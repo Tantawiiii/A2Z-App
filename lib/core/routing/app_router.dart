@@ -1,5 +1,5 @@
 import 'package:a2z_app/core/routing/routers.dart';
-import 'package:a2z_app/features/splash/splash_screen.dart';
+import 'package:a2z_app/features/getstarted/get_started_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/onboarding/screens/onboarding_screen.dart';
@@ -7,11 +7,10 @@ import '../../features/onboarding/screens/onboarding_screen.dart';
 class AppRouter {
   Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case Routes.splashScreen:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
-
       case Routes.onBoardingScreen:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
+      case Routes.getStartedScreen:
+        return MaterialPageRoute(builder: (_) => const GetStartedScreen());
 
       default:
         return MaterialPageRoute(
