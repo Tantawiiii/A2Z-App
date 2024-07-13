@@ -73,4 +73,13 @@ flutter:
     - asset/images/
     - asset/anim/
 
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: asset/fonts/Poppins-Bold.ttf
+        - asset: asset/fonts/Poppins-ExtraBold.ttf
+        - asset: asset/fonts/Poppins-Medium.ttf
+        - asset: asset/fonts/Poppins-Regular.ttf
+        - asset: asset/fonts/Poppins-SemiBold.ttf
+
 

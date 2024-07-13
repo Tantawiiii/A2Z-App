@@ -8,6 +8,9 @@ class ImagesPaths {
   static const String animBodyOnBoarding2 = "asset/anim/anim_onboard2.json";
   static const String animBodyOnBoarding3 = "asset/anim/anim_onboard3.json";
 
+  static const String logoIconBack = "asset/icon/logo_back.svg";
+  static const String imgTeacher = "asset/images/teacher.png";
+
 
 
 
