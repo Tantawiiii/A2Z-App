@@ -13,4 +13,9 @@ class StringsTexts  {
    static const String txtNext = "Next";
    static const String txtDone = "Done";
 
+   static const  String txtOnBoardingHeadLine = "Choose the best teacher \n suitable for you.";
+
+   static const String txGetStartedButton = "Get Started";
+   static const String txtOnBoardingDescription = "Discover a wide range of teaching materials and tools to enhance your lessons.";
+
 }
