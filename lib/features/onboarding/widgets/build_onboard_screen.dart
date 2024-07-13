@@ -29,13 +29,13 @@ class BuildOnboardingScreen extends StatelessWidget {
         verticalSpace(40.h),
         Text(
           titleBoard,
-          style: TextStyles.font26BlackBold,
+          style: TextStyles.font24BlueBold,
           textAlign: TextAlign.center,
         ),
         verticalSpace(20.h),
         Text(
           desBoard,
-          style: TextStyles.font13DarkBlueMedium,
+          style: TextStyles.font13GrayNormal,
           textAlign: TextAlign.center,
         ),
       ],

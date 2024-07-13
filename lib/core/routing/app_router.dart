@@ -1,8 +1,9 @@
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/features/getstarted/get_started_screen.dart';
-import 'package:a2z_app/features/login/login_screen.dart';
+import 'package:a2z_app/features/signup/ui/signup_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../features/login/ui/screens/login_screen.dart';
 import '../../features/onboarding/screens/onboarding_screen.dart';
 
 class AppRouter {
@@ -12,8 +13,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
       case Routes.getStartedScreen:
         return MaterialPageRoute(builder: (_) => const GetStartedScreen());
-        case Routes.loginScreen:
+      case Routes.loginScreen:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
+
+      case Routes.signupScreen:
+        return MaterialPageRoute(builder: (_) => const SignupScreen());
 
       default:
         return MaterialPageRoute(
