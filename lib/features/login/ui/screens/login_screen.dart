@@ -1,9 +1,11 @@
+import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
 import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/helpers/spacing.dart';
+import '../../../../core/routing/routers.dart';
 import '../../../../core/widgets/build_button.dart';
 import '../widgets/build_dont_have_acc_text.dart';
 import '../widgets/build_email_and_password.dart';
@@ -41,9 +43,13 @@ class LoginScreen extends StatelessWidget {
                     verticalSpace(24),
                     Align(
                       alignment: AlignmentDirectional.centerEnd,
-                      child: Text(
-                        StringsTexts.txtForgetPassword,
-                        style: TextStyles.font13BlueNormal,
+                      child: InkWell(
+                        child: Text(
+                          StringsTexts.txtForgetPassword,
+                          style: TextStyles.font13BlueNormal),
+                          onTap: () {
+                              context.pushNamed(Routes.forgetPasswordScreen);
+                            },
                       ),
                     ),
                     verticalSpace(40),

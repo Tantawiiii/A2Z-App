@@ -1,4 +1,5 @@
 import 'package:a2z_app/core/routing/routers.dart';
+import 'package:a2z_app/features/forget_password/ui/forget_passworf_screen.dart';
 import 'package:a2z_app/features/getstarted/get_started_screen.dart';
 import 'package:a2z_app/features/signup/ui/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,8 @@ class AppRouter {
 
       case Routes.signupScreen:
         return MaterialPageRoute(builder: (_) => const SignupScreen());
+      case Routes.forgetPasswordScreen:
+        return MaterialPageRoute(builder: (_) => const ForgetPassword());
 
       default:
         return MaterialPageRoute(

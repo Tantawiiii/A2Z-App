@@ -29,4 +29,8 @@ class StringsTexts  {
    static const String txtPasswordIsValid = "please enter a valid password.";
    static const String txtDontHaveAcc = 'Don\'t have an account? ';
    static const String txtSignUp = 'Sign Up';
+
+   static const String txtForgetPasswordTitle = "Forgot your password";
+   static const String txtForgetPasswordDes = "At our app, we take the security of your information seriously. Enter your phone number to get the activation code.";
+
 }
