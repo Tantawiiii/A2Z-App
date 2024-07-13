@@ -7,8 +7,8 @@ import 'package:flutter_svg/svg.dart';
 import '../../../core/theming/text_style.dart';
 import '../../../core/utils/colors_code.dart';
 
-class DoctorImageTextWidget extends StatelessWidget {
-  const DoctorImageTextWidget({super.key});
+class TeacherImageTextWidget extends StatelessWidget {
+  const TeacherImageTextWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +23,18 @@ class DoctorImageTextWidget extends StatelessWidget {
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                stops: const [0.14, 0.5])),
+                stops: const [0.10, 0.5]),),
         child: Image.asset(ImagesPaths.imgTeacher),
       ),
        Positioned(
-        bottom: 30,
+        bottom: 40,
         left: 0,
         right: 0,
         child: Text(
           StringsTexts.txtOnBoardingHeadLine,
           textAlign: TextAlign.center,
           style: TextStyles.font24BlueBold.copyWith(
-            height: 1.4,
+            height: 1.6,
           ),
         ),
       ),

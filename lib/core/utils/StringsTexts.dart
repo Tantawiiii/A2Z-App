@@ -18,4 +18,15 @@ class StringsTexts  {
    static const String txGetStartedButton = "Get Started";
    static const String txtOnBoardingDescription = "Discover a wide range of teaching materials and tools to enhance your lessons.";
 
+   static const String txtWelcomeBack = "Welcome Back";
+   static const String txtDescriptionLogin = "We're excited to have you back, can't wait to see what you've been up to since you last logged in.";
+   static const String txtEmail = "Email";
+   static const String txtPassword = "Password";
+   static const String txtForgetPassword = "Forgot Password?";
+   static const String txtLogin = "Login";
+   static const String txtOrSignMedia = "Or sign in with";
+   static const String txtEmailIsValid = "please enter a valid email.";
+   static const String txtPasswordIsValid = "please enter a valid password.";
+   static const String txtDontHaveAcc = 'Don\'t have an account? ';
+   static const String txtSignUp = 'Sign Up';
 }
