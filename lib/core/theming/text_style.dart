@@ -35,6 +35,14 @@ class TextStyles {
 
   );
 
+  static TextStyle font20BlueBold = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 20.sp,
+    fontWeight: FontWeightHelper.bold,
+    color: ColorsCode.mainBlue,
+
+  );
+
   static TextStyle font13BlueNormal = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 13.sp,
