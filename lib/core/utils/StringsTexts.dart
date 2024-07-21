@@ -33,4 +33,9 @@ class StringsTexts  {
    static const String txtForgetPasswordTitle = "Forgot your password";
    static const String txtForgetPasswordDes = "At our app, we take the security of your information seriously. Enter your phone number to get the activation code.";
 
+   static const String txtVerifyOtp = "Verification OTP Code";
+   static const String txtVerifyOtpDes = "We have send the otp code Verification check your massages.? ";
+
+
+
 }

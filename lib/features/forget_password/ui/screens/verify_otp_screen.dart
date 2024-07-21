@@ -3,53 +3,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/helpers/app_regex.dart';
-import '../../../core/helpers/spacing.dart';
-import '../../../core/theming/text_style.dart';
-import '../../../core/utils/StringsTexts.dart';
-import '../../../core/widgets/build_button.dart';
-import '../../../core/widgets/build_text_form_field.dart';
+import '../../../../core/helpers/spacing.dart';
+import '../../../../core/theming/text_style.dart';
+import '../../../../core/utils/StringsTexts.dart';
+import '../../../../core/widgets/build_button.dart';
+import '../widgets/build_otp_form.dart';
 
-class ForgetPassword extends StatelessWidget {
-  const ForgetPassword({super.key});
+class VerifyOtpScreen extends StatelessWidget {
+  const VerifyOtpScreen({super.key});
 
 
   @override
   Widget build(BuildContext context) {
 
-    final TextEditingController phoneNumberController =  TextEditingController();
     return  Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 35.h, vertical: 35.h),
+          padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  StringsTexts.txtForgetPasswordTitle,
+                  StringsTexts.txtVerifyOtp,
                   style: TextStyles.font20BlueBold,
                 ),
                 verticalSpace(8),
                 Text(
-                  StringsTexts.txtForgetPasswordDes,
+                  StringsTexts.txtVerifyOtpDes,
                   style: TextStyles.font13GrayNormal,
                 ),
                 verticalSpace(36),
-
-                BuildTextFormField(
-                  controller: phoneNumberController,
-                  hintText: "Enter a Valid Phone number",
-                  validator: (value) {
-
-                  },
-                ),
-
+                const BuildOtpForm(),
                 verticalSpace(100),
 
                 BuildButton(
-                  textButton: "Password Reset",
+                  textButton: "Confirm",
                   textStyle: TextStyles.font16WhiteMedium,
                   onPressed: () {
 
