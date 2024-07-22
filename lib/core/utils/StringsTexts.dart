@@ -36,6 +36,9 @@ class StringsTexts  {
    static const String txtVerifyOtp = "Verification OTP Code";
    static const String txtVerifyOtpDes = "We have send the otp code Verification check your massages.? ";
 
+   static const String txtConfirmBtn = "Confirm";
+   static const String txtHintValidPhoneNum = "Enter a Valid Phone number";
+   static const String txtPasswordReset = "Password Reset";
 
 
 }

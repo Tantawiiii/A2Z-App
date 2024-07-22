@@ -15,38 +15,33 @@ class VerifyOtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return  Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringsTexts.txtVerifyOtp,
-                  style: TextStyles.font20BlueBold,
-                ),
-                verticalSpace(8),
-                Text(
-                  StringsTexts.txtVerifyOtpDes,
-                  style: TextStyles.font13GrayNormal,
-                ),
-                verticalSpace(36),
-                const BuildOtpForm(),
-                verticalSpace(100),
+          padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 30.h),
+          child: ListView(
+            children: [
+              Text(
+                StringsTexts.txtVerifyOtp,
+                style: TextStyles.font24BlueBold,
+              ),
+              verticalSpace(8),
+              Text(
+                StringsTexts.txtVerifyOtpDes,
+                style: TextStyles.font13GrayNormal,
+              ),
+              verticalSpace(42),
+              const BuildOtpForm(),
+              verticalSpace(160),
+              BuildButton(
+                textButton: StringsTexts.txtConfirmBtn,
+                textStyle: TextStyles.font16WhiteMedium,
+                onPressed: () {
 
-                BuildButton(
-                  textButton: "Confirm",
-                  textStyle: TextStyles.font16WhiteMedium,
-                  onPressed: () {
-
-                  },
-                ),
-              ],
-            ),
+                },
+              ),
+            ],
           ),
         ),
       ),
