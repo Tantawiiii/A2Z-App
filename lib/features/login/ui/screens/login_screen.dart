@@ -65,6 +65,7 @@ class LoginScreen extends StatelessWidget {
                     const BuildIconsSocialMedia(),
                     verticalSpace(32),
                     const DontHaveAccountText(),
+                    verticalSpace(50),
                   ],
                 ),
               ],

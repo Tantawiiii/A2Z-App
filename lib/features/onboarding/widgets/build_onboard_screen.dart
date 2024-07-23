@@ -25,6 +25,8 @@ class BuildOnboardingScreen extends StatelessWidget {
           lottiePath,
           width: 300.w,
           repeat: true,
+          // to solve the load problem
+          frameRate: FrameRate.max,
         ),
         verticalSpace(40.h),
         Text(
