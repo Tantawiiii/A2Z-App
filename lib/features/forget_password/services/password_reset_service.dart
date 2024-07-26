@@ -1,47 +1,57 @@
+import 'package:a2z_app/core/helpers/extentions.dart';
+import 'package:a2z_app/core/routing/routers.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-
+import 'package:flutter/material.dart';
 import '../../../core/networking/api_constants.dart';
 
 class PasswordResetService {
-  final Dio _dio = Dio();
+  static const int _timeoutDuration =10000;
 
-  Future<Map<String, dynamic>> sendPasswordResetRequest(String loginOrEmail) async {
-    const String resetPasswordEndPoints = ApiConstants.apiRequestPasswordRest;
+  Dio _createDio() {
+    return Dio(
+      BaseOptions(
+        baseUrl: ApiConstants.apiBaseUrl,
+        headers: {'Content-Type': 'application/json'},
+        //connectTimeout: const Duration(milliseconds: _timeoutDuration),
+      //  receiveTimeout: const Duration(milliseconds: _timeoutDuration),
+      ),
+    );
+  }
+
+  Future<void> requestPasswordReset(BuildContext context, String loginOrEmail) async {
+    Dio dio = _createDio();
 
     try {
-      final response = await _dio.post(
-        resetPasswordEndPoints,
-        data: {'loginOrEmail': loginOrEmail}, // Assuming you need to pass the login or email
+      final response = await dio.post(
+        ApiConstants.apiRequestPasswordRest(loginOrEmail),
       );
 
-      if (response.statusCode == 200) {
-        if (kDebugMode) {
-          print('Send Success OTP: ${response.data}');
-        }
-        return {
-          'succeeded': true,
-          'data': response.data,
-        };
+      if (response.statusCode == 200 && response.data['succeeded'] == true) {
+        print("OTP >>> "+response.data);
+        context.pushNamed(Routes.verifyOtpScreen);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OTP request successful. Please check your email.'),
+            backgroundColor: Colors.blue,
+          ),
+        );
       } else {
-        if (kDebugMode) {
-          print('Failed with status code: ${response.statusCode}');
+        print(response.data);
+        if (response.data['errors'] != null && response.data['errors'].contains('User is not exist')) {
+          _showErrorSnackBar(context, 'User does not exist. Please check your phone number.');
+        } else {
+          _showErrorSnackBar(context, 'Failed to request password reset. Please try again.');
         }
-        // Parse error message from response if available
-        final errorMessage = response.data['errors']?.join(', ') ?? 'Unknown error';
-        return {
-          'succeeded': false,
-          'error': 'Failed with status code: ${response.statusCode}, Error: $errorMessage',
-        };
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('Exception: $e');
-      }
-      return {
-        'succeeded': false,
-        'error': 'Failed to send password reset request: $e',
-      };
+      _showErrorSnackBar(context, 'An error occurred: ${e.toString()}');
+      print(e.toString());
     }
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message),backgroundColor: Colors.red),
+    );
   }
 }
