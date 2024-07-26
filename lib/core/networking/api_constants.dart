@@ -1,8 +1,8 @@
 class ApiConstants {
 
-  static const String apiBaseUrl = "https://xrsmxrgo122302001020ss4.picoagri.online";
+  static const String apiBaseUrl = "http://a2zplatform.com";
 
-  static const String apiRequestPasswordRest = "$apiBaseUrl/api/platform/security/users/:loginOrEmail/requestpasswordreset";
+  static String apiRequestPasswordRest(String loginOrEmail) => "$apiBaseUrl/api/platform/security/users/:$loginOrEmail/requestpasswordreset";
 
 }
 
