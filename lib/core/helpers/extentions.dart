@@ -10,6 +10,12 @@ extension Navigation on BuildContext {
         .pushReplacementNamed(routeName, arguments: arguments);
   }
 
+  // Future<dynamic> pushReplacement(Widget page, {Object? arguments}) {
+  //   return Navigator.of(this).pushReplacement(
+  //     MaterialPageRoute(builder: (_) => page, settings: RouteSettings(arguments: arguments)),
+  //   );
+  // }
+
   Future<dynamic> pushNamedAndRemoveUntil(String routeName, {Object? arguments
   ,required RoutePredicate predicate}) {
     return Navigator.of(this)

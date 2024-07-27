@@ -1,16 +1,14 @@
-import 'package:a2z_app/core/utils/colors_code.dart';
+import 'package:a2z_app/core/widgets/build_toast.dart';
+import 'package:a2z_app/features/forget_password/services/provider/app_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:toasty_box/toast_enums.dart';
-import 'package:toasty_box/toast_service.dart';
-
+import 'package:provider/provider.dart';
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/theming/text_style.dart';
 import '../../../../core/utils/StringsTexts.dart';
 import '../../../../core/widgets/build_button.dart';
 import '../../../../core/widgets/build_text_form_field.dart';
-import '../../services/password_reset_service.dart';
+import '../../services/network/password_reset_service.dart';
 
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({
@@ -59,22 +57,12 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   if (loginOrEmail.isNotEmpty) {
                     _passwordResetService.requestPasswordReset(
                         context, loginOrEmail);
+
+                    // Update state with the new data
+                    Provider.of<AppStateProvider>(context, listen: false)
+                        .setData(loginOrEmail);
                   } else {
-                    ToastService.showToast(
-                      context,
-                      isClosable: true,
-                      backgroundColor: ColorsCode.lighterGray,
-                      length: ToastLength.short,
-                      expandedHeight: 80,
-                      message: "please enter your valid Data.",
-                      messageStyle: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                      slideCurve: Curves.elasticInOut,
-                      positionCurve: Curves.bounceOut,
-                      dismissDirection: DismissDirection.none,
-                    );
+                    buildSuccessToast(context, "please enter your valid Data.");
                   }
                 },
               )

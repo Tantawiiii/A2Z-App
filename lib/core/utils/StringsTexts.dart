@@ -40,5 +40,12 @@ class StringsTexts  {
    static const String txtHintValidPhoneNum = "Enter a Valid Phone number";
    static const String txtPasswordReset = "Password Reset";
 
+   static const String txtOtpEnterData = "Enter your OTP code.";
+   static const String txtNewPassword = "Enter your New Password.";
+
+   static const String txtSuccessfully = "Successfully";
+   static const String txtSuccessDes = "Valia! You nailed it You have successfully reset password for your account.";
+
+
 
 }
