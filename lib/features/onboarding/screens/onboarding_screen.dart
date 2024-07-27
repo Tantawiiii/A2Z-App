@@ -41,20 +41,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               },
               children: const [
                 BuildOnboardingScreen(
-                  imageHeaderPath: ImagesPaths.imgHeaderOnBoarding1,
-                  lottiePath: ImagesPaths.animBodyOnBoarding1,
+                  svgBodyPath: ImagesPaths.logoImage,
                   titleBoard: StringsTexts.titleOnBoard1,
                   desBoard: StringsTexts.desOnBoard1,
                 ),
                 BuildOnboardingScreen(
-                  imageHeaderPath: ImagesPaths.imgHeaderOnBoarding2,
-                  lottiePath: ImagesPaths.animBodyOnBoarding2,
+                  svgBodyPath: ImagesPaths.animBodyOnBoarding2,
                   titleBoard: StringsTexts.titleOnBoard2,
                   desBoard: StringsTexts.desOnBoard2,
                 ),
                 BuildOnboardingScreen(
-                  imageHeaderPath:ImagesPaths.imgHeaderOnBoarding3,
-                  lottiePath: ImagesPaths.animBodyOnBoarding1,
+                  svgBodyPath: ImagesPaths.animBodyOnBoarding2,
                   titleBoard: StringsTexts.titleOnBoard3,
                   desBoard: StringsTexts.desOnBoard3,
                 ),

@@ -1,5 +1,5 @@
 import 'package:a2z_app/core/routing/routers.dart';
-import 'package:a2z_app/features/forget_password/services/password_reset_service.dart';
+import 'package:a2z_app/features/forget_password/services/network/password_reset_service.dart';
 import 'package:a2z_app/features/forget_password/ui/screens/forget_passworf_screen.dart';
 import 'package:a2z_app/features/forget_password/ui/screens/verify_otp_screen.dart';
 import 'package:a2z_app/features/getstarted/get_started_screen.dart';

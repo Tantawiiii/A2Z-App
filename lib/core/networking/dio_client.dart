@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 
 import 'api_constants.dart';
 
-class DioExceptions {
-  static const int _timeoutDuration =10000;
+class DioClient {
+  static const int _timeoutDuration =20000;
 
   Dio createDio() {
     return Dio(
