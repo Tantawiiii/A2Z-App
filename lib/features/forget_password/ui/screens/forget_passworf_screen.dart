@@ -3,6 +3,7 @@ import 'package:a2z_app/features/forget_password/services/provider/app_state_pro
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/theming/text_style.dart';
 import '../../../../core/utils/StringsTexts.dart';
@@ -33,23 +34,29 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           child: ListView(
             children: [
               Text(
-                StringsTexts.txtForgetPasswordTitle,
+                StringTextsNames.txtForgetPasswordTitle,
                 style: TextStyles.font24BlueBold,
               ),
               verticalSpace(8),
               Text(
-                StringsTexts.txtForgetPasswordDes,
+                StringTextsNames.txtForgetPasswordDes,
                 style: TextStyles.font13GrayNormal,
               ),
               verticalSpace(42),
               BuildTextFormField(
                 controller: phoneNumberController,
-                hintText: StringsTexts.txtHintValidPhoneNum,
-                validator: (value) {},
+                hintText: StringTextsNames.txtHintValidPhoneNum,
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      !AppRegex.isPhoneNumberValid(value)) {
+                    return 'Please enter a valid phone number';
+                  }
+                },
               ),
               verticalSpace(160),
               BuildButton(
-                textButton: StringsTexts.txtPasswordReset,
+                textButton: StringTextsNames.txtPasswordReset,
                 textStyle: TextStyles.font16WhiteMedium,
                 onPressed: () {
                   final loginOrEmail = phoneNumberController.text;

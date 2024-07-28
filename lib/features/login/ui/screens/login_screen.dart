@@ -28,12 +28,12 @@ class LoginScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  StringsTexts.txtWelcomeBack,
+                  StringTextsNames.txtWelcomeBack,
                   style: TextStyles.font24BlueBold,
                 ),
                 verticalSpace(8),
                 Text(
-                  StringsTexts.txtDescriptionLogin,
+                  StringTextsNames.txtDescriptionLogin,
                   style: TextStyles.font14GrayNormal,
                 ),
                 verticalSpace(36),
@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                       alignment: AlignmentDirectional.centerEnd,
                       child: InkWell(
                         child: Text(
-                          StringsTexts.txtForgetPassword,
+                          StringTextsNames.txtForgetPassword,
                           style: TextStyles.font13BlueNormal),
                           onTap: () {
                               context.pushNamed(Routes.forgetPasswordScreen);
@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     verticalSpace(40),
                     BuildButton(
-                      textButton: StringsTexts.txtLogin,
+                      textButton: StringTextsNames.txtLogin,
                       textStyle: TextStyles.font16WhiteMedium,
                       onPressed: () {},
                     ),

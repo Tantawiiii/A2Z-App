@@ -22,7 +22,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
 
       case Routes.signupScreen:
-        return MaterialPageRoute(builder: (_) => const SignupScreen());
+        return MaterialPageRoute(builder: (_) =>  SignupScreen());
       case Routes.forgetPasswordScreen:
         return MaterialPageRoute(builder: (_) => const ForgetPassword());
       case Routes.verifyOtpScreen:

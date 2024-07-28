@@ -1,5 +1,5 @@
+import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:flutter/material.dart';
-
 
 import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/spacing.dart';
@@ -7,7 +7,26 @@ import '../../../../core/widgets/build_text_form_field.dart';
 import '../../../login/ui/widgets/build_password_validatons.dart';
 
 class SignupForm extends StatefulWidget {
-  const SignupForm({super.key});
+   SignupForm(
+      {super.key,
+      required this.formKey,
+      required this.firstNameController,
+      required this.lastNameController,
+      required this.phoneNumberController,
+      required this.emailController,
+      required this.usernameController,
+      required this.passwordController,
+      required this.gradeController});
+
+  final GlobalKey<FormState> formKey;
+
+   TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController;
+  final TextEditingController phoneNumberController;
+  final TextEditingController emailController;
+  final TextEditingController usernameController;
+  final TextEditingController passwordController;
+  final TextEditingController gradeController;
 
   @override
   State<SignupForm> createState() => _SignupFormState();
@@ -15,7 +34,6 @@ class SignupForm extends StatefulWidget {
 
 class _SignupFormState extends State<SignupForm> {
   bool isPasswordObscureText = true;
-  bool isPasswordConfirmationObscureText = true;
 
   bool hasLowercase = false;
   bool hasUppercase = false;
@@ -23,24 +41,22 @@ class _SignupFormState extends State<SignupForm> {
   bool hasNumber = false;
   bool hasMinLength = false;
 
-   TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    passwordController = passwordController;
     setupPasswordControllerListener();
   }
 
   void setupPasswordControllerListener() {
-    passwordController.addListener(() {
+    widget.passwordController.addListener(() {
       setState(() {
-        hasLowercase = AppRegex.hasLowerCase(passwordController.text);
-        hasUppercase = AppRegex.hasUpperCase(passwordController.text);
+        hasLowercase = AppRegex.hasLowerCase(  widget.passwordController.text);
+        hasUppercase = AppRegex.hasUpperCase(widget.passwordController.text);
         hasSpecialCharacters =
-            AppRegex.hasSpecialCharacter(passwordController.text);
-        hasNumber = AppRegex.hasNumber(passwordController.text);
-        hasMinLength = AppRegex.hasMinLength(passwordController.text);
+            AppRegex.hasSpecialCharacter(widget.passwordController.text);
+        hasNumber = AppRegex.hasNumber(widget.passwordController.text);
+        hasMinLength = AppRegex.hasMinLength(widget.passwordController.text);
       });
     });
   }
@@ -48,43 +64,55 @@ class _SignupFormState extends State<SignupForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: widget.formKey,
       child: Column(
         children: [
           BuildTextFormField(
-            hintText: 'Full Name',
+            controller: widget.firstNameController,
+            hintText: StringTextsNames.txtFullName,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a valid name';
+                return StringTextsNames.txtNameValid;
+              }
+            },
+          ),
+          BuildTextFormField(
+            controller: widget.lastNameController,
+            hintText: StringTextsNames.txtFullName,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return StringTextsNames.txtNameValid;
               }
             },
           ),
           verticalSpace(18),
           BuildTextFormField(
-            hintText: 'Phone number',
+            controller: widget.phoneNumberController,
+            hintText: StringTextsNames.txtPhoneNumber,
             validator: (value) {
               if (value == null ||
                   value.isEmpty ||
-                  !AppRegex.isPhoneNumberValid(value)) {
-                return 'Please enter a valid phone number';
+                  !AppRegex.isPhoneNumValid(value)) {
+                return StringTextsNames.txtHintValidPhoneNum;
               }
             },
           ),
           verticalSpace(18),
           BuildTextFormField(
-            hintText: 'Email',
+            controller: widget.emailController,
+            hintText: StringTextsNames.txtEmail,
             validator: (value) {
               if (value == null ||
                   value.isEmpty ||
                   !AppRegex.isEmailValid(value)) {
-                return 'Please enter a valid email';
+                return StringTextsNames.txtEmailIsValid;
               }
             },
-
           ),
           verticalSpace(18),
           BuildTextFormField(
-
-            hintText: 'Password',
+            controller: widget.passwordController,
+            hintText: StringTextsNames.txtPassword,
             isObscureText: isPasswordObscureText,
             suffixIcon: GestureDetector(
               onTap: () {
@@ -98,30 +126,18 @@ class _SignupFormState extends State<SignupForm> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a valid password';
+                return StringTextsNames.txtPasswordIsValid;
               }
             },
           ),
           verticalSpace(18),
           BuildTextFormField(
-            hintText: 'Password Confirmation',
-            isObscureText: isPasswordConfirmationObscureText,
-            suffixIcon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  isPasswordConfirmationObscureText =
-                  !isPasswordConfirmationObscureText;
-                });
-              },
-              child: Icon(
-                isPasswordConfirmationObscureText
-                    ? Icons.visibility_off
-                    : Icons.visibility,
-              ),
-            ),
+            controller: widget.gradeController,
+            hintText: StringTextsNames.txtGrade,
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter a valid password';
+              if (value == null ||
+                  value.isEmpty ) {
+                return StringTextsNames.txtGradeValid;
               }
             },
           ),
@@ -129,18 +145,14 @@ class _SignupFormState extends State<SignupForm> {
           BuildPasswordValidations(
             hasLowerCase: hasLowercase,
             hasUpperCase: hasUppercase,
-            hasSpecialCharacter: hasSpecialCharacters,
-            hasNumber: hasNumber,
             hasMinLength: hasMinLength,
+            hasNumber: hasNumber,
+            hasSpecialCharacter: hasSpecialCharacters,
           ),
         ],
       ),
     );
   }
 
-  @override
-  void dispose() {
-    passwordController.dispose();
-    super.dispose();
-  }
+
 }

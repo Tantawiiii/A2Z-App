@@ -42,18 +42,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               children: const [
                 BuildOnboardingScreen(
                   svgBodyPath: ImagesPaths.logoImage,
-                  titleBoard: StringsTexts.titleOnBoard1,
-                  desBoard: StringsTexts.desOnBoard1,
+                  titleBoard: StringTextsNames.titleOnBoard1,
+                  desBoard: StringTextsNames.desOnBoard1,
                 ),
                 BuildOnboardingScreen(
                   svgBodyPath: ImagesPaths.animBodyOnBoarding2,
-                  titleBoard: StringsTexts.titleOnBoard2,
-                  desBoard: StringsTexts.desOnBoard2,
+                  titleBoard: StringTextsNames.titleOnBoard2,
+                  desBoard: StringTextsNames.desOnBoard2,
                 ),
                 BuildOnboardingScreen(
                   svgBodyPath: ImagesPaths.animBodyOnBoarding2,
-                  titleBoard: StringsTexts.titleOnBoard3,
-                  desBoard: StringsTexts.desOnBoard3,
+                  titleBoard: StringTextsNames.titleOnBoard3,
+                  desBoard: StringTextsNames.desOnBoard3,
                 ),
               ],
             ),
@@ -68,7 +68,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       context.pushNamed(Routes.getStartedScreen);
                     },
                     child: Text(
-                      StringsTexts.txtSkip,
+                      StringTextsNames.txtSkip,
                       style: TextStyles.font13BlueSemiBold,
                     ),
                   ),
@@ -86,7 +86,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             context.pushNamed(Routes.getStartedScreen);
                           },
                           child: Text(
-                            StringsTexts.txtDone,
+                            StringTextsNames.txtDone,
                             style: TextStyles.font13BlueSemiBold,
                           ),
                         )
@@ -98,7 +98,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             );
                           },
                           child: Text(
-                            StringsTexts.txtNext,
+                            StringTextsNames.txtNext,
                             style: TextStyles.font13BlueSemiBold,
                           ),
                         ),

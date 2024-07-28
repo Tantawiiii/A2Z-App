@@ -24,7 +24,7 @@ class BuildOrSignInMediaAccounts extends StatelessWidget {
         ),
         horizontalSpace(4),
         Text(
-          StringsTexts.txtOrSignMedia,
+          StringTextsNames.txtOrSignMedia,
           style: TextStyles.font13GrayNormal,
         ),
         horizontalSpace(4),

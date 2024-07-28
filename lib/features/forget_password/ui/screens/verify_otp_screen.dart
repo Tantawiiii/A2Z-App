@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/font_weight_helper.dart';
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/theming/text_style.dart';
@@ -37,12 +38,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
           child: ListView(
             children: [
               Text(
-                StringsTexts.txtVerifyOtp,
+                StringTextsNames.txtVerifyOtp,
                 style: TextStyles.font24BlueBold,
               ),
               verticalSpace(8),
               Text(
-                StringsTexts.txtVerifyOtpDes,
+                StringTextsNames.txtVerifyOtpDes,
                 style: TextStyles.font13GrayNormal,
               ),
               verticalSpace(42),
@@ -56,15 +57,17 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   color: ColorsCode.darkBlue,
                 ),
                 validator: (value) {
-                  if (phoneNum.isEmpty && phoneNum == "null") {
-                    return "Please enter a phone number";
+                  if (value == null ||
+                      value.isEmpty ||
+                      !AppRegex.isPhoneNumberValid(value)) {
+                    return 'Please enter a valid phone number';
                   }
                 },
               ),
               verticalSpace(8),
               BuildTextFormField(
                 controller: otpController,
-                hintText: StringsTexts.txtOtpEnterData,
+                hintText: StringTextsNames.txtOtpEnterData,
                 validator: (value) {
                   if (value!.isEmpty && value == "null") {
                     return "Please enter a OTP Code";
@@ -74,7 +77,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
               verticalSpace(8),
               BuildTextFormField(
                 controller: newPasswordController,
-                hintText: StringsTexts.txtNewPassword,
+                hintText: StringTextsNames.txtNewPassword,
                 validator: (value) {
                   if (value!.isEmpty && value == "null") {
                     return "Please enter a new password";
@@ -83,7 +86,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
               ),
               verticalSpace(160),
               BuildButton(
-                textButton: StringsTexts.txtConfirmBtn,
+                textButton: StringTextsNames.txtConfirmBtn,
                 textStyle: TextStyles.font16WhiteMedium,
                 onPressed: () {
                   changePasswordByOTP(

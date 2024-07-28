@@ -25,7 +25,7 @@ class GetStartedScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      StringsTexts.txtOnBoardingDescription,
+                      StringTextsNames.txtOnBoardingDescription,
                       style: TextStyles.font13GrayNormal,
                       textAlign: TextAlign.center,
                     ),
