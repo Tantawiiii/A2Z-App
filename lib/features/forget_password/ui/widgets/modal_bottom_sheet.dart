@@ -31,18 +31,18 @@ class BottomSheetDialog extends StatelessWidget {
             ),
             verticalSpace(16.h),
             Text(
-              StringsTexts.txtSuccessfully,
+              StringTextsNames.txtSuccessfully,
               style: TextStyles.font20BlueBold,
             ),
             verticalSpace(8.h),
             Text(
-              StringsTexts.txtSuccessDes,
+              StringTextsNames.txtSuccessDes,
               style: TextStyles.font13DarkBlueRegular,
               textAlign: TextAlign.center,
             ),
             verticalSpace(20.h),
             BuildButton(
-              textButton: StringsTexts.txtDone,
+              textButton: StringTextsNames.txtDone,
               textStyle: TextStyles.font16WhiteMedium,
               onPressed: () {
                 context.pushNamedAndRemoveUntil(Routes.loginScreen, predicate:  (route) => false);

@@ -1,3 +1,4 @@
+import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:a2z_app/features/signup/ui/widgets/already_have_account_text.dart';
 import 'package:a2z_app/features/signup/ui/widgets/build_sign_up_form.dart';
 import 'package:flutter/material.dart';
@@ -7,56 +8,99 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/helpers/spacing.dart';
 import '../../../../../core/theming/text_style.dart';
 import '../../../core/widgets/build_button.dart';
+import '../services/graphql_service.dart';
 
+class SignupScreen extends StatefulWidget {
+  SignupScreen({super.key});
 
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
 
-class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+class _SignupScreenState extends State<SignupScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _gradeController = TextEditingController();
+
+  final GraphQLService _graphQLService = GraphQLService();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // to fix white part top of the Keyboard window opening
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Create Account',
-                  style: TextStyles.font24BlueBold,
-                ),
-                verticalSpace(8),
-                Text(
-                  'Sign up now and start exploring all that our app has to offer. We\'re excited to welcome you to our community!',
-                  style: TextStyles.font14GrayNormal,
-                ),
-                verticalSpace(36),
-                Column(
-                  children: [
-                    const SignupForm(),
-                    verticalSpace(40),
-                    BuildButton(
-                      textButton: "Create Account",
-                      textStyle: TextStyles.font16WhiteMedium,
-                      onPressed: () {
-
-                      },
-                    ),
-                    verticalSpace(16),
-                    const AlreadyHaveAccountText(),
-                  ],
-                ),
-              ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
+        child: ListView(
+          children: [
+            Text(
+              StringTextsNames.txtCreateAccount,
+              style: TextStyles.font24BlueBold,
             ),
-          ),
+            verticalSpace(8),
+            Text(
+              StringTextsNames.txtCreateAccDes,
+              style: TextStyles.font14GrayNormal,
+            ),
+            verticalSpace(36),
+            SignupForm(
+              formKey: _formKey,
+              firstNameController: _firstNameController,
+              lastNameController: _lastNameController,
+              phoneNumberController: _phoneNumberController,
+              emailController: _emailController,
+              usernameController: _usernameController,
+              passwordController: _passwordController,
+              gradeController: _gradeController,
+            ),
+            verticalSpace(40),
+            BuildButton(
+              textButton: StringTextsNames.txtCreateAccount,
+              textStyle: TextStyles.font16WhiteMedium,
+              onPressed: _register,
+            ),
+            verticalSpace(16),
+            const AlreadyHaveAccountText(),
+            verticalSpace(160),
+          ],
         ),
       ),
     );
   }
 
+  void _register() async {
+    if (_formKey.currentState!.validate()) {
+      final result = await _graphQLService.requestRegistration(
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        phoneNumber: _phoneNumberController.text,
+        email: _emailController.text,
+        username: _usernameController.text,
+        password: _passwordController.text,
+        grade: _gradeController.text,
+      );
 
+      // Handle the result as needed
+      print(result);
+    }
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _phoneNumberController.dispose();
+    _emailController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _gradeController.dispose();
+    super.dispose();
+  }
 }

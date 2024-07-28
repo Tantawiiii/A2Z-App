@@ -1,6 +1,6 @@
 
 
-class StringsTexts  {
+class StringTextsNames  {
 
    static const String titleOnBoard1 = "Discover Your Learning Journey";
    static const String titleOnBoard3 = "Your Path to Success Starts Here";
@@ -30,6 +30,16 @@ class StringsTexts  {
    static const String txtDontHaveAcc = 'Don\'t have an account? ';
    static const String txtSignUp = 'Sign Up';
 
+   static const String txtFullName = "Your Name";
+   static const String txtNameValid = "Please enter a valid name";
+   static const String txtGrade = "Your Grades";
+   static const String txtGradeValid = "Please enter a valid Grades";
+
+
+
+   static const String txtPhoneNumber = "Your phone number";
+   static const String txtHintValidPhoneNum = "Please enter a valid phone number";
+
    static const String txtForgetPasswordTitle = "Forgot your password";
    static const String txtForgetPasswordDes = "At our app, we take the security of your information seriously. Enter your phone number to get the activation code.";
 
@@ -37,7 +47,6 @@ class StringsTexts  {
    static const String txtVerifyOtpDes = "We have send the otp code Verification check your massages.? ";
 
    static const String txtConfirmBtn = "Confirm";
-   static const String txtHintValidPhoneNum = "Enter a Valid Phone number";
    static const String txtPasswordReset = "Password Reset";
 
    static const String txtOtpEnterData = "Enter your OTP code.";
@@ -46,6 +55,7 @@ class StringsTexts  {
    static const String txtSuccessfully = "Successfully";
    static const String txtSuccessDes = "Valia! You nailed it You have successfully reset password for your account.";
 
-
+   static const String txtCreateAccount = "Create Account";
+   static const String txtCreateAccDes = "Sign up now and start exploring all that our app has to offer. We\'re excited to welcome you to our community!";
 
 }

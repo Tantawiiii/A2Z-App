@@ -33,7 +33,7 @@ class TeacherImageTextWidget extends StatelessWidget {
           left: 0,
           right: 0,
           child: Text(
-            StringsTexts.txtOnBoardingHeadLine,
+            StringTextsNames.txtOnBoardingHeadLine,
             textAlign: TextAlign.center,
             style: TextStyles.font24BlueBold.copyWith(
               height: 1.6,

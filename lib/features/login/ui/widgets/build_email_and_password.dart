@@ -51,19 +51,19 @@ class _BuildEmailAndPasswordState extends State<BuildEmailAndPassword> {
         children: [
           BuildTextFormField(
             controller: emailController,
-            hintText: StringsTexts.txtEmail,
+            hintText: StringTextsNames.txtEmail,
             validator: (value) {
               if (value == null ||
                   value.isEmpty ||
                   !AppRegex.isEmailValid(value)) {
-                return StringsTexts.txtEmailIsValid;
+                return StringTextsNames.txtEmailIsValid;
               }
             },
           ),
           verticalSpace(18),
           BuildTextFormField(
             controller: passwordController,
-            hintText: StringsTexts.txtPassword,
+            hintText: StringTextsNames.txtPassword,
             isObscureText: isObscuredText,
             suffixIcon: GestureDetector(
               onTap: () {
@@ -77,7 +77,7 @@ class _BuildEmailAndPasswordState extends State<BuildEmailAndPassword> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return StringsTexts.txtPasswordIsValid;
+                return StringTextsNames.txtPasswordIsValid;
               }
             },
           ),

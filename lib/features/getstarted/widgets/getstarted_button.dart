@@ -26,7 +26,7 @@ class GetStartedButton extends StatelessWidget {
         ),
       ),
       child: Text(
-        StringsTexts.txGetStartedButton,
+        StringTextsNames.txGetStartedButton,
         style: TextStyles.font16WhiteMedium,
       ),
     );

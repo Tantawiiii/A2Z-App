@@ -17,11 +17,11 @@ class DontHaveAccountText extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: StringsTexts.txtDontHaveAcc,
+            text: StringTextsNames.txtDontHaveAcc,
             style: TextStyles.font13DarkBlueRegular,
           ),
           TextSpan(
-            text: StringsTexts.txtSignUp,
+            text: StringTextsNames.txtSignUp,
             style: TextStyles.font13BlueSemiBold,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
