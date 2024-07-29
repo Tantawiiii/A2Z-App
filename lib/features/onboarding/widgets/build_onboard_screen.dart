@@ -18,14 +18,15 @@ class BuildOnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
       children: [
         //Image.asset(imageHeaderPath),
         //verticalSpace(10.h),
         SvgPicture.asset(
           svgBodyPath,
-          width: 280.w,
+          width: 260.w,
         ),
-        verticalSpace(40.h),
+        verticalSpace(60.h),
         Text(
           titleBoard,
           style: TextStyles.font24BlueBold,

@@ -53,7 +53,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   desBoard: StringTextsNames.desOnBoard2,
                 ),
                 BuildOnboardingScreen(
-                  svgBodyPath: ImagesPaths.animBodyOnBoarding2,
+                  svgBodyPath: ImagesPaths.animBodyOnBoarding3,
                   titleBoard: StringTextsNames.titleOnBoard3,
                   desBoard: StringTextsNames.desOnBoard3,
                 ),
@@ -65,17 +65,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   //skip
-                  Bounce(
-                    child: Motion(
-                      child: GestureDetector(
-                        onTap: () {
-                          context.pushNamed(Routes.getStartedScreen);
-                        },
-                        child: Text(
-                          StringTextsNames.txtSkip,
-                          style: TextStyles.font13BlueSemiBold,
-                        ),
-                      ),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(Routes.getStartedScreen);
+                    },
+                    child: Text(
+                      StringTextsNames.txtSkip,
+                      style: TextStyles.font14BlueSemiBold,
                     ),
                   ),
 
@@ -87,35 +83,27 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
                   // next or done
                   onLastPage
-                      ? Bounce(
-                        child: Motion(
-                          child: GestureDetector(
-                              onTap: () {
-                                context.pushNamed(Routes.getStartedScreen);
-                              },
-                              child: Text(
-                                StringTextsNames.txtDone,
-                                style: TextStyles.font13BlueSemiBold,
-                              ),
-                            ),
+                      ? GestureDetector(
+                          onTap: () {
+                            context.pushNamed(Routes.getStartedScreen);
+                          },
+                          child: Text(
+                            StringTextsNames.txtDone,
+                            style: TextStyles.font14BlueSemiBold,
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeIn,
+                            );
+                          },
+                          child: Text(
+                            StringTextsNames.txtNext,
+                            style: TextStyles.font14BlueSemiBold,
+                          ),
                         ),
-                      )
-                      : Bounce(
-                        child: Motion(
-                          child: GestureDetector(
-                              onTap: () {
-                                _pageController.nextPage(
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeIn,
-                                );
-                              },
-                              child: Text(
-                                StringTextsNames.txtNext,
-                                style: TextStyles.font13BlueSemiBold,
-                              ),
-                            ),
-                        ),
-                      ),
                 ],
               ),
             ),
