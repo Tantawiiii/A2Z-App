@@ -30,7 +30,10 @@ class StringTextsNames  {
    static const String txtDontHaveAcc = 'Don\'t have an account? ';
    static const String txtSignUp = 'Sign Up';
 
-   static const String txtFullName = "Your Name";
+   static const String txtFirstName = "First Name";
+   static const String txtFirstNameValid = "Enter First Name";
+   static const String txtLastName = "Last Name";
+   static const String txtLastNameValid = "Enter Last Name";
    static const String txtNameValid = "Please enter a valid name";
    static const String txtGrade = "Your Grades";
    static const String txtGradeValid = "Please enter a valid Grades";

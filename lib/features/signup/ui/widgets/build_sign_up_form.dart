@@ -1,5 +1,6 @@
 import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/spacing.dart';
@@ -67,24 +68,38 @@ class _SignupFormState extends State<SignupForm> {
       key: widget.formKey,
       child: Column(
         children: [
-          BuildTextFormField(
-            controller: widget.firstNameController,
-            hintText: StringTextsNames.txtFullName,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return StringTextsNames.txtNameValid;
-              }
-            },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SizedBox(
+                width: 150.w,
+                child: BuildTextFormField(
+                  controller: widget.firstNameController,
+                  hintText: StringTextsNames.txtFirstName,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return StringTextsNames.txtFirstNameValid;
+                    }
+                  },
+                ),
+              ),
+
+              SizedBox(
+                width: 150.w,
+                child: BuildTextFormField(
+                  controller: widget.lastNameController,
+                  hintText: StringTextsNames.txtLastName,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return StringTextsNames.txtLastNameValid;
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
-          BuildTextFormField(
-            controller: widget.lastNameController,
-            hintText: StringTextsNames.txtFullName,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return StringTextsNames.txtNameValid;
-              }
-            },
-          ),
+
           verticalSpace(18),
           BuildTextFormField(
             controller: widget.phoneNumberController,

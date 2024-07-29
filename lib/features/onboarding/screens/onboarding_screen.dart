@@ -2,8 +2,10 @@ import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:a2z_app/features/onboarding/widgets/build_onboard_screen.dart';
+import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:motion/motion.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/theming/text_style.dart';
@@ -63,13 +65,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   //skip
-                  GestureDetector(
-                    onTap: () {
-                      context.pushNamed(Routes.getStartedScreen);
-                    },
-                    child: Text(
-                      StringTextsNames.txtSkip,
-                      style: TextStyles.font13BlueSemiBold,
+                  Bounce(
+                    child: Motion(
+                      child: GestureDetector(
+                        onTap: () {
+                          context.pushNamed(Routes.getStartedScreen);
+                        },
+                        child: Text(
+                          StringTextsNames.txtSkip,
+                          style: TextStyles.font13BlueSemiBold,
+                        ),
+                      ),
                     ),
                   ),
 
@@ -81,27 +87,35 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
                   // next or done
                   onLastPage
-                      ? GestureDetector(
-                          onTap: () {
-                            context.pushNamed(Routes.getStartedScreen);
-                          },
-                          child: Text(
-                            StringTextsNames.txtDone,
-                            style: TextStyles.font13BlueSemiBold,
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            _pageController.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeIn,
-                            );
-                          },
-                          child: Text(
-                            StringTextsNames.txtNext,
-                            style: TextStyles.font13BlueSemiBold,
-                          ),
+                      ? Bounce(
+                        child: Motion(
+                          child: GestureDetector(
+                              onTap: () {
+                                context.pushNamed(Routes.getStartedScreen);
+                              },
+                              child: Text(
+                                StringTextsNames.txtDone,
+                                style: TextStyles.font13BlueSemiBold,
+                              ),
+                            ),
                         ),
+                      )
+                      : Bounce(
+                        child: Motion(
+                          child: GestureDetector(
+                              onTap: () {
+                                _pageController.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeIn,
+                                );
+                              },
+                              child: Text(
+                                StringTextsNames.txtNext,
+                                style: TextStyles.font13BlueSemiBold,
+                              ),
+                            ),
+                        ),
+                      ),
                 ],
               ),
             ),

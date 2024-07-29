@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 35.h, vertical: 35.h),
+          padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +61,6 @@ class LoginScreen extends StatelessWidget {
                     verticalSpace(46),
                     const BuildOrSignInMediaAccounts(),
                     verticalSpace(46),
-                    // TODO: HERE we Build Row media Login Icons
                     const BuildIconsSocialMedia(),
                     verticalSpace(32),
                     const DontHaveAccountText(),

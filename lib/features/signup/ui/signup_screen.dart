@@ -37,7 +37,7 @@ class _SignupScreenState extends State<SignupScreen> {
       // to fix white part top of the Keyboard window opening
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
         child: ListView(
           children: [
             Text(
@@ -87,8 +87,6 @@ class _SignupScreenState extends State<SignupScreen> {
         grade: _gradeController.text,
       );
 
-      // Handle the result as needed
-      print(result);
     }
   }
 
