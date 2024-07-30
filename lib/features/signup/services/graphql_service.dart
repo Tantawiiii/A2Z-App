@@ -32,6 +32,7 @@ class GraphQLService {
       },
     });
 
+    print("Rejester: ${response.data}");
     return response.data;
   }
 }

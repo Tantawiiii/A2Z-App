@@ -3,6 +3,7 @@ import 'package:a2z_app/features/forget_password/services/network/password_reset
 import 'package:a2z_app/features/forget_password/ui/screens/forget_passworf_screen.dart';
 import 'package:a2z_app/features/forget_password/ui/screens/verify_otp_screen.dart';
 import 'package:a2z_app/features/getstarted/get_started_screen.dart';
+import 'package:a2z_app/features/home/home_screen.dart';
 import 'package:a2z_app/features/signup/ui/signup_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -22,11 +23,13 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
 
       case Routes.signupScreen:
-        return MaterialPageRoute(builder: (_) =>  SignupScreen());
+        return MaterialPageRoute(builder: (_) => SignupScreen());
       case Routes.forgetPasswordScreen:
         return MaterialPageRoute(builder: (_) => const ForgetPassword());
       case Routes.verifyOtpScreen:
         return MaterialPageRoute(builder: (_) => const VerifyOtpScreen());
+      case Routes.homeScreen:
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
 
       default:
         return MaterialPageRoute(

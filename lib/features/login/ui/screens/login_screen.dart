@@ -56,7 +56,9 @@ class LoginScreen extends StatelessWidget {
                     BuildButton(
                       textButton: StringTextsNames.txtLogin,
                       textStyle: TextStyles.font16WhiteMedium,
-                      onPressed: () {},
+                      onPressed: () {
+                        context.pushNamed(Routes.homeScreen);
+                      },
                     ),
                     verticalSpace(46),
                     const BuildOrSignInMediaAccounts(),

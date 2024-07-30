@@ -8,7 +8,7 @@ import '../../../../core/widgets/build_text_form_field.dart';
 import '../../../login/ui/widgets/build_password_validatons.dart';
 
 class SignupForm extends StatefulWidget {
-   SignupForm(
+  SignupForm(
       {super.key,
       required this.formKey,
       required this.firstNameController,
@@ -21,7 +21,7 @@ class SignupForm extends StatefulWidget {
 
   final GlobalKey<FormState> formKey;
 
-   TextEditingController firstNameController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController;
   final TextEditingController phoneNumberController;
   final TextEditingController emailController;
@@ -42,7 +42,6 @@ class _SignupFormState extends State<SignupForm> {
   bool hasNumber = false;
   bool hasMinLength = false;
 
-
   @override
   void initState() {
     super.initState();
@@ -52,7 +51,7 @@ class _SignupFormState extends State<SignupForm> {
   void setupPasswordControllerListener() {
     widget.passwordController.addListener(() {
       setState(() {
-        hasLowercase = AppRegex.hasLowerCase(  widget.passwordController.text);
+        hasLowercase = AppRegex.hasLowerCase(widget.passwordController.text);
         hasUppercase = AppRegex.hasUpperCase(widget.passwordController.text);
         hasSpecialCharacters =
             AppRegex.hasSpecialCharacter(widget.passwordController.text);
@@ -84,7 +83,6 @@ class _SignupFormState extends State<SignupForm> {
                   },
                 ),
               ),
-
               SizedBox(
                 width: 150.w,
                 child: BuildTextFormField(
@@ -99,7 +97,6 @@ class _SignupFormState extends State<SignupForm> {
               ),
             ],
           ),
-
           verticalSpace(18),
           BuildTextFormField(
             controller: widget.phoneNumberController,
@@ -140,7 +137,9 @@ class _SignupFormState extends State<SignupForm> {
               ),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null ||
+                  value.isEmpty ||
+                  !AppRegex.isPasswordValid(value)) {
                 return StringTextsNames.txtPasswordIsValid;
               }
             },
@@ -150,8 +149,7 @@ class _SignupFormState extends State<SignupForm> {
             controller: widget.gradeController,
             hintText: StringTextsNames.txtGrade,
             validator: (value) {
-              if (value == null ||
-                  value.isEmpty ) {
+              if (value == null || value.isEmpty) {
                 return StringTextsNames.txtGradeValid;
               }
             },
@@ -168,6 +166,4 @@ class _SignupFormState extends State<SignupForm> {
       ),
     );
   }
-
-
 }
