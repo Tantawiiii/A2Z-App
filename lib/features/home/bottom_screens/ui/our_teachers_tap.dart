@@ -2,15 +2,15 @@
 
 import 'package:flutter/material.dart';
 
-class ProfileTap extends StatelessWidget {
-  const ProfileTap({super.key});
+class OurTeachersTap extends StatelessWidget {
+  const OurTeachersTap({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Text("Profile Tap"),
+        child: Text("OurTeachersTap Tap"),
       ),
     );
   }

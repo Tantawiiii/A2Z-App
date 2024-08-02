@@ -77,15 +77,22 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void _register() async {
     if (_formKey.currentState!.validate()) {
-      await _graphQLService.requestRegistration(
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
-        phoneNumber: _phoneNumberController.text,
-        email: _emailController.text,
-        username: _usernameController.text,
-        password: _passwordController.text,
-        grade: _gradeController.text,
-      );
+      try {
+        final result = await _graphQLService.requestRegistration(
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+          phoneNumber: "+2${_phoneNumberController.text}",
+          email: _emailController.text,
+          username: _usernameController.text,
+          password: _passwordController.text,
+          grade: _gradeController.text,
+        );
+
+        // Handle the result as needed
+        print("response: ${result}");
+      } catch (e) {
+        print("An error occurred: $e");
+      }
     }
   }
 
