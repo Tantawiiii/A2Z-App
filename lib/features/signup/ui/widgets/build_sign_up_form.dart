@@ -22,12 +22,12 @@ class SignupForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
   TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController;
-  final TextEditingController phoneNumberController;
-  final TextEditingController emailController;
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
-  final TextEditingController gradeController;
+   TextEditingController lastNameController= TextEditingController();
+   TextEditingController phoneNumberController= TextEditingController();
+   TextEditingController emailController= TextEditingController();
+   TextEditingController usernameController= TextEditingController();
+   TextEditingController passwordController = TextEditingController();
+   TextEditingController gradeController= TextEditingController();
 
   @override
   State<SignupForm> createState() => _SignupFormState();
@@ -103,8 +103,9 @@ class _SignupFormState extends State<SignupForm> {
             hintText: StringTextsNames.txtPhoneNumber,
             validator: (value) {
               if (value == null ||
-                  value.isEmpty ||
-                  !AppRegex.isPhoneNumValid(value)) {
+                  value.isEmpty
+                  //|| !AppRegex.isPhoneNumValid(value)
+              ) {
                 return StringTextsNames.txtHintValidPhoneNum;
               }
             },
@@ -138,8 +139,9 @@ class _SignupFormState extends State<SignupForm> {
             ),
             validator: (value) {
               if (value == null ||
-                  value.isEmpty ||
-                  !AppRegex.isPasswordValid(value)) {
+                  value.isEmpty
+                 // || !AppRegex.isPasswordValid(value)
+              ) {
                 return StringTextsNames.txtPasswordIsValid;
               }
             },

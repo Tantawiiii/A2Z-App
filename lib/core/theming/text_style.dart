@@ -72,6 +72,13 @@ class TextStyles {
     color: ColorsCode.gray,
   );
 
+  static TextStyle font12GrayNormal = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 12.sp,
+    fontWeight: FontWeightHelper.regular,
+    color: ColorsCode.gray,
+  );
+
   static TextStyle font14LightGrayNormal = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 14.sp,
@@ -81,6 +88,12 @@ class TextStyles {
   static TextStyle font14DarkBlueMedium = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 14.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: ColorsCode.darkBlue,
+  );
+  static TextStyle font12DarkBlueMedium = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 12.sp,
     fontWeight: FontWeightHelper.medium,
     color: ColorsCode.darkBlue,
   );

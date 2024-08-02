@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
-import '../../../../core/networking/clients/graphql_client.dart';
-import 'graphql_queries.dart';
 
 class GraphQLService {
-  final Dio _dio;
-
-  GraphQLService({GraphQLClient? client})
-      : _dio = (client ?? GraphQLClient()).dio;
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: 'http://a2zplatform.com/graphql',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ),
+  );
 
   Future<Map<String, dynamic>> requestRegistration({
     required String firstName,
@@ -17,7 +19,42 @@ class GraphQLService {
     required String password,
     required String grade,
   }) async {
-    const String query = GraphQLQueries.requestRegistration;
+    const String query = '''
+    mutation RequestRegistration(\$firstName: String!, \$lastName: String!, \$phoneNumber: String!, \$email: String!, \$username: String!, \$password: String!, \$grade: String!) {
+      requestRegistration(
+        command: {
+          storeId: "A2Z"
+          contact: {
+            firstName: \$firstName
+            lastName: \$lastName
+            phoneNumber: \$phoneNumber
+            dynamicProperties: [
+              {
+                name: "grade",
+                value: \$grade
+              }
+            ]
+          }
+          account: {
+            email: \$email
+            username: \$username
+            password: \$password
+          }
+        }
+      ) {
+        result {
+          succeeded
+          requireEmailVerification
+          oTP
+          errors {
+            code
+            description
+            parameter
+          }
+        }
+      }
+    }
+    ''';
 
     final response = await _dio.post('', data: {
       'query': query,
@@ -32,7 +69,6 @@ class GraphQLService {
       },
     });
 
-    print("Rejester: ${response.data}");
     return response.data;
   }
 }
