@@ -61,4 +61,15 @@ class StringTextsNames  {
    static const String txtCreateAccount = "Create Account";
    static const String txtCreateAccDes = "Sign up now and start exploring all that our app has to offer. We\'re excited to welcome you to our community!";
 
+   static const String txtNoCourses = "You have no courses yet.";
+   static const String txtSubNow = "Subscribe Now.";
+   static const String txtAhmedRamadan = "Ahmed Ramadan";
+   static const String txtStudent = "Student";
+
+   static const String txtChangePass = "Change Password";
+   static const String txtExams = "Exams";
+   static const String txtFaq = "FAQ";
+   static const String txtAboutUs = "About US";
+   static const String txtLogOut = "LogOut";
+
 }

@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: ColorsCode.lightWhite,
               showLabel: true,
               shadowElevation: 0.0,
-              itemLabelStyle: TextStyles.font12GrayNormal,
+              itemLabelStyle: TextStyles.font10GrayNormal,
               notchColor: ColorsCode.mainBlue,
               removeMargins: true,
               bottomBarHeight: 65,
@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 log('current selected index $index');
                 _pageController.jumpToPage(index);
               },
-              kIconSize: 26,
+              kIconSize: 24,
               kBottomRadius: 0.0,
             )
           : null,
