@@ -72,9 +72,9 @@ class TextStyles {
     color: ColorsCode.gray,
   );
 
-  static TextStyle font12GrayNormal = TextStyle(
+  static TextStyle font10GrayNormal = TextStyle(
     fontFamily: 'Poppins',
-    fontSize: 12.sp,
+    fontSize: 10.sp,
     fontWeight: FontWeightHelper.regular,
     color: ColorsCode.gray,
   );
