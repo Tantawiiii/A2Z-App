@@ -18,7 +18,7 @@ class A2ZApp extends StatelessWidget {
             primaryColor: ColorsCode.mainBlue,
             scaffoldBackgroundColor: ColorsCode.white
         ),
-        initialRoute: Routes.homeScreen,
+        initialRoute: Routes.onBoardingScreen,
         onGenerateRoute: appRouter.generateRoute,
       ),
     );
