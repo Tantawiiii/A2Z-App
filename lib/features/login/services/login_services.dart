@@ -6,15 +6,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../core/networking/clients/dio_client.dart';
+import '../../../core/networking/local/token_storage.dart';
 import '../../../core/widgets/build_toast.dart';
 
 class AuthService {
-
-
   final DioClient _dioClient = DioClient();
 
+  // Initialize TokenStorage
+  final TokenStorage _tokenStorage = TokenStorage();
 
-  Future<void> login(BuildContext context,String username, String password) async {
+  Future<void> login(BuildContext context, String username, String password) async {
     final String url = ApiConstants.apiLogin;
     final dio = _dioClient.createDio();
     try {
@@ -34,8 +35,11 @@ class AuthService {
       );
 
       if (response.data.containsKey('access_token')) {
+        // Save the token using TokenStorage
+        await _tokenStorage.saveToken(response.data['access_token']);
+
         // Login successful, navigate to Home screen
-        context.pushNamedAndRemoveUntil(Routes.homeScreen, predicate:  (route) => false);
+        context.pushNamedAndRemoveUntil(Routes.homeScreen, predicate: (route) => false);
         buildSuccessToast(context, "Successfully logged in A2Z");
       } else {
         // Show error message
@@ -53,14 +57,12 @@ class AuthService {
         if (kDebugMode) {
           print('Error response: ${e.response?.statusCode} ${e.response?.statusMessage}');
         }
-
       } else {
         buildFailedToast(context, 'Error: ${e.message}');
 
         if (kDebugMode) {
           print('Error: ${e.message}');
         }
-
       }
     }
   }

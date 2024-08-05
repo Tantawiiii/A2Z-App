@@ -12,4 +12,5 @@ class ColorsCode{
   static const Color lightWhite =  Color(0xFFFDFDFF);
   static const Color fillRed =  Color(0xFFFF4C5E);
   static const Color fillGreen =  Color(0xFF22C55E);
+  static const Color lightBlue = Color(0xFFE1ECF9);
 }

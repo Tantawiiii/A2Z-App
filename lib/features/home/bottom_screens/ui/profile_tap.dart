@@ -1,4 +1,6 @@
+import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/helpers/spacing.dart';
+import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
 import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
@@ -74,6 +76,8 @@ class ProfileTap extends StatelessWidget {
             text: StringTextsNames.txtLogOut,
             color: Colors.red,
             onTap: () {
+
+              context.pushNamed(Routes.loginScreen);
               print('Logout Tapped');
             },
           ),
