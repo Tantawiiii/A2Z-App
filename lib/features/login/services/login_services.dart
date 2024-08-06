@@ -18,6 +18,8 @@ class AuthService {
   Future<void> login(BuildContext context, String username, String password) async {
     final String url = ApiConstants.apiLogin;
     final dio = _dioClient.createDio();
+
+    print('Login URL: $url');
     try {
       final response = await dio.post(
         url,
