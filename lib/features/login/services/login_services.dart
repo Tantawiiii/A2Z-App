@@ -15,9 +15,10 @@ class AuthService {
   // Initialize TokenStorage
   final TokenStorage _tokenStorage = TokenStorage();
 
-  Future<void> login(BuildContext context, String username, String password) async {
+  Future<void> login(
+      BuildContext context, String username, String password) async {
     final String url = ApiConstants.apiLogin;
-    final dio = _dioClient.createDio();
+    final dio = _dioClient.dio;
 
     print('Login URL: $url');
     try {
@@ -41,26 +42,28 @@ class AuthService {
         await _tokenStorage.saveToken(response.data['access_token']);
 
         // Login successful, navigate to Home screen
-        context.pushNamedAndRemoveUntil(Routes.homeScreen, predicate: (route) => false);
+        context.pushNamedAndRemoveUntil(Routes.homeScreen,
+            predicate: (route) => false);
         buildSuccessToast(context, "Successfully logged in A2Z");
       } else {
         // Show error message
-        buildFailedToast(context, 'Login failed');
+        buildFailedToast(context, 'Login failed, please try again with correct credentials');
 
         if (kDebugMode) {
-          print('Login failed: ${response.data['error_description'] ?? 'Unknown error'}');
+          print(
+              'Login failed: ${response.data['error_description'] ?? 'Unknown error'}');
         }
       }
     } on DioError catch (e) {
       if (e.response != null) {
-        buildFailedToast(context,
-            'Error response: ${e.response?.statusCode} ${e.response?.statusMessage}');
+        buildFailedToast(context, 'Error while logging in A2Z, Try Again');
 
         if (kDebugMode) {
-          print('Error response: ${e.response?.statusCode} ${e.response?.statusMessage}');
+          print(
+              'Error response: ${e.response?.statusCode} ${e.response?.statusMessage}');
         }
       } else {
-        buildFailedToast(context, 'Error: ${e.message}');
+        buildFailedToast(context, 'Error while logging in A2Z, Try Again');
 
         if (kDebugMode) {
           print('Error: ${e.message}');

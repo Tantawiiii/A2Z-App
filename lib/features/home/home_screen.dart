@@ -2,13 +2,12 @@ import 'dart:developer';
 
 import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:a2z_app/features/home/bottom_screens/ui/courses_tap.dart';
-import 'package:a2z_app/features/home/bottom_screens/ui/profile_tap.dart';
 import 'package:a2z_app/features/home/bottom_screens/ui/search_tap.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../core/theming/text_style.dart';
+import 'bottom_screens/profile_tap/profile_tap.dart';
 import 'bottom_screens/ui/home_tap.dart';
 import 'bottom_screens/ui/our_teachers_tap.dart';
 
@@ -64,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
               notchGradient: null,
               maxLine: 1,
               circleMargin: 9,
-              durationInMilliSeconds: 250,
+              durationInMilliSeconds: 100,
               bottomBarItems: const [
                 BottomBarItem(
                   inActiveItem: Icon(

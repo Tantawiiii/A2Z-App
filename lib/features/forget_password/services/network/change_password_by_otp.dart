@@ -10,7 +10,7 @@ final DioClient _dioClient = DioClient();
 
 Future<void> changePasswordByOTP(BuildContext context, String phoneNumber,
     String otp, String newPassword) async {
-  final dio = _dioClient.createDio();
+  final dio = _dioClient.dio;
   final url = ApiConstants.apiChangePasswordByOTP;
 
   try {
