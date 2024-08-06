@@ -8,7 +8,7 @@ class PasswordResetService {
   final DioClient _dioClient = DioClient();
 
   Future<void> requestPasswordReset(BuildContext context, String loginOrEmail) async {
-    Dio dio = _dioClient.createDio();
+    Dio dio = _dioClient.dio;
 
     try {
       final response = await dio.post(
