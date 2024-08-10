@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class GraphQLClient {
   final Dio _dio;
 
-  GraphQLClient({Dio? dio})
+  GraphQLClient({Dio? dio, required link})
       : _dio = dio ??
       Dio(BaseOptions(
         baseUrl: 'http://a2zplatform.com/graphql',

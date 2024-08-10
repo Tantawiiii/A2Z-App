@@ -1,14 +1,9 @@
-import 'package:dio/dio.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQLService {
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: 'http://a2zplatform.com/graphql',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    ),
-  );
+  final GraphQLClient _client;
+
+  GraphQLService(this._client);
 
   Future<Map<String, dynamic>> requestRegistration({
     required String firstName,
@@ -19,25 +14,25 @@ class GraphQLService {
     required String password,
     required String grade,
   }) async {
-    const String query = '''
+    const String mutation = '''
     mutation RequestRegistration(\$firstName: String!, \$lastName: String!, \$phoneNumber: String!, \$email: String!, \$username: String!, \$password: String!, \$grade: String!) {
       requestRegistration(
         command: {
-          storeId: "A2Z"
+          storeId: "A2Z",
           contact: {
-            firstName: \$firstName
-            lastName: \$lastName
-            phoneNumber: \$phoneNumber
+            firstName: \$firstName,
+            lastName: \$lastName,
+            phoneNumber: \$phoneNumber,
             dynamicProperties: [
               {
                 name: "grade",
                 value: \$grade
               }
             ]
-          }
+          },
           account: {
-            email: \$email
-            username: \$username
+            username: \$username,
+            email: \$email,
             password: \$password
           }
         }
@@ -52,13 +47,16 @@ class GraphQLService {
             parameter
           }
         }
+        account {
+          id
+        }
       }
     }
     ''';
 
-    final response = await _dio.post('', data: {
-      'query': query,
-      'variables': {
+    final options = MutationOptions(
+      document: gql(mutation),
+      variables: {
         'firstName': firstName,
         'lastName': lastName,
         'phoneNumber': phoneNumber,
@@ -67,8 +65,14 @@ class GraphQLService {
         'password': password,
         'grade': grade,
       },
-    });
+    );
 
-    return response.data;
+    final result = await _client.mutate(options);
+
+    if (result.hasException) {
+      throw Exception(result.exception.toString());
+    }
+
+    return result.data!;
   }
 }
