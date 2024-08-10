@@ -1,3 +1,4 @@
+import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:a2z_app/core/helpers/extentions.dart';
@@ -24,83 +25,101 @@ class _LoginScreenState extends State<LoginScreen> {
    final TextEditingController _usernameController = TextEditingController();
    final TextEditingController _passwordController = TextEditingController();
    final AuthService _authService = AuthService();
+   // To track loading
+   bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h),
-          child: ListView(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h),
+              child: ListView(
                 children: [
-                  Text(
-                    StringTextsNames.txtWelcomeBack,
-                    style: TextStyles.font24BlueBold,
-                  ),
-                  verticalSpace(8),
-                  Text(
-                    StringTextsNames.txtDescriptionLogin,
-                    style: TextStyles.font14GrayNormal,
-                  ),
-                  verticalSpace(36),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      BuildEmailAndPassword(
-                        emailController: _usernameController,
-                        passwordController: _passwordController,
+                      Text(
+                        StringTextsNames.txtWelcomeBack,
+                        style: TextStyles.font24BlueBold,
                       ),
-                      verticalSpace(12),
-                      Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: InkWell(
-                          child: Text(
-                            StringTextsNames.txtForgetPassword,
-                            style: TextStyles.font13BlueNormal,
+                      verticalSpace(8),
+                      Text(
+                        StringTextsNames.txtDescriptionLogin,
+                        style: TextStyles.font14GrayNormal,
+                      ),
+                      verticalSpace(36),
+                      Column(
+                        children: [
+                          BuildEmailAndPassword(
+                            emailController: _usernameController,
+                            passwordController: _passwordController,
                           ),
-                          onTap: () {
-                            context.pushNamed(Routes.forgetPasswordScreen);
-                          },
-                        ),
+                          verticalSpace(12),
+                          Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: InkWell(
+                              child: Text(
+                                StringTextsNames.txtForgetPassword,
+                                style: TextStyles.font13BlueNormal,
+                              ),
+                              onTap: () {
+                                context.pushNamed(Routes.forgetPasswordScreen);
+                              },
+                            ),
+                          ),
+                          verticalSpace(40),
+                          BuildButton(
+                            textButton: StringTextsNames.txtLogin,
+                            textStyle: TextStyles.font16WhiteMedium,
+                            onPressed: _login,
+                          ),
+                          verticalSpace(46),
+                          const BuildOrSignInMediaAccounts(),
+                          verticalSpace(46),
+                          const BuildIconsSocialMedia(),
+                          verticalSpace(32),
+                          const DontHaveAccountText(),
+                          verticalSpace(50),
+                        ],
                       ),
-                      verticalSpace(40),
-                      BuildButton(
-                        textButton: StringTextsNames.txtLogin,
-                        textStyle: TextStyles.font16WhiteMedium,
-                        onPressed: _login,
-                      ),
-                      verticalSpace(46),
-                      const BuildOrSignInMediaAccounts(),
-                      verticalSpace(46),
-                      const BuildIconsSocialMedia(),
-                      verticalSpace(32),
-                      const DontHaveAccountText(),
-                      verticalSpace(50),
                     ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            if (_isLoading)
+               Center(
+                child: CircularProgressIndicator(color: ColorsCode.mainBlue,),  // Show loading indicator
+              ),
+          ],
         ),
       ),
     );
   }
 
 
-  void _login() {
-    final username = _usernameController.text;
-    final password = _passwordController.text;
+   void _login() async {
+     final username = _usernameController.text;
+     final password = _passwordController.text;
 
-    if (username.isNotEmpty && password.isNotEmpty) {
-      _authService.login(context, username, password);
-    } else {
-      // Show error message for empty fields
-      buildFailedToast(context, 'Please fill in both fields.');
-    }
-  }
+     if (username.isNotEmpty && password.isNotEmpty) {
+       setState(() {
+         _isLoading = true;  // Start loading
+       });
+
+       // Perform login
+       await _authService.login(context, username, password);
+
+       setState(() {
+         _isLoading = false;  // Stop loading after response
+       });
+     } else {
+       buildFailedToast(context, 'Please fill in both fields.');
+     }
+   }
 
 }

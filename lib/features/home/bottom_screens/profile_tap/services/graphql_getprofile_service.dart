@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
-import '../../../core/networking/clients/dio_client.dart';
-import '../../../core/networking/local/token_storage.dart';
+
+import '../../../../../core/networking/clients/dio_client.dart';
+import '../../../../../core/networking/local/token_storage.dart';
+
 
 class GetProfileGraphQLService {
   final Dio dio;

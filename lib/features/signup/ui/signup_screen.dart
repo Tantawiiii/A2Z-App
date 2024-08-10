@@ -4,9 +4,11 @@ import 'package:a2z_app/features/signup/ui/widgets/build_sign_up_form.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../../../../core/helpers/spacing.dart';
 import '../../../../../core/theming/text_style.dart';
+import '../../../core/networking/clients/graphql_client.dart';
 import '../../../core/widgets/build_button.dart';
 import '../services/graphql_service.dart';
 
@@ -28,8 +30,21 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
   final _gradeController = TextEditingController();
 
-  final GraphQLService _graphQLService = GraphQLService();
+  late GraphQLService _graphQLService;
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    // integrate with the GraphQl service
+    final client = GraphQLClient(
+      link: HttpLink('http://edu.a2zplatform.com/graphql'),
+      cache: GraphQLCache(store: InMemoryStore()),
+    );
+    _graphQLService = GraphQLService(client);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,15 +96,21 @@ class _SignupScreenState extends State<SignupScreen> {
         final result = await _graphQLService.requestRegistration(
           firstName: _firstNameController.text,
           lastName: _lastNameController.text,
-          phoneNumber: "+2${_phoneNumberController.text}",
+          phoneNumber: _phoneNumberController.text,
           email: _emailController.text,
           username: _usernameController.text,
           password: _passwordController.text,
           grade: _gradeController.text,
         );
 
-        // Handle the result as needed
-        print("response: ${result}");
+        if (result['requestRegistration']['result']['succeeded']) {
+          // Registration successful
+          print("Registration successful: ${result}");
+          // Handle success, e.g., navigate to another screen
+        } else {
+          // Handle registration errors
+          print("Registration failed: ${result['requestRegistration']['result']['errors']}");
+        }
       } catch (e) {
         print("An error occurred: $e");
       }

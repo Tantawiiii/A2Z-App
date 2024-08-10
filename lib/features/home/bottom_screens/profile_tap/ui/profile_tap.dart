@@ -2,13 +2,13 @@ import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
 import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
-import 'package:a2z_app/features/home/services/logout_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/networking/clients/dio_client.dart';
-import '../../services/graphql_getprofile_service.dart';
-import '../../widgets/build_profile_options.dart';
+import '../../../../../core/networking/clients/dio_client.dart';
+import '../services/graphql_getprofile_service.dart';
+import '../services/logout_services.dart';
+import 'build_profile_options.dart';
 
 
 class ProfileTap extends StatefulWidget {

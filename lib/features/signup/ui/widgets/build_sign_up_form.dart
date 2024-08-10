@@ -1,11 +1,15 @@
 import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/widgets/build_text_form_field.dart';
 import '../../../login/ui/widgets/build_password_validatons.dart';
+import '../../helper/fetch_grades.dart';
+import '../../services/get_grades_graphql_client.dart';
+import '../../services/graphql_service.dart';
 
 class SignupForm extends StatefulWidget {
   SignupForm(
@@ -22,12 +26,12 @@ class SignupForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
   TextEditingController firstNameController = TextEditingController();
-   TextEditingController lastNameController= TextEditingController();
-   TextEditingController phoneNumberController= TextEditingController();
-   TextEditingController emailController= TextEditingController();
-   TextEditingController usernameController= TextEditingController();
-   TextEditingController passwordController = TextEditingController();
-   TextEditingController gradeController= TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController gradeController = TextEditingController();
 
   @override
   State<SignupForm> createState() => _SignupFormState();
@@ -42,10 +46,16 @@ class _SignupFormState extends State<SignupForm> {
   bool hasNumber = false;
   bool hasMinLength = false;
 
+  List<String> _grades = [];
+  List<DropdownMenuItem<String>> _dropdownItems = [];
+  late GraphQLService _graphQLService;
+
   @override
   void initState() {
     super.initState();
     setupPasswordControllerListener();
+
+
   }
 
   void setupPasswordControllerListener() {
@@ -60,6 +70,7 @@ class _SignupFormState extends State<SignupForm> {
       });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +113,9 @@ class _SignupFormState extends State<SignupForm> {
             controller: widget.phoneNumberController,
             hintText: StringTextsNames.txtPhoneNumber,
             validator: (value) {
-              if (value == null ||
-                  value.isEmpty
+              if (value == null || value.isEmpty
                   //|| !AppRegex.isPhoneNumValid(value)
-              ) {
+                  ) {
                 return StringTextsNames.txtHintValidPhoneNum;
               }
             },
@@ -138,22 +148,30 @@ class _SignupFormState extends State<SignupForm> {
               ),
             ),
             validator: (value) {
-              if (value == null ||
-                  value.isEmpty
-                 // || !AppRegex.isPasswordValid(value)
-              ) {
+              if (value == null || value.isEmpty
+                  // || !AppRegex.isPasswordValid(value)
+                  ) {
                 return StringTextsNames.txtPasswordIsValid;
               }
             },
           ),
           verticalSpace(18),
-          BuildTextFormField(
-            controller: widget.gradeController,
-            hintText: StringTextsNames.txtGrade,
+          DropdownButtonFormField<String>(
+            value: widget.gradeController.text.isEmpty
+                ? null
+                : widget.gradeController.text,
+            hint: Text('Select Grade'),
+            items: _dropdownItems,
+            onChanged: (String? newValue) {
+              setState(() {
+                widget.gradeController.text = newValue!;
+              });
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return StringTextsNames.txtGradeValid;
+                return 'Please select a grade';
               }
+              return null;
             },
           ),
           verticalSpace(24),
@@ -168,4 +186,7 @@ class _SignupFormState extends State<SignupForm> {
       ),
     );
   }
+
+
+
 }
