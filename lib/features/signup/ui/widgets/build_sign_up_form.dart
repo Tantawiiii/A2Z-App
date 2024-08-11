@@ -8,8 +8,7 @@ import '../../../../core/helpers/spacing.dart';
 import '../../../../core/widgets/build_text_form_field.dart';
 import '../../../login/ui/widgets/build_password_validatons.dart';
 import '../../helper/fetch_grades.dart';
-import '../../services/get_grades_graphql_client.dart';
-import '../../services/graphql_service.dart';
+import '../../../../core/networking/clients/get_grades_graphql_client.dart';
 
 class SignupForm extends StatefulWidget {
   SignupForm(
@@ -48,7 +47,7 @@ class _SignupFormState extends State<SignupForm> {
 
   List<String> _grades = [];
   List<DropdownMenuItem<String>> _dropdownItems = [];
-  late GraphQLService _graphQLService;
+   late GraphQLClient client;
 
   @override
   void initState() {
@@ -56,6 +55,21 @@ class _SignupFormState extends State<SignupForm> {
     setupPasswordControllerListener();
 
 
+    // Ensure the client is initialized
+    GraphQLClientInstance.initializeClient();
+
+    // Fetch grades and update the state
+    fetchGrades(GraphQLClientInstance.client).then((fetchedCategories) {
+      setState(() {
+        _grades = fetchedCategories;
+        _dropdownItems = _grades
+            .map((String category) => DropdownMenuItem<String>(
+          value: category,
+          child: Text(category),
+        ))
+            .toList();
+      });
+    });
   }
 
   void setupPasswordControllerListener() {
