@@ -1,16 +1,17 @@
-import 'package:a2z_app/core/utils/StringsTexts.dart';
-import 'package:a2z_app/features/signup/ui/widgets/already_have_account_text.dart';
-import 'package:a2z_app/features/signup/ui/widgets/build_sign_up_form.dart';
+import 'package:a2z_app/core/helpers/extentions.dart';
+import 'package:a2z_app/core/routing/routers.dart';
+import 'package:a2z_app/core/widgets/build_toast.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import '../../../core/networking/clients/get_grades_graphql_client.dart';
+import '../../../core/utils/StringsTexts.dart';
+import 'widgets/already_have_account_text.dart';
+import 'widgets/build_sign_up_form.dart';
 import '../../../../../core/helpers/spacing.dart';
 import '../../../../../core/theming/text_style.dart';
-import '../../../core/networking/clients/graphql_client.dart';
 import '../../../core/widgets/build_button.dart';
-import '../services/graphql_service.dart';
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({super.key});
@@ -30,26 +31,14 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
   final _gradeController = TextEditingController();
 
-  late GraphQLService _graphQLService;
-
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    // integrate with the GraphQl service
-    final client = GraphQLClient(
-      link: HttpLink('http://edu.a2zplatform.com/graphql'),
-      cache: GraphQLCache(store: InMemoryStore()),
-    );
-    _graphQLService = GraphQLService(client);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // to fix white part top of the Keyboard window opening
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
@@ -91,28 +80,85 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void _register() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        final result = await _graphQLService.requestRegistration(
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          phoneNumber: _phoneNumberController.text,
-          email: _emailController.text,
-          username: _usernameController.text,
-          password: _passwordController.text,
-          grade: _gradeController.text,
-        );
+    if (_formKey.currentState?.validate() ?? false) {
+      GraphQLClientInstance.initializeClient(); // Ensure the client is initialized
 
-        if (result['requestRegistration']['result']['succeeded']) {
-          // Registration successful
-          print("Registration successful: ${result}");
-          // Handle success, e.g., navigate to another screen
+      final MutationOptions options = MutationOptions(
+        document: gql(r'''
+          mutation RequestRegistration($storeId: String!, $firstName: String!, $lastName: String!, $phoneNumber: String!, $grade: String!, $username: String!, $email: String!, $password: String!) {
+            requestRegistration(
+              command: {
+                storeId: $storeId,
+                contact: {
+                  firstName: $firstName,
+                  lastName: $lastName,
+                  phoneNumber: $phoneNumber,
+                  dynamicProperties: [
+                    {
+                      name: "grade",
+                      value: $grade
+                    }
+                  ]
+                },
+                account: {
+                  username: $username,
+                  email: $email,
+                  password: $password
+                }
+              }
+            ) {
+              result {
+                succeeded
+                requireEmailVerification
+                oTP
+                errors {
+                  code
+                  description
+                  parameter
+                }
+              }
+              account {
+                id
+              }
+            }
+          }
+        '''),
+        variables: {
+          'storeId': 'A2Z',
+          'firstName': _firstNameController.text,
+          'lastName': _lastNameController.text,
+          'phoneNumber': _phoneNumberController.text,
+          'grade': _gradeController.text,
+          'username': _usernameController.text,
+          'email': _emailController.text,
+          'password': _passwordController.text,
+        },
+      );
+
+      final QueryResult result = await GraphQLClientInstance.client.mutate(options);
+
+      if (result.hasException) {
+        // Handle GraphQL errors here
+        print(result.exception.toString());
+        // Show error to the user
+      } else {
+        final response = result.data?['requestRegistration'];
+        final succeeded = response['result']['succeeded'] as bool;
+
+        if (succeeded) {
+          // Registration was successful
+          // Navigate to the next screen or show a success message
+          buildSuccessToast(context, "Successfully registered");
+          context.pushNamed(Routes.loginScreen);
         } else {
-          // Handle registration errors
-          print("Registration failed: ${result['requestRegistration']['result']['errors']}");
+          // Registration failed, handle errors
+          final errors = response['result']['errors'] as List<dynamic>;
+          for (var error in errors) {
+            print('Error: ${error['description']}');
+            // Show error to the user
+            buildFailedToast(context, "Sorry Registration failed");
+          }
         }
-      } catch (e) {
-        print("An error occurred: $e");
       }
     }
   }

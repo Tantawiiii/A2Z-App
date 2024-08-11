@@ -5,9 +5,14 @@ import 'package:provider/provider.dart';
 
 import 'a2z_app.dart';
 import 'core/routing/app_router.dart';
+import 'core/networking/clients/get_grades_graphql_client.dart';
 
 void main() async {
   await ScreenUtil.ensureScreenSize();
+  GraphQLClientInstance.initializeClient();
+  WidgetsFlutterBinding.ensureInitialized();
+
+
   runApp(ChangeNotifierProvider(
     create: (context) => AppStateProvider(),
     child: A2ZApp(

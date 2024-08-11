@@ -10,7 +10,9 @@ class TokenStorage {
 
   Future<String?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_accessTokenKey);
+    final token = prefs.getString(_accessTokenKey);
+    print('Retrieved token: $token'); // Debug print
+    return token;
   }
 
   Future<void> clearToken() async {

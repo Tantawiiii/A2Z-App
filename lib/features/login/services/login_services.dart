@@ -20,7 +20,7 @@ class AuthService {
     final String url = ApiConstants.apiLogin;
     final dio = _dioClient.dio;
 
-    print('Login URL: $url');
+ //   print('Login URL: $url');
     try {
       final response = await dio.post(
         url,
@@ -44,6 +44,7 @@ class AuthService {
         // Login successful, navigate to Home screen
         context.pushNamedAndRemoveUntil(Routes.homeScreen,
             predicate: (route) => false);
+        print("Token saved: ${_tokenStorage.getToken()}");
         buildSuccessToast(context, "Successfully logged in A2Z");
       } else {
         // Show error message

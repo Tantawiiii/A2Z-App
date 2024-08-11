@@ -1,9 +1,11 @@
+// lib/fetch_categories.dart
+
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-Future<List<String>> fetchCategories(GraphQLClient client) async {
-  final String fetchCategoriesQuery = '''
-    query ChildCategories(\$storeId: String!, \$maxLevel: Int!) {
-      childCategories(storeId: \$storeId, maxLevel: \$maxLevel) {
+Future<List<String>> fetchGrades(GraphQLClient client) async {
+  const String fetchGradesQuery = '''
+    query ChildCategories {
+      childCategories(storeId: "A2Z", maxLevel: 1) {
         childCategories {
           name
         }
@@ -13,11 +15,7 @@ Future<List<String>> fetchCategories(GraphQLClient client) async {
 
   final QueryResult result = await client.query(
     QueryOptions(
-      document: gql(fetchCategoriesQuery),
-      variables: {
-        'storeId': "A2Z",
-        'maxLevel': 1,
-      },
+      document: gql(fetchGradesQuery),
     ),
   );
 

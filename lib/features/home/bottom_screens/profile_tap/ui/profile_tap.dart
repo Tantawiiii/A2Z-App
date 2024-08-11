@@ -1,4 +1,5 @@
 import 'package:a2z_app/core/helpers/spacing.dart';
+import 'package:a2z_app/core/networking/clients/dio_client_graphql.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
 import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/networking/clients/dio_client.dart';
 import '../services/graphql_getprofile_service.dart';
 import '../services/logout_services.dart';
-import 'build_profile_options.dart';
+import '../widgets/build_profile_options.dart';
 
 
 class ProfileTap extends StatefulWidget {
@@ -26,7 +27,7 @@ class _ProfileTapState extends State<ProfileTap> {
   @override
   void initState() {
     super.initState();
-    final dioClient = DioClient();
+    final dioClient = DioClientGraphql();
     _graphQLService = GetProfileGraphQLService(dioClient);
     _fetchProfile();
   }
@@ -51,7 +52,8 @@ class _ProfileTapState extends State<ProfileTap> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: _profileData == null
+      body:
+      _profileData == null
           ? const Center(child: CircularProgressIndicator(color: Colors.cyan,))
       :
       ListView(
