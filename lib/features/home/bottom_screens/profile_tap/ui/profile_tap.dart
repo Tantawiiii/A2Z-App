@@ -1,5 +1,7 @@
+import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/clients/dio_client_graphql.dart';
+import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
 import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
@@ -75,7 +77,7 @@ class _ProfileTapState extends State<ProfileTap> {
             style: TextStyles.font20BlueBold,
           ),
           Text(
-            _profileData!['userType'] ?? 'Type',
+            _profileData!['email'] ?? 'email',
             textAlign: TextAlign.center,
             style: TextStyles.font13DarkBlueRegular,
           ),
@@ -86,6 +88,7 @@ class _ProfileTapState extends State<ProfileTap> {
             color: ColorsCode.gray,
             onTap: () {
               print('Change Password Tapped');
+              context.pushNamed(Routes.changePasswordScreen);
             },
           ),
           BuildProfileOptions(

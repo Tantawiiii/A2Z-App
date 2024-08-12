@@ -1,23 +1,21 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
+import '../../../../../core/networking/local/token_storage.dart';
+
+
 
 class GetProfileGraphQLService {
   final DioClientGraphql dioClient;
-  final String _accessTokenKey = 'accessToken'; // Make sure this matches your stored key
 
   GetProfileGraphQLService(this.dioClient);
 
-  Future<String?> getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString(_accessTokenKey);
-    print('Retrieved token: $token'); // Debug print
-    return token;
-  }
+
+  // Initialize TokenStorage
+  final TokenStorage _tokenStorage = TokenStorage();
 
   Future<Map<String, dynamic>?> fetchProfile() async {
-    final token = await getToken();
+    final token =await _tokenStorage.getToken();
     if (token == null) {
       throw Exception('Token not found');
     }

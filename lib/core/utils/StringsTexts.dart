@@ -67,9 +67,14 @@ class StringTextsNames  {
    static const String txtStudent = "Student";
 
    static const String txtChangePass = "Change Password";
+   static const String txtChangePassDes = "Now you can change your password with the new password and the old password.";
+   static const String txtOldPassword = "Enter Your Old Password";
+
    static const String txtExams = "Exams";
    static const String txtFaq = "FAQ";
    static const String txtAboutUs = "About US";
    static const String txtLogOut = "LogOut";
+
+   static const String txtUserName = "User Name";
 
 }
