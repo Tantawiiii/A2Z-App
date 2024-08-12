@@ -1,3 +1,6 @@
+import 'package:a2z_app/core/helpers/extentions.dart';
+import 'package:a2z_app/core/routing/routers.dart';
+import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
@@ -14,9 +17,11 @@ class GetProfileGraphQLService {
   // Initialize TokenStorage
   final TokenStorage _tokenStorage = TokenStorage();
 
-  Future<Map<String, dynamic>?> fetchProfile() async {
+  Future<Map<String, dynamic>?> fetchProfile(BuildContext context) async {
     final token =await _tokenStorage.getToken();
     if (token == null) {
+
+      context.pushNamedAndRemoveUntil(Routes.loginScreen, predicate:  (route) => false);
       throw Exception('Token not found');
     }
 

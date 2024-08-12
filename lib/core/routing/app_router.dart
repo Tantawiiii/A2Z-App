@@ -7,6 +7,7 @@ import 'package:a2z_app/features/home/all_courses/get_all_courses.dart';
 import 'package:a2z_app/features/home/bottom_screens/profile_tap/ui/change_password.dart';
 import 'package:a2z_app/features/home/home_screen.dart';
 import 'package:a2z_app/features/signup/ui/signup_screen.dart';
+import 'package:a2z_app/features/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/login/ui/screens/login_screen.dart';
@@ -17,6 +18,8 @@ class AppRouter {
 
   Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case Routes.splashScreen:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case Routes.onBoardingScreen:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
       case Routes.getStartedScreen:

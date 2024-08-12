@@ -8,6 +8,7 @@ class ApiConstants {
   static String apiChangePasswordByOTP = "$apiBaseUrl/api/platform/security/users/ChangePasswordByOTP";
   static String apiLogin = "$apiBaseUrl/connect/token";
   static String apiChangePassword = "$apiBaseUrl/api/platform/security/currentuser/changepassword";
+  static String apiGetBanners = "$apiBaseUrl/api/marketing/GetBannars";
 
 }
 

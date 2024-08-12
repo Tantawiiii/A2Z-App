@@ -11,7 +11,7 @@ class TokenStorage {
   Future<String?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(_accessTokenKey);
-    print('Retrieved token: $token'); // Debug print
+    print('Retrieved token: Success');
     return token;
   }
 
