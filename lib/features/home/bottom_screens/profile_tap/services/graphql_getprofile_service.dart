@@ -30,15 +30,23 @@ class GetProfileGraphQLService {
     });
 
     const String query = r'''
-    query Me {
-      me {
-        email
-        userName
-        userType
-        photoUrl
-        phoneNumber
+     query Me {
+  me {
+    email
+    userName
+    userType
+    photoUrl
+    phoneNumber
+    contact {
+      dynamicProperties {
+        name
+        value
       }
+      lastName
+      firstName
     }
+  }
+}
     ''';
 
     final options = QueryOptions(

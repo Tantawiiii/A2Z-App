@@ -110,6 +110,13 @@ class TextStyles {
     fontWeight: FontWeightHelper.semiBold,
     color: ColorsCode.mainBlue,
   );
+
+  static TextStyle font18BlueSemiBold = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 18.sp,
+    fontWeight: FontWeightHelper.semiBold,
+    color: ColorsCode.mainBlue,
+  );
   static TextStyle font15DarkBlueMedium = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 15.sp,

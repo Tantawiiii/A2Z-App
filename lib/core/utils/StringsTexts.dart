@@ -79,7 +79,10 @@ class StringTextsNames  {
    static const String txtUserName = "User Name";
 
    static const String txtAllCourses = "All Courses";
+   static const String txtCourses = "Courses";
+   static const String txtShowAll = "Show All";
    static const String txtHowAre = "How are you today? ";
    static const String txtReady = "Ready...!";
+
 
 }

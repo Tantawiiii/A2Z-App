@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
+
 import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/clients/dio_client_graphql.dart';
@@ -5,14 +8,11 @@ import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
 import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/networking/clients/dio_client.dart';
 import '../services/graphql_getprofile_service.dart';
 import '../services/logout_services.dart';
 import '../widgets/build_profile_options.dart';
-
 
 class ProfileTap extends StatefulWidget {
   const ProfileTap({super.key});
@@ -22,7 +22,6 @@ class ProfileTap extends StatefulWidget {
 }
 
 class _ProfileTapState extends State<ProfileTap> {
-
   late GetProfileGraphQLService _graphQLService;
   Map<String, dynamic>? _profileData;
 
@@ -45,20 +44,63 @@ class _ProfileTapState extends State<ProfileTap> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-    // logout the user setup
-    final LogOutServices _logout_services =  LogOutServices();
+    final LogOutServices _logout_services = LogOutServices();
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body:
-      _profileData == null
-          ? const Center(child: CircularProgressIndicator(color: Colors.cyan,))
-      :
-      ListView(
+      body: _profileData == null
+          ? ListView(
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
+        children: [
+          verticalSpace(50.h),
+          Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: CircleAvatar(
+              radius: 80,
+              backgroundColor: Colors.grey[300],
+            ),
+          ),
+          verticalSpace(10.h),
+          Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              height: 20.h,
+              color: Colors.grey[300],
+            ),
+          ),
+          verticalSpace(5.h),
+          Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              height: 20.h,
+              width: 150.w,
+              color: Colors.grey[300],
+            ),
+          ),
+          verticalSpace(40.h),
+          Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Column(
+              children: List.generate(5, (index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Container(
+                    height: 50.h,
+                    color: Colors.grey[300],
+                  ),
+                );
+              }),
+            ),
+          ),
+        ],
+      )
+          : ListView(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
         scrollDirection: Axis.vertical,
         children: [
@@ -68,7 +110,8 @@ class _ProfileTapState extends State<ProfileTap> {
             backgroundImage: _profileData!['photoUrl'] != null &&
                 _profileData!['photoUrl'].contains('http')
                 ? NetworkImage(_profileData!['photoUrl'])
-                : const AssetImage('asset/images/teacher.png') as ImageProvider,
+                : const AssetImage('asset/images/teacher.png')
+            as ImageProvider,
           ),
           verticalSpace(10.h),
           Text(
@@ -96,7 +139,6 @@ class _ProfileTapState extends State<ProfileTap> {
             text: StringTextsNames.txtExams,
             color: ColorsCode.gray,
             onTap: () {
-              // Handle on tap
               print('My Exams Tapped');
             },
           ),

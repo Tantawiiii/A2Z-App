@@ -51,11 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBody: true,
       bottomNavigationBar: (bottomBarPages.length <= maxCount)
           ? AnimatedNotchBottomBar(
-              elevation: 0.0,
+              elevation: 4.0,
               notchBottomBarController: _controller,
-              color: ColorsCode.lightWhite,
+              color: ColorsCode.backBottomNav,
               showLabel: true,
-              shadowElevation: 0.0,
+              shadowElevation: 4.0,
               itemLabelStyle: TextStyles.font10GrayNormal,
               notchColor: ColorsCode.mainBlue,
               removeMargins: true,
