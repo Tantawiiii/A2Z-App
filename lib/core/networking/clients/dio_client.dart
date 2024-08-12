@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../api_constants.dart';
+import '../const/api_constants.dart';
 
 class DioClient {
   static const int _timeoutDuration = 30000;

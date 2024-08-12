@@ -54,6 +54,7 @@ dependencies:
   smooth_page_indicator: ^1.2.0+3
   shared_preferences: ^2.2.3
   graphql_flutter: ^5.2.0-beta.7
+  shimmer: ^3.0.0
 
 
 dev_dependencies:

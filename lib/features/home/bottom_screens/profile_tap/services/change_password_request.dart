@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:a2z_app/core/networking/api_constants.dart';
+import 'package:a2z_app/core/networking/const/api_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 

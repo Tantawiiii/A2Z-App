@@ -36,7 +36,7 @@ class _ProfileTapState extends State<ProfileTap> {
 
   Future<void> _fetchProfile() async {
     try {
-      final data = await _graphQLService.fetchProfile();
+      final data = await _graphQLService.fetchProfile(context);
       setState(() {
         _profileData = data?['me'];
       });

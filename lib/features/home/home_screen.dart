@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theming/text_style.dart';
 import 'bottom_screens/profile_tap/ui/profile_tap.dart';
-import 'bottom_screens/ui/home_tap.dart';
+import 'bottom_screens/home_tap/ui/home_tap.dart';
 import 'bottom_screens/ui/our_teachers_tap.dart';
 
 class HomeScreen extends StatefulWidget {

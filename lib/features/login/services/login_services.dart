@@ -1,5 +1,5 @@
 import 'package:a2z_app/core/helpers/extentions.dart';
-import 'package:a2z_app/core/networking/api_constants.dart';
+import 'package:a2z_app/core/networking/const/api_constants.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';

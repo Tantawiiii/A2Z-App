@@ -1,4 +1,4 @@
-import 'package:a2z_app/core/networking/api_constants.dart';
+import 'package:a2z_app/core/networking/const/api_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -7,7 +7,7 @@ class DioClientGraphql {
 
   DioClientGraphql() {
     _dio.options = BaseOptions(
-      baseUrl: 'https://yourapi.com', // Replace with your base URL
+      baseUrl: ApiConstants.apiBaseUrlGraphQl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
     );

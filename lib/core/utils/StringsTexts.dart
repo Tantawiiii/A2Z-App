@@ -19,6 +19,7 @@ class StringTextsNames  {
    static const String txtOnBoardingDescription = "Discover a wide range of teaching materials and tools to enhance your lessons.";
 
    static const String txtWelcomeBack = "Welcome Back";
+   static const String txtWelcome = "Welcome ";
    static const String txtDescriptionLogin = "We're excited to have you back, can't wait to see what you've been up to since you last logged in.";
    static const String txtEmail = "Email";
    static const String txtPassword = "Password";
@@ -76,5 +77,9 @@ class StringTextsNames  {
    static const String txtLogOut = "LogOut";
 
    static const String txtUserName = "User Name";
+
+   static const String txtAllCourses = "All Courses";
+   static const String txtHowAre = "How are you today? ";
+   static const String txtReady = "Ready...!";
 
 }
