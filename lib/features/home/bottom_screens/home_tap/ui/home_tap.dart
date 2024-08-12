@@ -1,13 +1,9 @@
 import 'package:a2z_app/core/helpers/spacing.dart';
-import 'package:a2z_app/core/utils/colors_code.dart';
-import 'package:a2z_app/features/home/bottom_screens/home_tap/services/banners_servise.dart';
 import 'package:a2z_app/features/home/bottom_screens/home_tap/widgets/build_banner_view.dart';
-import 'package:dio/dio.dart';
+import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shimmer/shimmer.dart';
 
-import '../../../../../core/networking/clients/dio_client.dart';
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
 import '../../../../../core/utils/StringsTexts.dart';
@@ -54,7 +50,7 @@ class _HomeTapState extends State<HomeTap> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 24.w),
         child: ListView(
           children: [
             _profileData == null
@@ -67,7 +63,7 @@ class _HomeTapState extends State<HomeTap> {
                     StringTextsNames.txtWelcome + _profileData!['userName'],
                     style: TextStyles.font20BlueBold,
                   ),
-            verticalSpace(6),
+            verticalSpace(8),
             RichText(
               text: TextSpan(
                 text: StringTextsNames.txtHowAre,
@@ -82,6 +78,34 @@ class _HomeTapState extends State<HomeTap> {
             ),
             verticalSpace(20),
             BuildBannersView(banners: _viewModel.banners),
+            verticalSpace(20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                   StringTextsNames.txtCourses,
+                  style: TextStyles.font14BlueSemiBold,
+                ),
+                Bounce(
+                  onTap: (){
+                    // Go to all Courses without Filtration
+
+                  },
+                  child: Text(
+                    StringTextsNames.txtShowAll,
+                    style: TextStyles.font10GrayNormal,
+                  ),
+
+                ),
+              ],
+            ),
+            verticalSpace(20),
+
+            // get the Courses with Filters his Grades take from graphQl/me
+
+
+
           ],
         ),
       ),

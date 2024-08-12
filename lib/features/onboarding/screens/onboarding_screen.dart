@@ -71,7 +71,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     },
                     child: Text(
                       StringTextsNames.txtSkip,
-                      style: TextStyles.font14BlueSemiBold,
+                      style: TextStyles.font18BlueSemiBold,
                     ),
                   ),
 
@@ -90,7 +90,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           },
                           child: Text(
                             StringTextsNames.txtDone,
-                            style: TextStyles.font14BlueSemiBold,
+                            style: TextStyles.font18BlueSemiBold,
                           ),
                         )
                       : GestureDetector(
@@ -102,7 +102,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           },
                           child: Text(
                             StringTextsNames.txtNext,
-                            style: TextStyles.font14BlueSemiBold,
+                            style: TextStyles.font18BlueSemiBold,
                           ),
                         ),
                 ],

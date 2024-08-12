@@ -13,4 +13,7 @@ class ColorsCode{
   static const Color fillRed =  Color(0xFFFF4C5E);
   static const Color fillGreen =  Color(0xFF22C55E);
   static const Color lightBlue = Color(0xFFE1ECF9);
+  static const Color backBottomNav = Color(0xFFF9F8F8);
+
+
 }
