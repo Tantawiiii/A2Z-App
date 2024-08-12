@@ -40,11 +40,12 @@ class AuthService {
       if (response.data.containsKey('access_token')) {
         // Save the token using TokenStorage
         await _tokenStorage.saveToken(response.data['access_token']);
+        print("Token saved:");
 
         // Login successful, navigate to Home screen
         context.pushNamedAndRemoveUntil(Routes.homeScreen,
             predicate: (route) => false);
-        print("Token saved: ${_tokenStorage.getToken()}");
+        print("Token saved: 2");
         buildSuccessToast(context, "Successfully logged in A2Z");
       } else {
         // Show error message

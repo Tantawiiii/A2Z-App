@@ -79,6 +79,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   SmoothPageIndicator(
                     controller: _pageController,
                     count: 3,
+                    effect: const ExpandingDotsEffect(),
                   ),
 
                   // next or done

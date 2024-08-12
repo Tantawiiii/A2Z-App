@@ -7,6 +7,7 @@ class ApiConstants {
   static String apiRequestPasswordRest(String loginOrEmail) => "$apiBaseUrl/api/platform/security/users/$loginOrEmail/requestpasswordreset/";
   static String apiChangePasswordByOTP = "$apiBaseUrl/api/platform/security/users/ChangePasswordByOTP";
   static String apiLogin = "$apiBaseUrl/connect/token";
+  static String apiChangePassword = "$apiBaseUrl/api/platform/security/currentuser/changepassword";
 
 }
 
