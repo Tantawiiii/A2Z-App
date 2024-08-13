@@ -22,23 +22,25 @@ class ProfileTap extends StatefulWidget {
 }
 
 class _ProfileTapState extends State<ProfileTap> {
-  late ProfileGraphQLService _graphQLService;
+  late ProfileGraphQLService _profileService;
+
   Map<String, dynamic>? _profileData;
 
   @override
   void initState() {
     super.initState();
-    final dioClient = DioClientGraphql();
-    _graphQLService = ProfileGraphQLService(dioClient);
+    final dioClientGrapQl = DioClientGraphql();
+    _profileService = ProfileGraphQLService(dioClientGrapQl);
     _fetchProfile();
   }
 
   Future<void> _fetchProfile() async {
     try {
-      final data = await _graphQLService.fetchProfile(context);
+      final data = await _profileService.fetchProfile(context);
       setState(() {
-        _profileData = data?['me'];
+        _profileData = data;
       });
+
     } catch (e) {
       print('Failed to load profile: $e');
     }
@@ -57,7 +59,7 @@ class _ProfileTapState extends State<ProfileTap> {
           verticalSpace(50.h),
           Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            highlightColor: Colors.blue[200]!,
             child: CircleAvatar(
               radius: 80,
               backgroundColor: Colors.grey[300],
@@ -66,7 +68,7 @@ class _ProfileTapState extends State<ProfileTap> {
           verticalSpace(10.h),
           Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            highlightColor: Colors.blue[200]!,
             child: Container(
               height: 20.h,
               color: Colors.grey[300],
@@ -75,7 +77,7 @@ class _ProfileTapState extends State<ProfileTap> {
           verticalSpace(5.h),
           Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            highlightColor: Colors.blue[200]!,
             child: Container(
               height: 20.h,
               width: 150.w,
@@ -85,7 +87,7 @@ class _ProfileTapState extends State<ProfileTap> {
           verticalSpace(40.h),
           Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            highlightColor: Colors.blue[200]!,
             child: Column(
               children: List.generate(5, (index) {
                 return Padding(
@@ -110,8 +112,7 @@ class _ProfileTapState extends State<ProfileTap> {
             backgroundImage: _profileData!['photoUrl'] != null &&
                 _profileData!['photoUrl'].contains('http')
                 ? NetworkImage(_profileData!['photoUrl'])
-                : const AssetImage('asset/images/teacher.png')
-            as ImageProvider,
+                : const AssetImage('asset/images/teacher.png') as ImageProvider,
           ),
           verticalSpace(10.h),
           Text(

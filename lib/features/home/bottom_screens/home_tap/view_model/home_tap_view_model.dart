@@ -6,47 +6,8 @@ import '../../profile_tap/services/graphql_getprofile_service.dart';
 
 class HomeTapViewModel {
   final ProfileGraphQLService _graphQLService;
-  Map<String, dynamic>? profileData;
-  List<String> banners = [];
-
   HomeTapViewModel()
       : _graphQLService = ProfileGraphQLService(DioClientGraphql());
-
-  Future<void> loadData(BuildContext context) async {
-    await Future.wait([
-      _fetchProfile(context),
-      _fetchBanners(),
-    ]);
-  }
-
-  Future<void> _fetchProfile(BuildContext context) async {
-    try {
-      final data = await _graphQLService.fetchProfile(context);
-      profileData = data?['me'];
-    } catch (e) {
-      print('Failed to load profile: $e');
-    }
-  }
-
-  Future<void> _fetchBanners() async {
-    try {
-      final dio = Dio();
-      final response = await dio.post(
-        ApiConstants.apiGetBanners,
-        queryParameters: {'BannarArea': 'Home'},
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data;
-        banners = data.cast<String>();
-      } else {
-        print('Failed to load banners, status code: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error occurred while fetching banners: $e');
-    }
-  }
-
 
   List<Map<String, dynamic>>? _categories;
   List<Map<String, dynamic>>? get categories => _categories;
