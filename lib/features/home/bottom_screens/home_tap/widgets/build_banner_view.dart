@@ -61,7 +61,7 @@ class BuildBannersView extends StatelessWidget {
             itemCount:4, // Placeholder item count
             itemBuilder: (context, index) {
               return Padding(
-                padding: const EdgeInsets.only(right: 16.0),
+                padding: const EdgeInsets.only(right: 8.0),
                 child: Container(
                   width: 300,
                   height: 150,

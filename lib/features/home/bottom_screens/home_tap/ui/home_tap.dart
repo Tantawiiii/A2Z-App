@@ -8,6 +8,7 @@ import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
 import '../../../../../core/utils/StringsTexts.dart';
 import '../../profile_tap/services/graphql_getprofile_service.dart';
+import '../services/categories_graphql_services.dart';
 import '../view_model/home_tap_view_model.dart';
 
 class HomeTap extends StatefulWidget {
@@ -18,7 +19,9 @@ class HomeTap extends StatefulWidget {
 }
 
 class _HomeTapState extends State<HomeTap> {
-  late GetProfileGraphQLService _graphQLService;
+  late ProfileGraphQLService _profileService;
+  late CategoriesGraphQLService _categoriesService;
+
   Map<String, dynamic>? _profileData;
 
   late HomeTapViewModel _viewModel;
@@ -27,7 +30,9 @@ class _HomeTapState extends State<HomeTap> {
   void initState() {
     super.initState();
     final dioClientGrapQl = DioClientGraphql();
-    _graphQLService = GetProfileGraphQLService(dioClientGrapQl);
+    _profileService = ProfileGraphQLService(dioClientGrapQl);
+    _categoriesService = CategoriesGraphQLService(dioClientGrapQl);
+
 
     // Fetch profile and banners
     _fetchProfile();
@@ -36,10 +41,20 @@ class _HomeTapState extends State<HomeTap> {
 
   Future<void> _fetchProfile() async {
     try {
-      final data = await _graphQLService.fetchProfile(context);
+      final data = await _profileService.fetchProfile(context);
       setState(() {
-        _profileData = data?['me'];
+        _profileData = data;
       });
+
+      // Extract grade from dynamicProperties
+      final grade = _profileData?['contact']?['dynamicProperties']
+          ?.firstWhere((prop) => prop['name'] == 'grade')['value'];
+
+      if (grade != null) {
+        _viewModel.categories = await _categoriesService.fetchCategories(grade);
+        setState(() {});
+      }
+
     } catch (e) {
       print('Failed to load profile: $e');
     }
@@ -103,8 +118,9 @@ class _HomeTapState extends State<HomeTap> {
             verticalSpace(20),
 
             // get the Courses with Filters his Grades take from graphQl/me
-
-
+            if (_viewModel.categories != null)
+              for (final category in _viewModel.categories!)
+                _buildCategoryWidget(category),
 
           ],
         ),
@@ -112,4 +128,21 @@ class _HomeTapState extends State<HomeTap> {
     );
   }
 
+}
+Widget _buildCategoryWidget(Map<String, dynamic> category) {
+  // Check if childCategories is null or empty
+  final hasChildCategories = category['name'] != null && category['name'].isNotEmpty;
+
+  return Row(
+    children: [
+      Image.network(
+        category['imgSrc'] ?? 'https://via.placeholder.com/150', // Provide a default image URL
+      ),
+      SizedBox(width: 8),
+      Text(
+        hasChildCategories ? category['name'] : 'No Category Available',
+        style: TextStyles.font14BlueSemiBold,
+      ),
+    ],
+  );
 }
