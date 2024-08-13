@@ -5,12 +5,12 @@ import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../profile_tap/services/graphql_getprofile_service.dart';
 
 class HomeTapViewModel {
-  final GetProfileGraphQLService _graphQLService;
+  final ProfileGraphQLService _graphQLService;
   Map<String, dynamic>? profileData;
   List<String> banners = [];
 
   HomeTapViewModel()
-      : _graphQLService = GetProfileGraphQLService(DioClientGraphql());
+      : _graphQLService = ProfileGraphQLService(DioClientGraphql());
 
   Future<void> loadData(BuildContext context) async {
     await Future.wait([
@@ -46,4 +46,14 @@ class HomeTapViewModel {
       print('Error occurred while fetching banners: $e');
     }
   }
+
+
+  List<Map<String, dynamic>>? _categories;
+  List<Map<String, dynamic>>? get categories => _categories;
+
+  set categories(List<Map<String, dynamic>>? categories) {
+    _categories = categories;
+  }
+
+
 }

@@ -22,14 +22,14 @@ class ProfileTap extends StatefulWidget {
 }
 
 class _ProfileTapState extends State<ProfileTap> {
-  late GetProfileGraphQLService _graphQLService;
+  late ProfileGraphQLService _graphQLService;
   Map<String, dynamic>? _profileData;
 
   @override
   void initState() {
     super.initState();
     final dioClient = DioClientGraphql();
-    _graphQLService = GetProfileGraphQLService(dioClient);
+    _graphQLService = ProfileGraphQLService(dioClient);
     _fetchProfile();
   }
 
