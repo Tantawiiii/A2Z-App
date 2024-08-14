@@ -67,7 +67,7 @@ class _HomeTapState extends State<HomeTap> {
                     ),
                   )
                 : Text(
-                    StringTextsNames.txtWelcome + _profileData!['userName'],
+                    StringTextsNames.txtWelcome + (_profileData!['userName'] ?? ""),
                     style: TextStyles.font20BlueBold,
                   ),
             verticalSpace(8),
@@ -233,7 +233,7 @@ Widget _buildCategoryWidget(Map<String, dynamic>? category) {
       highlightColor: Colors.blue[200]!,
       child: const Padding(
         padding: EdgeInsets.all(24.0),
-        child: BuildEmptyCourses(txtNot: '',),
+        child: BuildEmptyCourses(txtNot: StringTextsNames.txtNoCategories,),
       ),
     );
   }
@@ -245,10 +245,10 @@ Widget _buildCategoryWidget(Map<String, dynamic>? category) {
         category['imgSrc'] ??
             'https://via.placeholder.com/150', // Provide a default image URL
       ),
-      verticalSpace(8),
+      horizontalSpace(8),
       Text(
         category['name']!,
-        style: TextStyles.font14BlueSemiBold,
+        style: TextStyles.font18BlueSemiBold,
       ),
     ],
   );
