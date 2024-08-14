@@ -1,6 +1,5 @@
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
-import 'package:a2z_app/features/home/bottom_screens/home_tap/widgets/build_banner_view.dart';
 import 'package:bounce/bounce.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +130,7 @@ class _HomeTapState extends State<HomeTap> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text(
-                  StringTextsNames.txtCourses,
+                  StringTextsNames.txtCategories,
                   style: TextStyles.font14BlueSemiBold,
                 ),
                 Bounce(
@@ -163,7 +162,7 @@ class _HomeTapState extends State<HomeTap> {
             else if (_viewModel.categories!.isEmpty)
               const Padding(
                 padding: EdgeInsets.all(24.0),
-                child: BuildEmptyCourses(),
+                child: BuildEmptyCourses(txtNot: StringTextsNames.txtCategories,),
               )
             // Display the actual categories if available
             else
@@ -234,7 +233,7 @@ Widget _buildCategoryWidget(Map<String, dynamic>? category) {
       highlightColor: Colors.blue[200]!,
       child: const Padding(
         padding: EdgeInsets.all(24.0),
-        child: BuildEmptyCourses(),
+        child: BuildEmptyCourses(txtNot: '',),
       ),
     );
   }

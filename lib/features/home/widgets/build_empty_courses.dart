@@ -10,7 +10,9 @@ import '../../../core/utils/StringsTexts.dart';
 import '../../../core/utils/images_paths.dart';
 
 class BuildEmptyCourses extends StatelessWidget {
-  const BuildEmptyCourses({super.key});
+  const BuildEmptyCourses({super.key, required this.txtNot});
+
+  final String txtNot;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class BuildEmptyCourses extends StatelessWidget {
           ),
           verticalSpace(20.h),
           Text(
-            StringTextsNames.txtNoCourses,
+            txtNot,
             style: TextStyles.font15DarkBlueMedium,
           ),
           verticalSpace(8.h),

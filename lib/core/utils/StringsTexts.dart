@@ -62,7 +62,8 @@ class StringTextsNames  {
    static const String txtCreateAccount = "Create Account";
    static const String txtCreateAccDes = "Sign up now and start exploring all that our app has to offer. We\'re excited to welcome you to our community!";
 
-   static const String txtNoCourses = "You have no courses yet.";
+   static const String txtNoCourses = "You have no Courses yet.";
+   static const String txtNoCategories = "You have no Categories yet.";
    static const String txtSubNow = "Subscribe Now.";
    static const String txtAhmedRamadan = "Ahmed Ramadan";
    static const String txtStudent = "Student";
@@ -80,6 +81,7 @@ class StringTextsNames  {
 
    static const String txtAllCourses = "All Courses";
    static const String txtCourses = "Courses";
+   static const String txtCategories = "Categories";
    static const String txtShowAll = "Show All";
    static const String txtHowAre = "How are you today? ";
    static const String txtReady = "Ready...!";
