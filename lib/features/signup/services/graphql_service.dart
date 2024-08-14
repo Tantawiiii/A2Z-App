@@ -13,9 +13,10 @@ class GraphQLService {
     required String username,
     required String password,
     required String grade,
+    required String profilePhoto,
   }) async {
     const String mutation = '''
-    mutation RequestRegistration(\$firstName: String!, \$lastName: String!, \$phoneNumber: String!, \$email: String!, \$username: String!, \$password: String!, \$grade: String!) {
+    mutation RequestRegistration(\$firstName: String!,  \$profilePhoto: String!,\$lastName: String!, \$phoneNumber: String!, \$email: String!, \$username: String!, \$password: String!, \$grade: String!) {
       requestRegistration(
         command: {
           storeId: "A2Z",
@@ -27,7 +28,11 @@ class GraphQLService {
               {
                 name: "grade",
                 value: \$grade
-              }
+              },        
+              { 
+                name: "ProfilePhoto", 
+                value: \$profilePhoto 
+                }
             ]
           },
           account: {
@@ -64,6 +69,7 @@ class GraphQLService {
         'username': username,
         'password': password,
         'grade': grade,
+        'ProfilePhoto': profilePhoto,
       },
     );
 

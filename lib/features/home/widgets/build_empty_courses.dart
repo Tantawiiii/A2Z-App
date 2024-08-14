@@ -28,6 +28,7 @@ class BuildEmptyCourses extends StatelessWidget {
           Text(
             txtNot,
             style: TextStyles.font15DarkBlueMedium,
+            textAlign: TextAlign.center,
           ),
           verticalSpace(8.h),
 

@@ -116,7 +116,7 @@ class _ProfileTapState extends State<ProfileTap> {
           ),
           verticalSpace(10.h),
           Text(
-            _profileData!['userName'] ?? 'Username',
+            (_profileData!['fullName'] ?? _profileData!['userName'] ),
             textAlign: TextAlign.center,
             style: TextStyles.font20BlueBold,
           ),

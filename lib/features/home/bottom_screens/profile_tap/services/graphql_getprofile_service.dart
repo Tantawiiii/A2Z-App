@@ -23,6 +23,7 @@ class ProfileGraphQLService extends BaseGraphQLService {
           }
           lastName
           firstName
+          fullName
         }
       }
     }
