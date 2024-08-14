@@ -10,7 +10,7 @@ void buildSuccessToast(BuildContext context, String message) {
     context,
     isClosable: true,
     backgroundColor: ColorsCode.lighterGray,
-    length: ToastLength.medium,
+    length: ToastLength.short,
     expandedHeight: 80,
     message: message,
     messageStyle: const TextStyle(

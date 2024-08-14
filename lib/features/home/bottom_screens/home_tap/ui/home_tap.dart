@@ -162,7 +162,7 @@ class _HomeTapState extends State<HomeTap> {
             else if (_viewModel.categories!.isEmpty)
               const Padding(
                 padding: EdgeInsets.all(24.0),
-                child: BuildEmptyCourses(txtNot: StringTextsNames.txtCategories,),
+                child: BuildEmptyCourses(txtNot: StringTextsNames.txtNoCategories,),
               )
             // Display the actual categories if available
             else

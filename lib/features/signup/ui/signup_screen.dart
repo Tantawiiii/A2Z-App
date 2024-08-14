@@ -85,50 +85,55 @@ class _SignupScreenState extends State<SignupScreen> {
 
       final MutationOptions options = MutationOptions(
         document: gql(r'''
-          mutation RequestRegistration($storeId: String!, $firstName: String!, $lastName: String!, $phoneNumber: String!, $grade: String!, $username: String!, $email: String!, $password: String!) {
-            requestRegistration(
-              command: {
-                storeId: $storeId,
-                contact: {
-                  firstName: $firstName,
-                  lastName: $lastName,
-                  phoneNumber: $phoneNumber,
-                  dynamicProperties: [
-                    {
-                      name: "grade",
-                      value: $grade
-                    }
-                  ]
-                },
-                account: {
-                  username: $username,
-                  email: $email,
-                  password: $password
-                }
+    mutation RequestRegistration($storeId: String!, $firstName: String!, $lastName: String!, $phoneNumber: String!, $grade: DynamicPropertyValue!, $username: String!, $email: String!, $password: String!) {
+      requestRegistration(
+        command: {
+          storeId: $storeId,
+          contact: {
+            firstName: $firstName,
+            lastName: $lastName,
+            phoneNumber: $phoneNumber,
+            dynamicProperties: [
+              {
+                name: "grade",
+                value: $grade
               }
-            ) {
-              result {
-                succeeded
-                requireEmailVerification
-                oTP
-                errors {
-                  code
-                  description
-                  parameter
-                }
-              }
-              account {
-                id
-              }
-            }
+            ]
+          },
+          account: {
+            username: $username,
+            email: $email,
+            password: $password
           }
-        '''),
+        }
+      ) {
+        result {
+          succeeded
+          requireEmailVerification
+          oTP
+          errors {
+            code
+            description
+            parameter
+          }
+        }
+        account {
+          id
+        }
+      }
+    }
+  '''),
         variables: {
           'storeId': 'A2Z',
           'firstName': _firstNameController.text,
           'lastName': _lastNameController.text,
           'phoneNumber': _phoneNumberController.text,
-          'grade': _gradeController.text,
+          'dynamicProperties':[
+            {
+              'name': 'grade',
+              'value': _gradeController.text,
+            },
+          ],
           'username': _usernameController.text,
           'email': _emailController.text,
           'password': _passwordController.text,
