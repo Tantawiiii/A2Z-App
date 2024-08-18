@@ -1,6 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -114,12 +116,49 @@ class _SignupScreenState extends State<SignupScreen> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      setState(() {
-        _profileImage = File(pickedFile.path);
-      });
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false,
+            aspectRatioPresets: [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio4x3,
+
+            ],
+          ),
+          IOSUiSettings(
+            title: 'Cropper',
+            aspectRatioPresets: [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio4x3,
+
+            ],
+          ),
+          WebUiSettings(
+            context: context,
+            presentStyle: WebPresentStyle.dialog,
+            size: const CropperSize(
+              width: 520,
+              height: 520,
+            ),
+          ),
+        ],
+      );
+
+      if (croppedFile != null) {
+        setState(() {
+          _profileImage = croppedFile as File?;
+        });
+      }
     }
   }
-
   void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
       String? profilePhotoUrl;
@@ -176,7 +215,7 @@ class _SignupScreenState extends State<SignupScreen> {
           'firstName': _firstNameController.text,
           'lastName': _lastNameController.text,
           'phoneNumber': _phoneNumberController.text,
-          'grade': _gradeController.text,
+          'value': _gradeController.text,
           'profilePhoto': profilePhotoUrl ?? '',
           'username': _usernameController.text,
           'email': _emailController.text,
@@ -184,8 +223,14 @@ class _SignupScreenState extends State<SignupScreen> {
         },
       );
 
-      final QueryResult result = await GraphQLClientInstance.client.mutate(options);
 
+      /*
+      *  'grade': {'value': _gradeController.text},
+    'profilePhoto': {'value': profilePhotoUrl ?? ''},
+      * **/
+
+      final QueryResult result = await GraphQLClientInstance.client.mutate(options);
+      //log('Ahmed');
       if (result.hasException) {
         print(result.exception.toString());
       } else {

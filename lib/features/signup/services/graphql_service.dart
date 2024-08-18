@@ -68,7 +68,7 @@ class GraphQLService {
         'email': email,
         'username': username,
         'password': password,
-        'grade': grade,
+        'value': grade,
         'ProfilePhoto': profilePhoto,
       },
     );
