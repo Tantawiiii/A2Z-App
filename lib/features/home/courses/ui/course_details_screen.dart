@@ -82,34 +82,25 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               style: TextStyles.font20BlueBold,
             ),
             SizedBox(height: 16.h),
-
-            // Display catalogId
-            if (courseDetail?['catalogId'] != null)
-              Text(
-                'Catalog ID: ${courseDetail!['catalogId']}',
-                style: TextStyles.font15DarkBlueMedium,
-              ),
-            SizedBox(height: 8.h),
-
-            // Display code
-            if (courseDetail?['code'] != null)
-              Text(
-                'Code: ${courseDetail!['code']}',
-                style: TextStyles.font15DarkBlueMedium,
-              ),
-            SizedBox(height: 8.h),
-
             // Videos
             if (courseDetail?['videos'] != null && courseDetail!['videos']['totalCount'] > 0)
               ...courseDetail!['videos']['items'].map<Widget>((video) {
+                String videoUrl = video['contentUrl'];
+                String videoId = extractYouTubeVideoId(videoUrl); // Create a function to extract video ID
+                String thumbnailUrl = 'https://img.youtube.com/vi/$videoId/0.jpg';
+
                 return ListTile(
-                  leading: video['thumbnailUrl'] != null
-                      ? Image.network(video['thumbnailUrl'], width: 50.w)
+                  leading: video['contentUrl'] != null
+                      ? SizedBox(
+                    width: 50.w, // Set a fixed width for the leading image
+                    child: Image.network(thumbnailUrl, fit: BoxFit.cover),
+                  )
                       : Icon(Icons.video_library),
                   title: Text(video['name'] ?? 'Unnamed Video'),
                   subtitle: Text(video['description'] ?? ''),
                 );
               }).toList(),
+
 
             SizedBox(height: 16.h),
 
@@ -186,5 +177,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         ),
       ),
     );
+  }
+
+  String extractYouTubeVideoId(String url) {
+    final uri = Uri.parse(url);
+    return uri.queryParameters['v'] ?? '';
   }
 }
