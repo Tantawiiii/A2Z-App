@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -37,6 +39,23 @@ class _ProfileTapState extends State<ProfileTap> {
   Future<void> _fetchProfile() async {
     try {
       final data = await _profileService.fetchProfile(context);
+
+      if (data != null) {
+        // Extract the 'dynamicProperties' list
+        final dynamicProperties = data['contact']['dynamicProperties'] as List<dynamic>;
+
+        // Find the 'ProfilePhoto' property
+        final profilePhotoProperty = dynamicProperties.firstWhere(
+              (property) => property['name'] == 'ProfilePhoto',
+          orElse: () => null,
+        );
+
+        // Add the 'ProfilePhoto' to the profile data
+        if (profilePhotoProperty != null) {
+          data['profilePhoto'] = profilePhotoProperty['value'];
+        }
+      }
+
       setState(() {
         _profileData = data;
       });
@@ -45,6 +64,7 @@ class _ProfileTapState extends State<ProfileTap> {
       print('Failed to load profile: $e');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -109,14 +129,17 @@ class _ProfileTapState extends State<ProfileTap> {
           verticalSpace(50.h),
           CircleAvatar(
             radius: 80,
-            backgroundImage: _profileData!['photoUrl'] != null &&
-                _profileData!['photoUrl'].contains('http')
+            backgroundImage: _profileData!['profilePhoto'] != null &&
+                _profileData!['profilePhoto'].toString().isNotEmpty
+                ? FileImage(File(_profileData!['profilePhoto'])) // Use FileImage for local files
+                : (_profileData!['photoUrl'] != null && _profileData!['photoUrl'].contains('http')
                 ? NetworkImage(_profileData!['photoUrl'])
-                : const AssetImage('asset/images/teacher.png') as ImageProvider,
+                : const AssetImage('asset/images/teacher.png') as ImageProvider),
           ),
           verticalSpace(10.h),
           Text(
-            (_profileData!['fullName'] ?? _profileData!['userName'] ),
+            (_profileData!['contact']['fullName'] ??
+                _profileData!['userName']),
             textAlign: TextAlign.center,
             style: TextStyles.font20BlueBold,
           ),

@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         StringTextsNames.txtDescriptionLogin,
                         style: TextStyles.font14GrayNormal,
                       ),
-                      verticalSpace(36),
+                      verticalSpace(44),
                       Column(
                         children: [
                           BuildEmailAndPassword(
@@ -71,17 +71,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                             ),
                           ),
-                          verticalSpace(40),
+                          verticalSpace(50),
                           BuildButton(
                             textButton: StringTextsNames.txtLogin,
                             textStyle: TextStyles.font16WhiteMedium,
                             onPressed: _login,
                           ),
-                          verticalSpace(46),
-                          const BuildOrSignInMediaAccounts(),
-                          verticalSpace(46),
-                          const BuildIconsSocialMedia(),
-                          verticalSpace(32),
+                          verticalSpace(24),
+                          // const BuildOrSignInMediaAccounts(),
+                          // verticalSpace(46),
+                          // const BuildIconsSocialMedia(),
+                          // verticalSpace(32),
                           const DontHaveAccountText(),
                           verticalSpace(50),
                         ],

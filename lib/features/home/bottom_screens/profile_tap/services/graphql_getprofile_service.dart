@@ -17,14 +17,15 @@ class ProfileGraphQLService extends BaseGraphQLService {
         photoUrl
         phoneNumber
         contact {
-          dynamicProperties {
             name
-            value
+            firstName
+            lastName
+            fullName
+            dynamicProperties {
+              name
+              value
+            }
           }
-          lastName
-          firstName
-          fullName
-        }
       }
     }
     ''';
