@@ -64,6 +64,8 @@ class _HomeTapState extends State<HomeTap> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 24.w),
         child: ListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             _profileData == null
                 ? const Center(
@@ -163,49 +165,50 @@ class _HomeTapState extends State<HomeTap> {
             // Display shimmer effect if categories are being loaded
             _viewModel.categories == null
                 ? Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.blue[200]!,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(16.0),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16.0,
-                        mainAxisSpacing: 16.0,
-                        childAspectRatio:
-                            1.0, // Adjust the aspect ratio as needed
-                      ),
-                      itemCount: 4,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildShimmerCategoryPlaceholder();
-                      },
-                    ),
-                  )
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.blue[200]!,
+              child: SizedBox(
+                height: 400,
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(16.0),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                    childAspectRatio: 1.0,
+                  ),
+                  itemCount: 4,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildShimmerCategoryPlaceholder();
+                  },
+                ),
+              ),
+            )
                 : _viewModel.categories!.isEmpty
-                    ? const Padding(
-                        padding: EdgeInsets.all(24.0),
-                        child: BuildEmptyCourses(
-                          txtNot: StringTextsNames.txtNoCategories,
-                        ),
-                      )
-                    : SizedBox(
-                        height: 600,
-                        child: GridView.builder(
-                          padding: const EdgeInsets.all(16.0),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 16.0,
-                            mainAxisSpacing: 16.0,
-                            childAspectRatio: 1.0, // Adjust as needed
-                          ),
-                          itemCount: _viewModel.categories!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final category = _viewModel.categories![index];
-                            return _buildCategoryWidget(category);
-                          },
-                        ),
-                      )
+                ? const Padding(
+              padding: EdgeInsets.all(24.0),
+              child: BuildEmptyCourses(
+                txtNot: StringTextsNames.txtNoCategories,
+              ),
+            )
+                : SizedBox(
+              height: 600,
+              child: GridView.builder(
+                padding: const EdgeInsets.all(8.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  childAspectRatio: 1.0,
+                ),
+                itemCount: _viewModel.categories!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final category = _viewModel.categories![index];
+                  return _buildCategoryWidget(category);
+                },
+              ),
+            )
+
           ],
         ),
       ),
@@ -303,17 +306,17 @@ Widget _buildCategoryWidget(Map<String, dynamic>? category) {
     return _buildShimmerCategoryPlaceholder();
   }
   return Container(
-    width: 200,
-    height: 300,
+    width: 250,
+    height: 400,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(16),
       color: ColorsCode.backCatHome,
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.3),
+          color: Colors.grey.withOpacity(0.2),
           spreadRadius: 2,
           blurRadius: 5,
-          offset: Offset(0, 3),
+          offset: const Offset(0, 3),
         ),
       ],
     ),
@@ -335,9 +338,11 @@ Widget _buildCategoryWidget(Map<String, dynamic>? category) {
           const SizedBox(height: 8),
           Text(
             category['name']!,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
+
             ),
           ),
         ],
