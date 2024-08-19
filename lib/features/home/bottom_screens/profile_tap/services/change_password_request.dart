@@ -17,6 +17,8 @@ Future<void> changePassword({
   required String newPassword,
 }) async {
   final String url = ApiConstants.apiChangePassword;
+  // Set the token in the headers
+  await dioClient.setAuthorizationToken();
 
   try {
     final response = await dioClient.dio.post(

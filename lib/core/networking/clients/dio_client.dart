@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../const/api_constants.dart';
 
 class DioClient {
@@ -17,4 +18,17 @@ class DioClient {
   );
 
   Dio get dio => _dio;
+
+  // Method to set the authorization token
+  Future<void> setAuthorizationToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString(
+        'access_token');
+
+    if (token != null) {
+      _dio.options.headers['Authorization'] = 'Bearer $token';
+    } else {
+      _dio.options.headers.remove('Authorization');
+    }
+  }
 }

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
+import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:bounce/bounce.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -31,19 +33,28 @@ class _HomeTapState extends State<HomeTap> {
   late HomeTapViewModel _viewModel;
   List<String> _banners = [];
 
-
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    final dioClientGrapQl = DioClientGraphql();
-    _profileService = ProfileGraphQLService(dioClientGrapQl);
-    _categoriesService = CategoriesGraphQLService(dioClientGrapQl);
+    final dioClientGraphQl = DioClientGraphql();
+    _profileService = ProfileGraphQLService(dioClientGraphQl);
+    _categoriesService = CategoriesGraphQLService(dioClientGraphQl);
+
+    _scrollController = ScrollController();
+    _startAutoScroll();
 
     // Fetch profile and banners
     _fetchProfile();
     fetchBanner();
     _viewModel = HomeTapViewModel();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,9 +71,17 @@ class _HomeTapState extends State<HomeTap> {
                       color: Colors.cyan,
                     ),
                   )
-                : Text(
-                    StringTextsNames.txtWelcome + (_profileData!['userName'] ?? ""),
-                    style: TextStyles.font20BlueBold,
+                : RichText(
+                    text: TextSpan(
+                      text: '${StringTextsNames.txtWelcome}\n',
+                      style: TextStyles.font13GrayNormal,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: (_profileData?['userName'] ?? ""),
+                          style: TextStyles.font18BlueSemiBold,
+                        ),
+                      ],
+                    ),
                   ),
             verticalSpace(8),
             RichText(
@@ -82,6 +101,7 @@ class _HomeTapState extends State<HomeTap> {
                 ? SizedBox(
                     height: 150,
                     child: ListView.builder(
+                      controller: _scrollController,
                       scrollDirection: Axis.horizontal,
                       itemCount: _banners.length,
                       itemBuilder: (context, index) {
@@ -98,8 +118,8 @@ class _HomeTapState extends State<HomeTap> {
                     ),
                   )
                 : Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.blue[200]!,
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.blue[200]!,
                     child: SizedBox(
                       height: 150,
                       child: ListView.builder(
@@ -141,34 +161,82 @@ class _HomeTapState extends State<HomeTap> {
             verticalSpace(24),
 
             // Display shimmer effect if categories are being loaded
-            if (_viewModel.categories == null)
-              Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.blue[200]!,
-                child: Column(
-                  children: List.generate(
-                    3,
-                    (index) => _buildShimmerCategoryPlaceholder(),
-                  ),
-                ),
-              )
-            // Show empty courses widget if there are no categories available
-            else if (_viewModel.categories!.isEmpty)
-              const Padding(
-                padding: EdgeInsets.all(24.0),
-                child: BuildEmptyCourses(txtNot: StringTextsNames.txtNoCategories,),
-              )
-            // Display the actual categories if available
-            else
-              for (final category in _viewModel.categories!)
-                _buildCategoryWidget(category),
+            _viewModel.categories == null
+                ? Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.blue[200]!,
+                    child: GridView.builder(
+                      padding: const EdgeInsets.all(16.0),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio:
+                            1.0, // Adjust the aspect ratio as needed
+                      ),
+                      itemCount: 4,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _buildShimmerCategoryPlaceholder();
+                      },
+                    ),
+                  )
+                : _viewModel.categories!.isEmpty
+                    ? const Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: BuildEmptyCourses(
+                          txtNot: StringTextsNames.txtNoCategories,
+                        ),
+                      )
+                    : SizedBox(
+                        height: 600,
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(16.0),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16.0,
+                            mainAxisSpacing: 16.0,
+                            childAspectRatio: 1.0, // Adjust as needed
+                          ),
+                          itemCount: _viewModel.categories!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final category = _viewModel.categories![index];
+                            return _buildCategoryWidget(category);
+                          },
+                        ),
+                      )
           ],
         ),
       ),
     );
   }
 
-  // fetch Banners
+  // Auto-scroll Banners
+  void _startAutoScroll() {
+    Future.delayed(const Duration(seconds: 2), () {
+      if (_scrollController.hasClients) {
+        double maxScroll = _scrollController.position.maxScrollExtent;
+        double currentScroll = _scrollController.position.pixels;
+        double scrollIncrement = 300.0;
+
+        double targetScroll = currentScroll + scrollIncrement;
+        // Scroll back to the start
+        if (targetScroll >= maxScroll) {
+          targetScroll = 0;
+        }
+
+        _scrollController.animateTo(
+          targetScroll,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        _startAutoScroll();
+      }
+    });
+  }
+
+  // Fetch Banners
   Future<void> fetchBanner() async {
     try {
       final dio = Dio();
@@ -204,13 +272,18 @@ class _HomeTapState extends State<HomeTap> {
         _profileData = data;
       });
 
-      // Extract grade from dynamicProperties
-      final grade = _profileData?['contact']?['dynamicProperties']
-          ?.firstWhere((prop) => prop['name'] == 'grade')['value'];
+      // Check if `contact` or `dynamicProperties` is null
+      final dynamicProperties = _profileData?['contact']?['dynamicProperties'];
+      if (dynamicProperties != null) {
+        final grade = dynamicProperties.firstWhere(
+            (prop) => prop['name'] == 'grade',
+            orElse: () => null)?['value'];
 
-      if (grade != null) {
-        _viewModel.categories = await _categoriesService.fetchCategories(grade);
-        setState(() {});
+        if (grade != null) {
+          _viewModel.categories =
+              await _categoriesService.fetchCategories(grade);
+          setState(() {});
+        }
       }
     } catch (e) {
       if (kDebugMode) {
@@ -221,58 +294,87 @@ class _HomeTapState extends State<HomeTap> {
 }
 
 Widget _buildCategoryWidget(Map<String, dynamic>? category) {
-  // Check if the category is null or if the name is empty
   final hasChildCategories = category != null &&
       category['name'] != null &&
       category['name'].isNotEmpty;
 
   if (!hasChildCategories) {
-    // Show shimmer effect while loading or if no categories are available
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.blue[200]!,
-      child: const Padding(
-        padding: EdgeInsets.all(24.0),
-        child: BuildEmptyCourses(txtNot: StringTextsNames.txtNoCategories,),
-      ),
-    );
+    // If the category data is missing, return a placeholder
+    return _buildShimmerCategoryPlaceholder();
   }
-
-  // Return the category widget if data is available
-  return Row(
-    children: [
-      Image.network(
-        category['imgSrc'] ??
-            'https://via.placeholder.com/150', // Provide a default image URL
+  return Container(
+    width: 200,
+    height: 300,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(16),
+      color: ColorsCode.backCatHome,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.3),
+          spreadRadius: 2,
+          blurRadius: 5,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6.0),
+              child: Image.network(
+                category['imgSrc'] ?? 'https://via.placeholder.com/150',
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            category['name']!,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
-      horizontalSpace(8),
-      Text(
-        category['name']!,
-        style: TextStyles.font18BlueSemiBold,
-      ),
-    ],
+    ),
   );
 }
 
 // Shimmer placeholder widget for categories
 Widget _buildShimmerCategoryPlaceholder() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8.0),
-    child: Row(
-      children: [
-        Container(
-          width: 150,
-          height: 100,
-          color: Colors.grey[300],
-        ),
-        horizontalSpace(8),
-        Expanded(
-          child: Container(
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.blue[200]!,
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.grey[300],
+      ),
+      margin: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 100,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
             height: 20,
+            width: 80,
             color: Colors.grey[300],
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
