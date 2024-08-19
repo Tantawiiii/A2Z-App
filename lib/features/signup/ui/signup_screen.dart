@@ -1,10 +1,11 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/routing/routers.dart';
@@ -35,14 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
   final _gradeController = TextEditingController();
 
-  File? _profileImage;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-
+  XFile? _profileImage;
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +59,10 @@ class _SignupScreenState extends State<SignupScreen> {
             GestureDetector(
               onTap: _pickImage,
               child: CircleAvatar(
-                radius: 60,
+                radius: 70,
+
                 backgroundImage: _profileImage != null
-                    ? FileImage(_profileImage!)
+                    ? FileImage(File(_profileImage!.path),scale: 2.5)
                     : const AssetImage('asset/images/teacher.png') as ImageProvider,
                 child: _profileImage == null ? const Icon(Icons.add_a_photo) : null,
               ),
@@ -110,7 +105,6 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
-
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -129,7 +123,6 @@ class _SignupScreenState extends State<SignupScreen> {
               CropAspectRatioPreset.original,
               CropAspectRatioPreset.square,
               CropAspectRatioPreset.ratio4x3,
-
             ],
           ),
           IOSUiSettings(
@@ -138,27 +131,20 @@ class _SignupScreenState extends State<SignupScreen> {
               CropAspectRatioPreset.original,
               CropAspectRatioPreset.square,
               CropAspectRatioPreset.ratio4x3,
-
             ],
-          ),
-          WebUiSettings(
-            context: context,
-            presentStyle: WebPresentStyle.dialog,
-            size: const CropperSize(
-              width: 520,
-              height: 520,
-            ),
           ),
         ],
       );
 
       if (croppedFile != null) {
         setState(() {
-          _profileImage = croppedFile as File?;
+          _profileImage = XFile(croppedFile.path);
         });
       }
     }
   }
+
+
   void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
       String? profilePhotoUrl;
@@ -174,49 +160,48 @@ class _SignupScreenState extends State<SignupScreen> {
 
       final MutationOptions options = MutationOptions(
         document: gql(r'''
-    mutation RequestRegistration($storeId: String!, $firstName: String!, $lastName: String!, $phoneNumber: String!, $grade: String!, $profilePhoto: String!, $username: String!, $email: String!, $password: String!) {
-      requestRegistration(
-        command: {
-          storeId: $storeId,
-          contact: {
-            firstName: $firstName,
-            lastName: $lastName,
-            phoneNumber: $phoneNumber,
-            dynamicProperties: [
-              { name: "grade", value: $grade },
-              { name: "ProfilePhoto", value: $profilePhoto }
-            ]
-          },
-          account: {
-            username: $username,
-            email: $email,
-            password: $password
-          }
-        }
-      ) {
-        result {
-          succeeded
-          requireEmailVerification
-          oTP
-          errors {
-            code
-            description
-            parameter
-          }
-        }
-        account {
-          id
+  mutation RequestRegistration($storeId: String!, $firstName: String!, $lastName: String!, $phoneNumber: String!, $dynamicProperties: [InputDynamicPropertyValueType!]!, $username: String!, $email: String!, $password: String!) {
+    requestRegistration(
+      command: {
+        storeId: $storeId,
+        contact: {
+          firstName: $firstName,
+          lastName: $lastName,
+          phoneNumber: $phoneNumber,
+          dynamicProperties: $dynamicProperties
+        },
+        account: {
+          username: $username,
+          email: $email,
+          password: $password
         }
       }
+    ) {
+      result {
+        succeeded
+        requireEmailVerification
+        oTP
+        errors {
+          code
+          description
+          parameter
+        }
+      }
+      account {
+        id
+      }
     }
+  }
   '''),
         variables: {
           'storeId': 'A2Z',
           'firstName': _firstNameController.text,
           'lastName': _lastNameController.text,
-          'phoneNumber': _phoneNumberController.text,
-          'value': _gradeController.text,
-          'profilePhoto': profilePhotoUrl ?? '',
+          'phoneNumber': "+2${_phoneNumberController.text}",
+          'dynamicProperties': [
+            {'name': 'grade', 'value': _gradeController.text},
+            {'name': 'ProfilePhoto', 'value': profilePhotoUrl ?? ''}
+          ],
           'username': _usernameController.text,
           'email': _emailController.text,
           'password': _passwordController.text,
@@ -224,10 +209,6 @@ class _SignupScreenState extends State<SignupScreen> {
       );
 
 
-      /*
-      *  'grade': {'value': _gradeController.text},
-    'profilePhoto': {'value': profilePhotoUrl ?? ''},
-      * **/
 
       final QueryResult result = await GraphQLClientInstance.client.mutate(options);
       //log('Ahmed');

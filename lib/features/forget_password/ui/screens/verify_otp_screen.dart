@@ -12,7 +12,6 @@ import '../../../../core/theming/text_style.dart';
 import '../../../../core/utils/StringsTexts.dart';
 import '../../../../core/widgets/build_button.dart';
 import '../../../../core/widgets/build_text_form_field.dart';
-import '../widgets/modal_bottom_sheet.dart';
 
 class VerifyOtpScreen extends StatefulWidget {
   const VerifyOtpScreen({super.key});

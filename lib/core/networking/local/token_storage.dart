@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenStorage {
@@ -11,7 +12,9 @@ class TokenStorage {
   Future<String?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(_accessTokenKey);
-    print('Retrieved token: Success');
+    if (kDebugMode) {
+      print('Retrieved token: Success');
+    }
     return token;
   }
 

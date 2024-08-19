@@ -28,7 +28,7 @@ class CategoriesGraphQLService extends BaseGraphQLService {
             ? item['childCategories'][0]['name']
             : '',
       })
-          ?.toList();
+          .toList();
 
 
     } catch (e) {

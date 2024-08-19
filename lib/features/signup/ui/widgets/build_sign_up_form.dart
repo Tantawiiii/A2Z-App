@@ -52,7 +52,6 @@ class _SignupFormState extends State<SignupForm> {
   @override
   void initState() {
     super.initState();
-    setupPasswordControllerListener();
 
 
     // Ensure the client is initialized
@@ -72,18 +71,18 @@ class _SignupFormState extends State<SignupForm> {
     });
   }
 
-  void setupPasswordControllerListener() {
-    widget.passwordController.addListener(() {
-      setState(() {
-        hasLowercase = AppRegex.hasLowerCase(widget.passwordController.text);
-        hasUppercase = AppRegex.hasUpperCase(widget.passwordController.text);
-        hasSpecialCharacters =
-            AppRegex.hasSpecialCharacter(widget.passwordController.text);
-        hasNumber = AppRegex.hasNumber(widget.passwordController.text);
-        hasMinLength = AppRegex.hasMinLength(widget.passwordController.text);
-      });
-    });
-  }
+  // void setupPasswordControllerListener() {
+  //   widget.passwordController.addListener(() {
+  //     setState(() {
+  //       hasLowercase = AppRegex.hasLowerCase(widget.passwordController.text);
+  //       hasUppercase = AppRegex.hasUpperCase(widget.passwordController.text);
+  //       hasSpecialCharacters =
+  //           AppRegex.hasSpecialCharacter(widget.passwordController.text);
+  //       hasNumber = AppRegex.hasNumber(widget.passwordController.text);
+  //       hasMinLength = AppRegex.hasMinLength(widget.passwordController.text);
+  //     });
+  //   });
+  // }
 
 
   @override
@@ -121,6 +120,18 @@ class _SignupFormState extends State<SignupForm> {
                 ),
               ),
             ],
+          ),
+          verticalSpace(18),
+          BuildTextFormField(
+            controller: widget.usernameController,
+            hintText: StringTextsNames.txtUserName,
+            validator: (value) {
+              if (value == null || value.isEmpty
+              //|| !AppRegex.isPhoneNumValid(value)
+              ) {
+                return StringTextsNames.txtUserName;
+              }
+            },
           ),
           verticalSpace(18),
           BuildTextFormField(
@@ -189,13 +200,13 @@ class _SignupFormState extends State<SignupForm> {
             },
           ),
           verticalSpace(24),
-          BuildPasswordValidations(
-            hasLowerCase: hasLowercase,
-            hasUpperCase: hasUppercase,
-            hasMinLength: hasMinLength,
-            hasNumber: hasNumber,
-            hasSpecialCharacter: hasSpecialCharacters,
-          ),
+          // BuildPasswordValidations(
+          //   hasLowerCase: hasLowercase,
+          //   hasUpperCase: hasUppercase,
+          //   hasMinLength: hasMinLength,
+          //   hasNumber: hasNumber,
+          //   hasSpecialCharacter: hasSpecialCharacters,
+          // ),
         ],
       ),
     );

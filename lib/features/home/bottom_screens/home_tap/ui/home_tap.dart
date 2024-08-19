@@ -2,6 +2,7 @@ import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
 import 'package:bounce/bounce.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
@@ -30,7 +31,7 @@ class _HomeTapState extends State<HomeTap> {
   late HomeTapViewModel _viewModel;
   List<String> _banners = [];
 
-  bool _isLoading = true;
+
 
   @override
   void initState() {
@@ -43,13 +44,6 @@ class _HomeTapState extends State<HomeTap> {
     _fetchProfile();
     fetchBanner();
     _viewModel = HomeTapViewModel();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _isLoading = false;
   }
 
   @override
@@ -191,10 +185,14 @@ class _HomeTapState extends State<HomeTap> {
           _banners = data.cast<String>();
         });
       } else {
-        print('Failed to load banners');
+        if (kDebugMode) {
+          print('Failed to load banners');
+        }
       }
     } catch (e) {
-      print('Error occurred: $e');
+      if (kDebugMode) {
+        print('Error occurred: $e');
+      }
     }
   }
 
@@ -215,7 +213,9 @@ class _HomeTapState extends State<HomeTap> {
         setState(() {});
       }
     } catch (e) {
-      print('Failed to load profile: $e');
+      if (kDebugMode) {
+        print('Failed to load profile: $e');
+      }
     }
   }
 }

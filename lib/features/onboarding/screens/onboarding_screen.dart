@@ -2,10 +2,8 @@ import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:a2z_app/features/onboarding/widgets/build_onboard_screen.dart';
-import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:motion/motion.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/theming/text_style.dart';

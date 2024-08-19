@@ -3,7 +3,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/networking/local/token_storage.dart';
-import '../../widgets/build_toast.dart';
 
 abstract class BaseGraphQLService {
   final DioClientGraphql dioClient;
