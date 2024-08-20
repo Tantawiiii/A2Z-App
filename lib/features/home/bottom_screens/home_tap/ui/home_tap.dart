@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
@@ -26,13 +27,10 @@ class HomeTap extends StatefulWidget {
 
 class _HomeTapState extends State<HomeTap> {
   late ProfileGraphQLService _profileService;
-  late CategoriesGraphQLService _categoriesService;
+  late HomeTapViewModel _viewModel;
 
   Map<String, dynamic>? _profileData;
-
-  late HomeTapViewModel _viewModel;
   List<String> _banners = [];
-
   late ScrollController _scrollController;
 
   @override
@@ -40,7 +38,7 @@ class _HomeTapState extends State<HomeTap> {
     super.initState();
     final dioClientGraphQl = DioClientGraphql();
     _profileService = ProfileGraphQLService(dioClientGraphQl);
-    _categoriesService = CategoriesGraphQLService(dioClientGraphQl);
+    _viewModel = HomeTapViewModel();
 
     _scrollController = ScrollController();
     _startAutoScroll();
@@ -48,7 +46,6 @@ class _HomeTapState extends State<HomeTap> {
     // Fetch profile and banners
     _fetchProfile();
     fetchBanner();
-    _viewModel = HomeTapViewModel();
   }
 
   @override
@@ -69,22 +66,22 @@ class _HomeTapState extends State<HomeTap> {
           children: [
             _profileData == null
                 ? const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.cyan,
-                    ),
-                  )
+              child: CircularProgressIndicator(
+                color: Colors.cyan,
+              ),
+            )
                 : RichText(
-                    text: TextSpan(
-                      text: '${StringTextsNames.txtWelcome}\n',
-                      style: TextStyles.font13GrayNormal,
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: (_profileData?['userName'] ?? ""),
-                          style: TextStyles.font18BlueSemiBold,
-                        ),
-                      ],
-                    ),
+              text: TextSpan(
+                text: '${StringTextsNames.txtWelcome}\n',
+                style: TextStyles.font13GrayNormal,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: (_profileData?['userName'] ?? ""),
+                    style: TextStyles.font18BlueSemiBold,
                   ),
+                ],
+              ),
+            ),
             verticalSpace(8),
             RichText(
               text: TextSpan(
@@ -101,77 +98,63 @@ class _HomeTapState extends State<HomeTap> {
             verticalSpace(20),
             _banners.isNotEmpty
                 ? SizedBox(
-                    height: 150,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _banners.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: Image.network(
-                            _banners[index],
-                            fit: BoxFit.cover,
-                            width: 300,
-                            height: 150,
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                : Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.blue[200]!,
-                    child: SizedBox(
+              height: 150,
+              child: ListView.builder(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                itemCount: _banners.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Image.network(
+                      _banners[index],
+                      fit: BoxFit.cover,
+                      width: 300,
                       height: 150,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 3, // Placeholder item count
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 16.0),
-                            child: Container(
-                              width: 300,
-                              height: 150,
-                              color: Colors.white,
-                            ),
-                          );
-                        },
-                      ),
                     ),
-                  ),
-            verticalSpace(24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(
-                  StringTextsNames.txtCategories,
-                  style: TextStyles.font14BlueSemiBold,
-                ),
-                Bounce(
-                  onTap: () {
-                    // Go to all Courses without Filtration
+                  );
+                },
+              ),
+            )
+                : Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.blue[200]!,
+              child: SizedBox(
+                height: 150,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 3, // Placeholder item count
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Container(
+                        width: 300,
+                        height: 150,
+                        color: Colors.white,
+                      ),
+                    );
                   },
-                  child: Text(
-                    StringTextsNames.txtShowAll,
-                    style: TextStyles.font10GrayNormal,
-                  ),
                 ),
-              ],
+              ),
             ),
             verticalSpace(24),
-
-            // Display shimmer effect if categories are being loaded
+            if (_viewModel.categories == null)
+              Text(
+                StringTextsNames.txtCategories,
+                style: TextStyles.font14BlueSemiBold,
+              ),
+            verticalSpace(14),
             _viewModel.categories == null
                 ? Shimmer.fromColors(
               baseColor: Colors.grey[300]!,
               highlightColor: Colors.blue[200]!,
               child: SizedBox(
                 height: 400,
+                width: 250,
                 child: GridView.builder(
-                  padding: const EdgeInsets.all(16.0),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  padding: const EdgeInsets.all(8.0),
+                  gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 16.0,
                     mainAxisSpacing: 16.0,
@@ -192,10 +175,12 @@ class _HomeTapState extends State<HomeTap> {
               ),
             )
                 : SizedBox(
-              height: 600,
+              height: 600.h,
+              width: 250.w,
               child: GridView.builder(
                 padding: const EdgeInsets.all(8.0),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
@@ -203,12 +188,12 @@ class _HomeTapState extends State<HomeTap> {
                 ),
                 itemCount: _viewModel.categories!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final category = _viewModel.categories![index];
+                  final category =
+                  _viewModel.categories![index];
                   return _buildCategoryWidget(category);
                 },
               ),
             )
-
           ],
         ),
       ),
@@ -267,7 +252,7 @@ class _HomeTapState extends State<HomeTap> {
     }
   }
 
-  // Fetch Data Profile
+  // Fetch profile data and categories
   Future<void> _fetchProfile() async {
     try {
       final data = await _profileService.fetchProfile(context);
@@ -275,16 +260,15 @@ class _HomeTapState extends State<HomeTap> {
         _profileData = data;
       });
 
-      // Check if `contact` or `dynamicProperties` is null
-      final dynamicProperties = _profileData?['contact']?['dynamicProperties'];
+      final dynamicProperties =
+      _profileData?['contact']?['dynamicProperties'];
       if (dynamicProperties != null) {
         final grade = dynamicProperties.firstWhere(
-            (prop) => prop['name'] == 'grade',
+                (prop) => prop['name'] == 'grade',
             orElse: () => null)?['value'];
 
         if (grade != null) {
-          _viewModel.categories =
-              await _categoriesService.fetchCategories(grade);
+          await _viewModel.fetchCategoriesByGrade(grade);
           setState(() {});
         }
       }
@@ -297,17 +281,25 @@ class _HomeTapState extends State<HomeTap> {
 }
 
 Widget _buildCategoryWidget(Map<String, dynamic>? category) {
+  // Check if childCategories exist and have at least one item
   final hasChildCategories = category != null &&
-      category['name'] != null &&
-      category['name'].isNotEmpty;
+      category['childCategories'] != null &&
+      category['childCategories'].isNotEmpty;
 
   if (!hasChildCategories) {
-    // If the category data is missing, return a placeholder
+    // If the category data is missing or empty, return a placeholder
     return _buildShimmerCategoryPlaceholder();
   }
+
+  // Extract the first child category's image, name, and ID
+  final childCategory = category['childCategories'][0];
+  final imgSrc = childCategory['imgSrc'] ?? 'https://via.placeholder.com/150';
+  final name = childCategory['name'] ?? '';
+  final id = childCategory['id'] ?? '';
+
   return Container(
     width: 250,
-    height: 400,
+    height: 350,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(16),
       color: ColorsCode.backCatHome,
@@ -329,7 +321,7 @@ Widget _buildCategoryWidget(Map<String, dynamic>? category) {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(6.0),
               child: Image.network(
-                category['imgSrc'] ?? 'https://via.placeholder.com/150',
+                imgSrc,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -337,12 +329,11 @@ Widget _buildCategoryWidget(Map<String, dynamic>? category) {
           ),
           const SizedBox(height: 8),
           Text(
-            category['name']!,
+            name,
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-
             ),
           ),
         ],
@@ -351,12 +342,15 @@ Widget _buildCategoryWidget(Map<String, dynamic>? category) {
   );
 }
 
+
 // Shimmer placeholder widget for categories
 Widget _buildShimmerCategoryPlaceholder() {
   return Shimmer.fromColors(
     baseColor: Colors.grey[300]!,
     highlightColor: Colors.blue[200]!,
     child: Container(
+      width: 200,
+      height: 350,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: Colors.grey[300],
@@ -365,11 +359,13 @@ Widget _buildShimmerCategoryPlaceholder() {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 100,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(8),
+          Expanded( // Wrap the Column's content with Expanded
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           ),
           const SizedBox(height: 8),

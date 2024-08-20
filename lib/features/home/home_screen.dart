@@ -7,9 +7,9 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 
 import '../../core/theming/text_style.dart';
+import 'bottom_screens/our_teachers_tap/our_teachers_tap.dart';
 import 'bottom_screens/profile_tap/ui/profile_tap.dart';
 import 'bottom_screens/home_tap/ui/home_tap.dart';
-import 'bottom_screens/ui/our_teachers_tap.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const ProfileTap(),
     const CoursesTap(),
     const HomeTap(),
-    const OurTeachersTap(),
+     OurTeachersTap(),
     const SearchTap(),
   ];
 

@@ -9,10 +9,11 @@ class CategoriesGraphQLService extends BaseGraphQLService {
       categories(query: $grade, storeId: "A2Z") {
         totalCount
         items {
-          imgSrc
           childCategories {
             imgSrc
             name
+            id
+            level
           }
         }
       }
@@ -23,14 +24,12 @@ class CategoriesGraphQLService extends BaseGraphQLService {
       final result = await performQuery(query, variables: {'grade': grade});
       return (result['categories']['items'] as List?)
           ?.map((item) => {
-        'imgSrc': item['imgSrc'],
-        'name': item['childCategories'] != null && item['childCategories'].isNotEmpty
-            ? item['childCategories'][0]['name']
-            : '',
+        'imgSrc': item['childCategories']?[0]['imgSrc'] ?? '',
+        'name': item['childCategories']?[0]['name'] ?? '',
+        'id': item['childCategories']?[0]['id'] ?? '',
+        'level': item['childCategories']?[0]['level'] ?? '',
       })
           .toList();
-
-
     } catch (e) {
       throw Exception('Failed to fetch categories: $e');
     }

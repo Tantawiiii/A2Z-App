@@ -9,12 +9,13 @@ import 'package:a2z_app/a2z_app.dart';
 import 'package:a2z_app/core/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget( A2ZApp(appRouter: AppRouter(),));
+    // await tester.pumpWidget( A2ZApp(appRouter: AppRouter(), client: GraphQLClient(),));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

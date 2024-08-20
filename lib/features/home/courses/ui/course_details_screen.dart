@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
@@ -32,7 +33,9 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         isLoading = false;
       });
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
       setState(() {
         isLoading = false;
       });
@@ -77,30 +80,30 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 fit: BoxFit.cover,
               ),
             SizedBox(height: 16.h),
-            Text(
-              courseDetail?['name'] ?? 'No Name',
-              style: TextStyles.font20BlueBold,
-            ),
-            SizedBox(height: 16.h),
             // Videos
             if (courseDetail?['videos'] != null && courseDetail!['videos']['totalCount'] > 0)
               ...courseDetail!['videos']['items'].map<Widget>((video) {
                 String videoUrl = video['contentUrl'];
-                String videoId = extractYouTubeVideoId(videoUrl); // Create a function to extract video ID
+                String videoId = extractYouTubeVideoId(videoUrl);
                 String thumbnailUrl = 'https://img.youtube.com/vi/$videoId/0.jpg';
 
                 return ListTile(
                   leading: video['contentUrl'] != null
                       ? SizedBox(
-                    width: 50.w, // Set a fixed width for the leading image
-                    child: Image.network(thumbnailUrl, fit: BoxFit.cover),
+                    width: 100.w,
+                    height: 200.h,
+                    child: Image.network(
+                      courseDetail!['imgSrc'],
+                      width: double.infinity,
+                      height: 200.h,
+                      fit: BoxFit.cover,
+                    ),
                   )
-                      : Icon(Icons.video_library),
+                      : const Icon(Icons.video_library),
                   title: Text(video['name'] ?? 'Unnamed Video'),
                   subtitle: Text(video['description'] ?? ''),
                 );
               }).toList(),
-
 
             SizedBox(height: 16.h),
 
@@ -143,18 +146,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 
             SizedBox(height: 16.h),
 
-            // Assets
-            if (courseDetail?['assets'] != null)
-              Wrap(
-                spacing: 8.w,
-                runSpacing: 8.h,
-                children: courseDetail!['assets'].map<Widget>((asset) {
-                  return ListTile(
-                    title: Text(asset['name'] ?? ''),
-                    subtitle: Text(asset['url'] ?? ''),
-                  );
-                }).toList(),
-              ),
 
             SizedBox(height: 16.h),
 
