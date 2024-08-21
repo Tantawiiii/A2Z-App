@@ -62,9 +62,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 radius: 70,
 
                 backgroundImage: _profileImage != null
-                    ? FileImage(File(_profileImage!.path),scale: 2.5)
-                    : const AssetImage('asset/images/teacher.png') as ImageProvider,
-                child: _profileImage == null ? const Icon(Icons.add_a_photo) : null,
+                    ? FileImage(File(_profileImage!.path), scale: 2.5)
+                    : const AssetImage(
+                    'asset/images/teacher.png') as ImageProvider,
+                child: _profileImage == null
+                    ? const Icon(Icons.add_a_photo)
+                    : null,
               ),
             ),
             verticalSpace(24),
@@ -107,7 +110,13 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(
+        source: ImageSource.gallery,
+      maxWidth: 1024,
+      maxHeight: 1024,
+      preferredCameraDevice: CameraDevice.rear,
+      //imageQuality: 85,
+    );
 
     if (pickedFile != null) {
       CroppedFile? croppedFile = await ImageCropper().cropImage(
@@ -117,8 +126,9 @@ class _SignupScreenState extends State<SignupScreen> {
             toolbarTitle: 'Cropper',
             toolbarColor: Colors.deepOrange,
             toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.square,
+            initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false,
+           // hideBottomControls: true,
             aspectRatioPresets: [
               CropAspectRatioPreset.original,
               CropAspectRatioPreset.square,
@@ -209,8 +219,8 @@ class _SignupScreenState extends State<SignupScreen> {
       );
 
 
-
-      final QueryResult result = await GraphQLClientInstance.client.mutate(options);
+      final QueryResult result = await GraphQLClientInstance.client.mutate(
+          options);
       //log('Ahmed');
       if (result.hasException) {
         print(result.exception.toString());

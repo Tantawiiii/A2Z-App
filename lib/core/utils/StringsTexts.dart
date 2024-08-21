@@ -86,5 +86,7 @@ class StringTextsNames  {
    static const String txtHowAre = "How are you today? ";
    static const String txtReady = "Ready...!";
 
+   static const String txtHintSearch = "Search for your favorite Teacher..";
+
 
 }
