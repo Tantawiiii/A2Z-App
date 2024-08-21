@@ -58,6 +58,8 @@ dependencies:
   image_picker: ^1.1.2
   image_cropper: ^8.0.2
   photo_view: ^0.15.0
+  flutter_launcher_icons: ^0.13.1
+  video_player: ^2.9.1
 
 
 dev_dependencies:
@@ -66,6 +68,24 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^3.0.0
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "asset/images/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "asset/images/logo.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+  windows:
+    generate: true
+    image_path: "asset/images/logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "asset/images/logo.png"
 
 
 flutter:

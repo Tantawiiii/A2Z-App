@@ -5,6 +5,7 @@ import '../../../../../core/networking/clients/base_graphql_servises.dart';
 import '../../../../../core/routing/routers.dart';
 
 class ProfileGraphQLService extends BaseGraphQLService {
+
   ProfileGraphQLService(super.dioClient);
 
   Future<Map<String, dynamic>?> fetchProfile(BuildContext context) async {

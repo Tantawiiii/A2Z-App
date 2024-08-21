@@ -1,6 +1,7 @@
 import '../../../../../core/networking/clients/base_graphql_servises.dart';
 
 class CategoriesGraphQLService extends BaseGraphQLService {
+
   CategoriesGraphQLService(super.dioClient);
 
   Future<List<Map<String, dynamic>>?> fetchCategories(String grade) async {
@@ -22,14 +23,19 @@ class CategoriesGraphQLService extends BaseGraphQLService {
 
     try {
       final result = await performQuery(query, variables: {'grade': grade});
-      return (result['categories']['items'] as List?)
-          ?.map((item) => {
-        'imgSrc': item['childCategories']?[0]['imgSrc'] ?? '',
-        'name': item['childCategories']?[0]['name'] ?? '',
-        'id': item['childCategories']?[0]['id'] ?? '',
-        'level': item['childCategories']?[0]['level'] ?? '',
+
+      // Flattening childCategories list from items
+      final categories = (result['categories']['items'] as List?)
+          ?.expand((item) => item['childCategories'] as List)
+          .map((childCategory) => {
+        'imgSrc': childCategory['imgSrc'] ?? '',
+        'name': childCategory['name'] ?? '',
+        'id': childCategory['id'] ?? '',
+        'level': childCategory['level'] ?? '',
       })
           .toList();
+
+      return categories;
     } catch (e) {
       throw Exception('Failed to fetch categories: $e');
     }

@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const CoursesTap(),
     const HomeTap(),
      OurTeachersTap(),
-  //  const SearchTap(),
+    const SearchTap(),
   ];
 
   @override
@@ -109,17 +109,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   itemLabel: 'Teachers',
                 ),
-                // BottomBarItem(
-                //   inActiveItem: Icon(
-                //     Icons.search_sharp,
-                //     color: Colors.black54,
-                //   ),
-                //   activeItem: Icon(
-                //     Icons.search_sharp,
-                //     color: Colors.white,
-                //   ),
-                //   itemLabel: 'Search',
-                // ),
+                BottomBarItem(
+                  inActiveItem: Icon(
+                    Icons.add_shopping_cart,
+                    color: Colors.black54,
+                  ),
+                  activeItem: Icon(
+                    Icons.add_shopping_cart,
+                    color: Colors.white,
+                  ),
+                  itemLabel: 'Cart',
+                ),
               ],
               onTap: (index) {
                 /// perform action on tab change and to update pages you can update pages without pages

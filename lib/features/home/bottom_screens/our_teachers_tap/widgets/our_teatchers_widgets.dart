@@ -1,4 +1,5 @@
 import 'package:a2z_app/core/helpers/spacing.dart';
+import 'package:a2z_app/features/home/bottom_screens/our_teachers_tap/widgets/teacherDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -39,10 +40,10 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
       } else {
         _filteredCategories = _categories
             .where((category) =>
-                category['name']
-                    ?.toLowerCase()
-                    ?.contains(widget.searchController.text.toLowerCase()) ??
-                false)
+        category['name']
+            ?.toLowerCase()
+            ?.contains(widget.searchController.text.toLowerCase()) ??
+            false)
             .toList();
       }
     });
@@ -62,8 +63,7 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
   Widget build(BuildContext context) {
     return Query(
       options: QueryOptions(document: gql(_categoriesService.query)),
-      builder: (QueryResult result,
-          {VoidCallback? refetch, FetchMore? fetchMore}) {
+      builder: (QueryResult result, {VoidCallback? refetch, FetchMore? fetchMore}) {
         if (result.hasException) {
           return Text(result.exception.toString());
         }
@@ -98,35 +98,49 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
   }
 
   Widget _buildCategoryCard(Map<String, dynamic> category) {
-    return SizedBox(
-      height: 200,
-      width: 150,
-      child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            category['imgSrc'] != null
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Image.network(
-                      category['imgSrc'],
-                      height: 100.h,
-                      width: 140.w,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : SvgPicture.asset(
-                    ImagesPaths.logoImage,
-                    height: 110.h,
-                    width: 90.w,
-                  ),
-            verticalSpace(4),
-            Text(
-              category['name'] ?? 'Unknown Category',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: () {
+        // Navigate to the details screen and pass the category name and ID
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryDetailsScreen(
+              categoryName: category['name'] ?? 'Unknown Category',
+              categoryId: category['id'] ?? '', // Pass the ID here
             ),
-            Text('${category['parent']?['name'] ?? 'Unknown Parent'}'),
-          ],
+          ),
+        );
+      },
+      child: SizedBox(
+        height: 200,
+        width: 150,
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              category['imgSrc'] != null
+                  ? Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Image.network(
+                  category['imgSrc'],
+                  height: 100.h,
+                  width: 140.w,
+                  fit: BoxFit.cover,
+                ),
+              )
+                  : SvgPicture.asset(
+                ImagesPaths.logoImage,
+                height: 110.h,
+                width: 90.w,
+              ),
+              verticalSpace(4),
+              Text(
+                category['name'] ?? 'Unknown Category',
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Text('${category['parent']?['name'] ?? 'Unknown Parent'}'),
+            ],
+          ),
         ),
       ),
     );

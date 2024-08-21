@@ -1,22 +1,20 @@
-
 import 'dart:async';
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
-import 'package:bounce/bounce.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
 import '../../../../../core/utils/StringsTexts.dart';
-import '../../../widgets/build_empty_courses.dart';
+import '../../../../../core/utils/images_paths.dart';
+import '../../../../get_courses_id_proudact/ProductListScreen.dart';
 import '../../profile_tap/services/graphql_getprofile_service.dart';
-import '../services/categories_graphql_services.dart';
-import '../view_model/home_tap_view_model.dart';
 
 class HomeTap extends StatefulWidget {
   const HomeTap({super.key});
@@ -27,25 +25,23 @@ class HomeTap extends StatefulWidget {
 
 class _HomeTapState extends State<HomeTap> {
   late ProfileGraphQLService _profileService;
-  late HomeTapViewModel _viewModel;
-
   Map<String, dynamic>? _profileData;
   List<String> _banners = [];
+  final List<dynamic> _categories = [];
   late ScrollController _scrollController;
+
 
   @override
   void initState() {
     super.initState();
     final dioClientGraphQl = DioClientGraphql();
     _profileService = ProfileGraphQLService(dioClientGraphQl);
-    _viewModel = HomeTapViewModel();
-
     _scrollController = ScrollController();
     _startAutoScroll();
 
     // Fetch profile and banners
     _fetchProfile();
-    fetchBanner();
+    _fetchBanners();
   }
 
   @override
@@ -62,7 +58,7 @@ class _HomeTapState extends State<HomeTap> {
         padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 24.w),
         child: ListView(
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+
           children: [
             _profileData == null
                 ? const Center(
@@ -116,123 +112,154 @@ class _HomeTapState extends State<HomeTap> {
                 },
               ),
             )
-                : Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.blue[200]!,
-              child: SizedBox(
-                height: 150,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3, // Placeholder item count
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Container(
-                        width: 300,
-                        height: 150,
-                        color: Colors.white,
+                : _buildShimmerBannerPlaceholder(),
+            verticalSpace(24),
+            Text(
+              StringTextsNames.txtCategories,
+              style: TextStyles.font14BlueSemiBold,
+            ),
+            verticalSpace(14),
+            _categories.isNotEmpty
+                ? GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 2 / 2,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+              ),
+              itemCount: _categories.length,
+              itemBuilder: (context, index) {
+                final category = _categories[index];
+                final categoryId = category['id']; // Get the category ID
+
+                return GestureDetector(
+                  onTap: () {
+                    // Navigate to the ProductListScreen with the category ID
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductListScreen(categoryId: categoryId),
                       ),
                     );
                   },
-                ),
-              ),
-            ),
-            verticalSpace(24),
-            if (_viewModel.categories == null)
-              Text(
-                StringTextsNames.txtCategories,
-                style: TextStyles.font14BlueSemiBold,
-              ),
-            verticalSpace(14),
-            _viewModel.categories == null
-                ? Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.blue[200]!,
-              child: SizedBox(
-                height: 400,
-                width: 250,
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0,
-                    childAspectRatio: 1.0,
+                  child: Card(
+                    elevation: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          category['imgSrc'] != null
+                              ? Image.network(
+                            category['imgSrc'],
+                            fit: BoxFit.cover,
+                            height: 80,
+                            width: double.infinity,
+                          )
+                              : SvgPicture.asset(
+                            ImagesPaths.logoImage,
+                            height: 110.h,
+                            width: 90.w,
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            category['name'],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  itemCount: 4,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _buildShimmerCategoryPlaceholder();
-                  },
-                ),
-              ),
+                );
+              },
             )
-                : _viewModel.categories!.isEmpty
-                ? const Padding(
-              padding: EdgeInsets.all(24.0),
-              child: BuildEmptyCourses(
-                txtNot: StringTextsNames.txtNoCategories,
-              ),
-            )
-                : SizedBox(
-              height: 600.h,
-              width: 250.w,
-              child: GridView.builder(
-                padding: const EdgeInsets.all(8.0),
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  childAspectRatio: 1.0,
-                ),
-                itemCount: _viewModel.categories!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final category =
-                  _viewModel.categories![index];
-                  return _buildCategoryWidget(category);
-                },
-              ),
-            )
+                : const Center(child: Text('No categories available.')),
+
           ],
         ),
       ),
     );
   }
 
-  // Auto-scroll Banners
-  void _startAutoScroll() {
-    Future.delayed(const Duration(seconds: 2), () {
-      if (_scrollController.hasClients) {
-        double maxScroll = _scrollController.position.maxScrollExtent;
-        double currentScroll = _scrollController.position.pixels;
-        double scrollIncrement = 300.0;
+  // Fetch profile data and categories
+  Future<void> _fetchProfile() async {
+    try {
+      final data = await _profileService.fetchProfile(context);
+      setState(() {
+        _profileData = data;
+      });
 
-        double targetScroll = currentScroll + scrollIncrement;
-        // Scroll back to the start
-        if (targetScroll >= maxScroll) {
-          targetScroll = 0;
+      final dynamicProperties = _profileData?['contact']?['dynamicProperties'];
+      if (dynamicProperties != null) {
+        final grade = dynamicProperties
+            .firstWhere((prop) => prop['name'] == 'grade', orElse: () => null)
+        ?['value'];
+
+        if (grade != null) {
+          await _fetchCategories(grade);
         }
 
-        _scrollController.animateTo(
-          targetScroll,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-        _startAutoScroll();
       }
-    });
+    } catch (e) {
+      if (kDebugMode) {
+        print('Failed to load profile: $e');
+      }
+    }
+  }
+
+  // Fetch categories based on the grade
+  Future<void> _fetchCategories(String grade) async {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        ApiConstants.apiBaseUrlGraphQl, // Ensure this points to your GraphQL endpoint
+        data: {
+          "query": """
+            query Categories {
+              categories(query: "$grade", storeId: "A2Z") {
+                items {
+                  childCategories {
+                    imgSrc
+                    name
+                    id
+                    level
+                  }
+                }
+              }
+            }
+          """
+        },
+        options: Options(contentType: Headers.jsonContentType),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> categories = response.data['data']['categories']['items'][0]['childCategories'];
+        setState(() {
+          _categories.clear(); // Clear existing categories if any
+          _categories.addAll(categories);
+        });
+      } else {
+        if (kDebugMode) {
+          print('Failed to load categories');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred: $e');
+      }
+    }
   }
 
   // Fetch Banners
-  Future<void> fetchBanner() async {
+  Future<void> _fetchBanners() async {
     try {
       final dio = Dio();
       final response = await dio.post(
         ApiConstants.apiGetBanners,
-        queryParameters: {
-          'BannarArea': 'Home',
-        },
+        queryParameters: {'BannarArea': 'Home'},
       );
 
       if (response.statusCode == 200) {
@@ -252,130 +279,52 @@ class _HomeTapState extends State<HomeTap> {
     }
   }
 
-  // Fetch profile data and categories
-  Future<void> _fetchProfile() async {
-    try {
-      final data = await _profileService.fetchProfile(context);
-      setState(() {
-        _profileData = data;
-      });
+  // Auto-scroll Banners
+  void _startAutoScroll() {
+    Future.delayed(const Duration(seconds: 2), () {
+      if (_scrollController.hasClients) {
+        double maxScroll = _scrollController.position.maxScrollExtent;
+        double currentScroll = _scrollController.position.pixels;
+        double scrollIncrement = 300.0;
 
-      final dynamicProperties =
-      _profileData?['contact']?['dynamicProperties'];
-      if (dynamicProperties != null) {
-        final grade = dynamicProperties.firstWhere(
-                (prop) => prop['name'] == 'grade',
-            orElse: () => null)?['value'];
-
-        if (grade != null) {
-          await _viewModel.fetchCategoriesByGrade(grade);
-          setState(() {});
+        double targetScroll = currentScroll + scrollIncrement;
+        if (targetScroll >= maxScroll) {
+          targetScroll = 0; // Scroll back to the start
         }
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Failed to load profile: $e');
-      }
-    }
-  }
-}
 
-Widget _buildCategoryWidget(Map<String, dynamic>? category) {
-  // Check if childCategories exist and have at least one item
-  final hasChildCategories = category != null &&
-      category['childCategories'] != null &&
-      category['childCategories'].isNotEmpty;
-
-  if (!hasChildCategories) {
-    // If the category data is missing or empty, return a placeholder
-    return _buildShimmerCategoryPlaceholder();
+        _scrollController.animateTo(
+          targetScroll,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        _startAutoScroll();
+      }
+    });
   }
 
-  // Extract the first child category's image, name, and ID
-  final childCategory = category['childCategories'][0];
-  final imgSrc = childCategory['imgSrc'] ?? 'https://via.placeholder.com/150';
-  final name = childCategory['name'] ?? '';
-  final id = childCategory['id'] ?? '';
-
-  return Container(
-    width: 250,
-    height: 350,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(16),
-      color: ColorsCode.backCatHome,
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          spreadRadius: 2,
-          blurRadius: 5,
-          offset: const Offset(0, 3),
+  // Shimmer placeholder widget for banners
+  Widget _buildShimmerBannerPlaceholder() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.blue[200]!,
+      child: SizedBox(
+        height: 150,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 3, // Placeholder item count
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Container(
+                width: 300,
+                height: 150,
+                color: Colors.white,
+              ),
+            );
+          },
         ),
-      ],
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6.0),
-              child: Image.network(
-                imgSrc,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            name,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
       ),
-    ),
-  );
+    );
+  }
 }
 
-
-// Shimmer placeholder widget for categories
-Widget _buildShimmerCategoryPlaceholder() {
-  return Shimmer.fromColors(
-    baseColor: Colors.grey[300]!,
-    highlightColor: Colors.blue[200]!,
-    child: Container(
-      width: 200,
-      height: 350,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.grey[300],
-      ),
-      margin: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded( // Wrap the Column's content with Expanded
-            child: Container(
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Container(
-            height: 20,
-            width: 80,
-            color: Colors.grey[300],
-          ),
-        ],
-      ),
-    ),
-  );
-}

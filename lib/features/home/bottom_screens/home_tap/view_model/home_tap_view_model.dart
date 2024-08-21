@@ -3,6 +3,7 @@ import '../services/categories_graphql_services.dart';
 
 class HomeTapViewModel {
   final CategoriesGraphQLService _categoriesService;
+
   HomeTapViewModel()
       : _categoriesService = CategoriesGraphQLService(DioClientGraphql());
 
@@ -15,9 +16,9 @@ class HomeTapViewModel {
 
   Future<void> fetchCategoriesByGrade(String grade) async {
     try {
-      _categories = await _categoriesService.fetchCategories(grade);
+      final fetchedCategories = await _categoriesService.fetchCategories(grade);
+      categories = fetchedCategories ?? [];
     } catch (e) {
-      // Handle exceptions if needed
       throw Exception('Failed to load categories: $e');
     }
   }
