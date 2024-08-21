@@ -59,15 +59,20 @@ class _SignupScreenState extends State<SignupScreen> {
             GestureDetector(
               onTap: _pickImage,
               child: CircleAvatar(
-                radius: 70,
-
+                radius: 75,
                 backgroundImage: _profileImage != null
-                    ? FileImage(File(_profileImage!.path), scale: 2.5)
-                    : const AssetImage(
-                    'asset/images/teacher.png') as ImageProvider,
+                    ? null // Set to null since we're using the `child` property to display the image
+                    : const AssetImage('asset/images/teacher.png') as ImageProvider,
                 child: _profileImage == null
                     ? const Icon(Icons.add_a_photo)
-                    : null,
+                    : ClipOval( // Ensures the image fits the circular shape
+                  child: Image.file(
+                    File(_profileImage!.path),
+                    width: 140, // Adjust to your needs (2 * radius)
+                    height: 140,
+                    fit: BoxFit.cover, // Ensures the image covers the circle
+                  ),
+                ),
               ),
             ),
             verticalSpace(24),
