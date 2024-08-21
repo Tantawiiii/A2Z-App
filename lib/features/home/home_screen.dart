@@ -7,7 +7,7 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 
 import '../../core/theming/text_style.dart';
-import 'bottom_screens/our_teachers_tap/our_teachers_tap.dart';
+import 'bottom_screens/our_teachers_tap/ui/our_teachers_tap.dart';
 import 'bottom_screens/profile_tap/ui/profile_tap.dart';
 import 'bottom_screens/home_tap/ui/home_tap.dart';
 
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const CoursesTap(),
     const HomeTap(),
      OurTeachersTap(),
-    const SearchTap(),
+  //  const SearchTap(),
   ];
 
   @override
@@ -109,17 +109,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   itemLabel: 'Teachers',
                 ),
-                BottomBarItem(
-                  inActiveItem: Icon(
-                    Icons.search_sharp,
-                    color: Colors.black54,
-                  ),
-                  activeItem: Icon(
-                    Icons.search_sharp,
-                    color: Colors.white,
-                  ),
-                  itemLabel: 'Search',
-                ),
+                // BottomBarItem(
+                //   inActiveItem: Icon(
+                //     Icons.search_sharp,
+                //     color: Colors.black54,
+                //   ),
+                //   activeItem: Icon(
+                //     Icons.search_sharp,
+                //     color: Colors.white,
+                //   ),
+                //   itemLabel: 'Search',
+                // ),
               ],
               onTap: (index) {
                 /// perform action on tab change and to update pages you can update pages without pages
