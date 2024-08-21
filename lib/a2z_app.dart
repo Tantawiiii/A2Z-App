@@ -22,7 +22,7 @@ class A2ZApp extends StatelessWidget {
               primaryColor: ColorsCode.mainBlue,
               scaffoldBackgroundColor: ColorsCode.white
           ),
-          initialRoute: Routes.splashScreen,
+          initialRoute: Routes.homeScreen,
           onGenerateRoute: appRouter.generateRoute,
         ),
       ),

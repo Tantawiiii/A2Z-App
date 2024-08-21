@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:a2z_app/core/utils/colors_code.dart';
+import 'package:a2z_app/features/home/bottom_screens/cart_tap/cart_tap.dart';
 import 'package:a2z_app/features/home/bottom_screens/courses_tap/courses_tap.dart';
-import 'package:a2z_app/features/home/bottom_screens/ui/search_tap.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const CoursesTap(),
     const HomeTap(),
      OurTeachersTap(),
-    const SearchTap(),
+    const CartTap(),
   ];
 
   @override
