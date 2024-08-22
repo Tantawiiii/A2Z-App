@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import '../../features/login/ui/screens/login_screen.dart';
 import '../../features/onboarding/screens/onboarding_screen.dart';
+import '../../features/subscription_courses/ui/subscription_screen.dart';
 
 class AppRouter {
   late final PasswordResetService passwordResetService;
@@ -36,15 +37,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case Routes.changePasswordScreen:
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
+        case Routes.courseSubscriptionCode:
+        return MaterialPageRoute(builder: (_) => const SubscriptionScreen());
 
       default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(
-              child: Text("No route defined for ${settings.name}"),
-            ),
-          ),
-        );
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
     }
   }
 }

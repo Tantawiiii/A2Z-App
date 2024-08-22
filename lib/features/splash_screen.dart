@@ -1,4 +1,5 @@
 
+import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:flutter/material.dart';
 
 import '../core/networking/local/token_storage.dart';
@@ -24,10 +25,10 @@ class _SplashScreenState extends State<SplashScreen> {
     final token = await tokenStorage.getToken();
     if (token != null && token.isNotEmpty) {
       // Token exists, navigate to home
-      Navigator.of(context).pushReplacementNamed(Routes.homeScreen);
+      context.pushNamedAndRemoveUntil(Routes.homeScreen, predicate:  (route) => false);
     } else {
       // No token, navigate to onboarding
-      Navigator.of(context).pushReplacementNamed(Routes.onBoardingScreen);
+      context.pushNamedAndRemoveUntil(Routes.onBoardingScreen, predicate:  (route) => false);
     }
   }
 

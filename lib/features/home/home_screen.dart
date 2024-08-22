@@ -19,9 +19,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _pageController = PageController(initialPage: 2);
+  final _pageController = PageController(initialPage: 4);
 
-  final _controller = NotchBottomBarController(index: 2);
+  final _controller = NotchBottomBarController(index: 4);
   int maxCount = 5;
 
   @override

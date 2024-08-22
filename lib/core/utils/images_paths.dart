@@ -19,5 +19,6 @@ class ImagesPaths {
   static const String appleIcon = "asset/icon/apple_icon.svg";
 
   static const String animDoneSuccess = "asset/anim/done_anim.json";
+  static const String animFailed = "asset/anim/failed_anim.json";
 
 }

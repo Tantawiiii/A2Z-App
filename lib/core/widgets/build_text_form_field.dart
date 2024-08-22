@@ -18,7 +18,7 @@ class BuildTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.fillBackgroundColor,
     this.controller,
-    required this.validator,
+     this.validator,
   });
 
   final EdgeInsetsGeometry? contentPadding;
@@ -31,7 +31,7 @@ class BuildTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final Color? fillBackgroundColor;
   final TextEditingController? controller;
-  final Function(String?) validator;
+  final Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class BuildTextFormField extends StatelessWidget {
       obscureText: isObscureText ?? false,
       style: inputTextStyle ?? TextStyles.font14DarkBlueMedium,
       validator: (value){
-        return validator(value);
+        return validator!(value);
       },
     );
   }
