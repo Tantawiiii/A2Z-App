@@ -10,5 +10,6 @@ class Routes {
   static const String homeScreen = "/homeScreen";
   static const String changePasswordScreen  = "/ChangePasswordScreen";
   static const String getAllCoursesScreen = "/getAllCoursesScreen";
+  static const String courseSubscriptionCode = "/courseSubscriptionCode";
 
 }

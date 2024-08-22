@@ -10,6 +10,8 @@ class ApiConstants {
   static String apiChangePassword = "$apiBaseUrl/api/platform/security/currentuser/changepassword";
   static String apiGetBanners = "$apiBaseUrl/api/marketing/GetBannars";
 
+  static String apiSubscriptionByCode = "$apiBaseUrl/Subscriptions/SubscripeByCode";
+
 }
 
 class ApiErrors {

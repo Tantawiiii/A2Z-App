@@ -88,6 +88,14 @@ class StringTextsNames  {
 
    static const String txtHintSearch = "Search for your favorite Teacher..";
    static const String txtCheckOut = "CheckOut";
+   static const String txtSubscribe = "Subscribe";
+   static const String txtSubscribeAppBar = "Subscribe to Course";
+   static const String txtSubscribeDes = "Subscription Codes App makes the learner enrollment process faster and more automated.";
+   static const String txtSubscribeSuccess = "Subscribe Successfully";
+   static const String txtSubscribeFailed = "Subscribe Failed";
+   static const String txtSubscribeSuccessDes = "You have successfully subscribed to the course.";
+   static const String txtSubscribeFailedDes = "You have failed to subscribe to the course.";
+
 
 
 }

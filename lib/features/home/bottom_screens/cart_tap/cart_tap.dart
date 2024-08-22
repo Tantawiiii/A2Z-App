@@ -1,5 +1,7 @@
 
 
+import 'package:a2z_app/core/helpers/extentions.dart';
+import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
 import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:a2z_app/core/widgets/build_button.dart';
@@ -18,7 +20,9 @@ class CartTap extends StatelessWidget {
           child: BuildButton(
               textButton: StringTextsNames.txtCheckOut,
               textStyle: TextStyles.font16WhiteMedium,
-              onPressed: (){},
+              onPressed: (){
+                context.pushNamed(Routes.courseSubscriptionCode);
+              },
           ),
         ),
       ),
