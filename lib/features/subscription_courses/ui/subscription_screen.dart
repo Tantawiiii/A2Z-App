@@ -53,6 +53,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               style: TextStyles.font14DarkBlueMedium,
             ),
             verticalSpace(50),
+            // TODO: WILL REMOVE this in the future when call Course and take id
+            // TODO: when click on the Course or take courses ids from the Cart
             BuildTextFormField(hintText:'Course ID' , controller:courseIdController ,),
             verticalSpace(16),
             BuildTextFormField(hintText:'Subscription Code' , controller:codeController ,),
