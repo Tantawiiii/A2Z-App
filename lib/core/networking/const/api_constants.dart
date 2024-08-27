@@ -1,8 +1,10 @@
 class ApiConstants {
 
   //static const String apiBaseUrl = "http://a2zplatform.com";
-  static const String apiBaseUrl = "http://edu.a2zplatform.com";
-  static const String apiBaseUrlGraphQl = "http://edu.a2zplatform.com/graphql";
+  // static const String apiBaseUrl = "http://edu.a2zplatform.com";
+  static const String apiBaseUrl = "http://centera2z.com";
+  //static const String apiBaseUrlGraphQl = "http://edu.a2zplatform.com/graphql";
+  static const String apiBaseUrlGraphQl = "http://centera2z.com/graphql";
 
   static String apiRequestPasswordRest(String loginOrEmail) => "$apiBaseUrl/api/platform/security/users/$loginOrEmail/requestpasswordreset/";
   static String apiChangePasswordByOTP = "$apiBaseUrl/api/platform/security/users/ChangePasswordByOTP";

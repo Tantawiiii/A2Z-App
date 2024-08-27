@@ -7,30 +7,90 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/theming/text_style.dart';
 
-class GetStartedScreen extends StatelessWidget {
+class GetStartedScreen extends StatefulWidget {
   const GetStartedScreen({super.key});
 
   @override
+  State<GetStartedScreen> createState() => _GetStartedScreenState();
+}
+
+class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<Offset> _slideAnimation;
+  bool _visible = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize animation controller
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    // Initialize slide animation
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3), // start position is slightly off-screen
+      end: Offset.zero, // end position is on-screen
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    ));
+
+    // Start animation after build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _visible = true;
+      });
+      _animationController.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsetsDirectional.only(top: 30.0.h, bottom:30.h),
-          child:  ListView(
+          padding: EdgeInsetsDirectional.only(top: 30.0.h, bottom: 30.h),
+          child: ListView(
             children: [
-              const TeacherImageTextWidget(),
-              //SizedBox(height: 14.h,),
+              AnimatedOpacity(
+                opacity: _visible ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 800),
+                child: SlideTransition(
+                  position: _slideAnimation,
+                  child: const TeacherImageTextWidget(),
+                ),
+              ),
               Padding(
-                padding:  EdgeInsetsDirectional.symmetric(horizontal: 20.w),
+                padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
                 child: Column(
                   children: [
-                    Text(
-                      StringTextsNames.txtOnBoardingDescription,
-                      style: TextStyles.font13GrayNormal,
-                      textAlign: TextAlign.center,
+                    AnimatedOpacity(
+                      opacity: _visible ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 800),
+                      child: Text(
+                        StringTextsNames.txtOnBoardingDescription,
+                        style: TextStyles.font13GrayNormal,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    SizedBox(height: 30.h,),
-                    const GetStartedButton(),
+                    SizedBox(height: 30.h),
+                    AnimatedOpacity(
+                      opacity: _visible ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 800),
+                      child: SlideTransition(
+                        position: _slideAnimation,
+                        child: const GetStartedButton(),
+                      ),
+                    ),
                   ],
                 ),
               )
