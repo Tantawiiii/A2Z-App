@@ -100,7 +100,6 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
   Widget _buildCategoryCard(Map<String, dynamic> category) {
     return GestureDetector(
       onTap: () {
-        // Navigate to the details screen and pass the category name and ID
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -112,26 +111,26 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
         );
       },
       child: SizedBox(
-        height: 200,
+        height: 280.h,
         width: 150,
         child: Card(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              category['imgSrc'] != null
-                  ? Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Image.network(
-                  category['imgSrc'],
-                  height: 100.h,
-                  width: 140.w,
+              Expanded(
+                child: category['imgSrc'] != null
+                    ? Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Image.network(
+                    category['imgSrc'],
+                    fit: BoxFit.cover,
+                  ),
+                )
+                    : SvgPicture.asset(
+                  ImagesPaths.logoImage,
                   fit: BoxFit.cover,
+                  height: 100,
                 ),
-              )
-                  : SvgPicture.asset(
-                ImagesPaths.logoImage,
-                height: 110.h,
-                width: 90.w,
               ),
               verticalSpace(4),
               Text(
@@ -145,4 +144,5 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
       ),
     );
   }
+
 }

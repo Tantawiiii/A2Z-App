@@ -1,3 +1,4 @@
+import 'package:a2z_app/core/networking/const/api_constants.dart';
 import 'package:a2z_app/features/forget_password/services/provider/app_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +16,7 @@ void main() async {
 
   await initHiveForFlutter();
 
-  final HttpLink httpLink = HttpLink('http://edu.a2zplatform.com/graphql');
+  final HttpLink httpLink = HttpLink(ApiConstants.apiBaseUrlGraphQl);
 
   final GraphQLClient client = GraphQLClient(
     link: httpLink,
