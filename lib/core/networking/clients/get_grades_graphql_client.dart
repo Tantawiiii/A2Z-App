@@ -8,7 +8,7 @@ class GraphQLClientInstance {
 
   static void initializeClient() {
     final HttpLink httpLink = HttpLink(
-      ApiConstants.apiBaseUrlGraphQl, // Your GraphQL endpoint
+      ApiConstants.apiBaseUrlGraphQl,
     );
 
     client = GraphQLClient(

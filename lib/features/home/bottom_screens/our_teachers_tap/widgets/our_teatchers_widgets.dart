@@ -105,7 +105,10 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
           MaterialPageRoute(
             builder: (context) => CategoryDetailsScreen(
               categoryName: category['name'] ?? 'Unknown Category',
-              categoryId: category['id'] ?? '', // Pass the ID here
+              categoryId: category['id'] ?? '',
+              imageSrc: category['imgSrc'],
+              parentName: category['parent']?['name'] ?? 'Language Parent',
+              heroTag: 'category-${category['id']}',
             ),
           ),
         );
@@ -118,26 +121,29 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
-                child: category['imgSrc'] != null
-                    ? Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Image.network(
-                    category['imgSrc'],
+                child: Hero(
+                  tag: 'category-${category['id']}', // Hero tag should be unique
+                  child: category['imgSrc'] != null
+                      ? Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Image.network(
+                      category['imgSrc'],
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                      : SvgPicture.asset(
+                    ImagesPaths.logoImage,
                     fit: BoxFit.cover,
+                    height: 100,
                   ),
-                )
-                    : SvgPicture.asset(
-                  ImagesPaths.logoImage,
-                  fit: BoxFit.cover,
-                  height: 100,
                 ),
               ),
               verticalSpace(4),
               Text(
-                category['name'] ?? 'Unknown Category',
+                category['name'] ?? 'Teacher Name',
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              Text('${category['parent']?['name'] ?? 'Unknown Parent'}'),
+              Text('${category['parent']?['name'] ?? 'Language Parent'}'),
             ],
           ),
         ),

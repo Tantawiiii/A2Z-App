@@ -1,8 +1,8 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +12,7 @@ import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/widgets/build_toast.dart';
 import '../../../core/networking/clients/get_grades_graphql_client.dart';
 import '../../../core/utils/StringsTexts.dart';
+import '../../../core/utils/colors_code.dart';
 import 'widgets/already_have_account_text.dart';
 import 'widgets/build_sign_up_form.dart';
 import '../../../../../core/helpers/spacing.dart';
@@ -35,6 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _gradeController = TextEditingController();
+  bool _isLoading = false;
 
   XFile? _profileImage;
 
@@ -62,17 +64,20 @@ class _SignupScreenState extends State<SignupScreen> {
                 radius: 75,
                 backgroundImage: _profileImage != null
                     ? null // Set to null since we're using the `child` property to display the image
-                    : const AssetImage('asset/images/teacher.png') as ImageProvider,
+                    : const AssetImage('asset/images/teacher.png')
+                        as ImageProvider,
                 child: _profileImage == null
                     ? const Icon(Icons.add_a_photo)
-                    : ClipOval( // Ensures the image fits the circular shape
-                  child: Image.file(
-                    File(_profileImage!.path),
-                    width: 140, // Adjust to your needs (2 * radius)
-                    height: 140,
-                    fit: BoxFit.cover, // Ensures the image covers the circle
-                  ),
-                ),
+                    : ClipOval(
+                        // Ensures the image fits the circular shape
+                        child: Image.file(
+                          File(_profileImage!.path),
+                          width: 140, // Adjust to your needs (2 * radius)
+                          height: 140,
+                          fit: BoxFit
+                              .cover, // Ensures the image covers the circle
+                        ),
+                      ),
               ),
             ),
             verticalSpace(24),
@@ -87,11 +92,17 @@ class _SignupScreenState extends State<SignupScreen> {
               gradeController: _gradeController,
             ),
             verticalSpace(40),
-            BuildButton(
-              textButton: StringTextsNames.txtCreateAccount,
-              textStyle: TextStyles.font16WhiteMedium,
-              onPressed: _register,
-            ),
+            _isLoading
+                ? const Center(
+                    child: SpinKitFadingCircle(
+                    color: ColorsCode.mainBlue,
+                    size: 50.0,
+                  ))
+                : BuildButton(
+                    textButton: StringTextsNames.txtCreateAccount,
+                    textStyle: TextStyles.font16WhiteMedium,
+                    onPressed: _register,
+                  ),
             verticalSpace(16),
             const AlreadyHaveAccountText(),
             verticalSpace(160),
@@ -116,7 +127,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
-        source: ImageSource.gallery,
+      source: ImageSource.gallery,
       maxWidth: 1024,
       maxHeight: 1024,
       preferredCameraDevice: CameraDevice.rear,
@@ -133,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false,
-           // hideBottomControls: true,
+            // hideBottomControls: true,
             aspectRatioPresets: [
               CropAspectRatioPreset.original,
               CropAspectRatioPreset.square,
@@ -159,14 +170,13 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-
   void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
-      String? profilePhotoUrl;
+      setState(() {
+        _isLoading = true; // Start loading
+      });
 
-      // TODO: this is not really FINISH
-      // upload the image to a server and get a URL.
-      // using the file path directly.
+      String? profilePhotoUrl;
       if (_profileImage != null) {
         profilePhotoUrl = _profileImage!.path;
       }
@@ -224,9 +234,13 @@ class _SignupScreenState extends State<SignupScreen> {
       );
 
 
-      final QueryResult result = await GraphQLClientInstance.client.mutate(
-          options);
-      //log('Ahmed');
+      final QueryResult result =
+          await GraphQLClientInstance.client.mutate(options);
+
+      setState(() {
+        _isLoading = false; // Stop loading
+      });
+
       if (result.hasException) {
         print(result.exception.toString());
       } else {
@@ -240,11 +254,10 @@ class _SignupScreenState extends State<SignupScreen> {
           final errors = response['result']['errors'] as List<dynamic>;
           for (var error in errors) {
             print('Error: ${error['description']}');
-            buildFailedToast(context, "Sorry Registration failed");
+            buildFailedToast(context, "${error['description']}");
           }
         }
       }
     }
   }
-
 }

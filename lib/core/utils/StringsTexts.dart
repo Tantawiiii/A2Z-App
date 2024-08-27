@@ -41,7 +41,7 @@ class StringTextsNames  {
 
 
 
-   static const String txtPhoneNumber = "Your phone number";
+   static const String txtPhoneNumber = "ex: 01** *** ****";
    static const String txtHintValidPhoneNum = "Please enter a valid phone number";
 
    static const String txtForgetPasswordTitle = "Forgot your password";
