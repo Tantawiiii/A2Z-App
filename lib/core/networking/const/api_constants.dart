@@ -14,6 +14,7 @@ class ApiConstants {
 
   static String apiSubscriptionByCode = "$apiBaseUrl/Subscriptions/SubscripeByCode";
   static String apiCheckStudentSubscription = "$apiBaseUrl/api/Subscriptions/CheckStudentSubscription";
+
 }
 
 class ApiErrors {

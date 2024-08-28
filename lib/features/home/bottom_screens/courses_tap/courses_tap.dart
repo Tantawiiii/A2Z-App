@@ -1,9 +1,14 @@
+import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../core/utils/StringsTexts.dart';
+import '../../../../core/utils/images_paths.dart';
 import '../../widgets/build_empty_courses.dart';
 
 class CoursesTap extends StatefulWidget {
@@ -88,6 +93,10 @@ class _CoursesTapState extends State<CoursesTap> {
           productType
           name
           imgSrc
+           category {
+          id
+          name
+        }
         }
       }
     }
@@ -119,26 +128,87 @@ class _CoursesTapState extends State<CoursesTap> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.blue[200]!,
+              child: ListView.builder(
+                itemCount: 6,
+                // Adjust the number based on how many shimmer items you want
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: ListTile(
+                      leading: Container(
+                        width: 50.0,
+                        height: 50.0,
+                        color: Colors.white,
+                      ),
+                      title: Container(
+                        width: double.infinity,
+                        height: 16.0,
+                        color: Colors.white,
+                      ),
+                      subtitle: Container(
+                        width: double.infinity,
+                        height: 14.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
           : _products.isEmpty
-          ? const BuildEmptyCourses(txtNot: StringTextsNames.txtNoCourses)
-          : ListView.builder(
-        itemCount: _products.length,
-        itemBuilder: (context, index) {
-          final product = _products[index];
-          return ListTile(
-            leading: Image.network(product['imgSrc']),
-            title: Text(product['name']),
-            subtitle: Text(product['productType']),
-          );
-        },
-      ),
+              ? const BuildEmptyCourses(txtNot: StringTextsNames.txtNoCourses)
+              : ListView.builder(
+                  itemCount: _products.length,
+                  itemBuilder: (context, index) {
+                    final product = _products[index];
+                    // Handle null values by providing default text or image
+                    //  final imgSrc = product['imgSrc'] ?? 'https://via.placeholder.com/150';
+                    final name = product['name'] ?? 'Unknown Product';
+                    final productType = product['productType'] ?? 'Unknown Type';
+                    final categoryName = product['category']?['name'] ?? 'Unknown Category';
+
+                    return Padding(
+                      padding:
+                          EdgeInsets.only(top: 10.h, right: 14.h, left: 14.h),
+                      child: Card(
+                        elevation: 1.5,
+                        shadowColor: Colors.cyan,
+                        child: Row(
+                          children: [
+                            product['imgSrc'] != null
+                                ? Image.network(
+                                    product['imgSrc'],
+                                    fit: BoxFit.cover,
+                                    width: 120,
+                                    height: 100,
+                                  )
+                                : SvgPicture.asset(
+                                    ImagesPaths.logoImage,
+                                    height: 90.h,
+                                    width: 60.w,
+                                    fit: BoxFit.cover,
+                                  ),
+                            horizontalSpace(8),
+                            Column(
+                              children: [
+                                Text(name),
+                                Text(categoryName),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }
