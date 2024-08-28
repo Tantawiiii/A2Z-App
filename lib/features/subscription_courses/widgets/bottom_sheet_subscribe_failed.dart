@@ -12,6 +12,7 @@ import 'package:lottie/lottie.dart';
 class BottomSheetSubscribeFailed extends StatelessWidget {
   const BottomSheetSubscribeFailed({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Container(

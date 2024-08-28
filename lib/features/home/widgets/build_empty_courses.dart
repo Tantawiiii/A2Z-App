@@ -30,18 +30,6 @@ class BuildEmptyCourses extends StatelessWidget {
             style: TextStyles.font15DarkBlueMedium,
             textAlign: TextAlign.center,
           ),
-          verticalSpace(8.h),
-
-          Bounce(
-            onTap: () {
-              context.pushNamed(Routes.getAllCoursesScreen);
-            },
-            child:  Text(
-              StringTextsNames.txtSubNow,
-              style:TextStyles.font13BlueSemiBold,
-            ),
-          ),
-
         ],
       ),
     );

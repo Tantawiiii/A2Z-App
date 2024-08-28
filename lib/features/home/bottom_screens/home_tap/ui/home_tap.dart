@@ -13,7 +13,7 @@ import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
 import '../../../../../core/utils/StringsTexts.dart';
 import '../../../../../core/utils/images_paths.dart';
-import '../../../../get_courses_id_proudact/ProductListScreen.dart';
+import '../../../../get_courses_id_proudact/ui/ProductListScreen.dart';
 import '../../profile_tap/services/graphql_getprofile_service.dart';
 
 class HomeTap extends StatefulWidget {
@@ -29,7 +29,6 @@ class _HomeTapState extends State<HomeTap> {
   List<String> _banners = [];
   final List<dynamic> _categories = [];
   late ScrollController _scrollController;
-
 
   @override
   void initState() {
@@ -58,12 +57,30 @@ class _HomeTapState extends State<HomeTap> {
         padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 24.w),
         child: ListView(
           shrinkWrap: true,
-
           children: [
             _profileData == null
-                ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.cyan,
+                ? Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 200,
+                      height: 20,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: 150,
+                      height: 20,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
               ),
             )
                 : RichText(
@@ -94,24 +111,24 @@ class _HomeTapState extends State<HomeTap> {
             verticalSpace(20),
             _banners.isNotEmpty
                 ? SizedBox(
-              height: 150,
-              child: ListView.builder(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                itemCount: _banners.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: Image.network(
-                      _banners[index],
-                      fit: BoxFit.cover,
-                      width: 300,
-                      height: 150,
+                    height: 150,
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _banners.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: Image.network(
+                            _banners[index],
+                            fit: BoxFit.cover,
+                            width: 300,
+                            height: 150,
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            )
+                  )
                 : _buildShimmerBannerPlaceholder(),
             verticalSpace(24),
             Text(
@@ -121,63 +138,82 @@ class _HomeTapState extends State<HomeTap> {
             verticalSpace(14),
             _categories.isNotEmpty
                 ? GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 2 / 2,
-                mainAxisSpacing: 8.0,
-                crossAxisSpacing: 8.0,
-              ),
-              itemCount: _categories.length,
-              itemBuilder: (context, index) {
-                final category = _categories[index];
-                final categoryId = category['id']; // Get the category ID
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 2 / 2.3,
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8.0,
+                    ),
+                    itemCount: _categories.length,
+                    itemBuilder: (context, index) {
+                      final category = _categories[index];
+                      final categoryId = category['id']; // Get the category ID
 
-                return GestureDetector(
-                  onTap: () {
-                    // Navigate to the ProductListScreen with the category ID
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductListScreen(categoryId: categoryId),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          category['imgSrc'] != null
-                              ? Image.network(
-                            category['imgSrc'],
-                            fit: BoxFit.cover,
-                            height: 80,
-                            width: double.infinity,
-                          )
-                              : SvgPicture.asset(
-                            ImagesPaths.logoImage,
-                            height: 110.h,
-                            width: 90.w,
+                      return GestureDetector(
+                        onTap: () {
+                          // Navigate to the ProductListScreen with the category ID
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ProductListScreen(categoryId: categoryId),
+                            ),
+                          );
+                        },
+                        child: SizedBox(
+                          height: 150.h,
+                          child: Card(
+                            elevation: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  category['imgSrc'] != null
+                                      ? Image.network(
+                                          category['imgSrc'],
+                                          fit: BoxFit.cover,
+                                          height: 100,
+                                          width: double.infinity,
+                                        )
+                                      : SvgPicture.asset(
+                                          ImagesPaths.logoImage,
+                                          height: 110.h,
+                                          width: 90.w,
+                                        ),
+                                  verticalSpace(12.0),
+                                  Text(
+                                    category['name'],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          SizedBox(height: 8.0),
-                          Text(
-                            category['name'],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
+                        ),
+                      );
+                    },
+                  )
+                : Center(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          ImagesPaths.imgEmptyCourses,
+                          width: 280.w,
+                        ),
+                        verticalSpace(20.h),
+                        Text(
+                          StringTextsNames.txtNoCategoriesAval,
+                          style: TextStyles.font13GrayNormal,
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            )
-                : const Center(child: Text('No categories available.')),
-
           ],
         ),
       ),
@@ -194,14 +230,13 @@ class _HomeTapState extends State<HomeTap> {
 
       final dynamicProperties = _profileData?['contact']?['dynamicProperties'];
       if (dynamicProperties != null) {
-        final grade = dynamicProperties
-            .firstWhere((prop) => prop['name'] == 'grade', orElse: () => null)
-        ?['value'];
+        final grade = dynamicProperties.firstWhere(
+            (prop) => prop['name'] == 'grade',
+            orElse: () => null)?['value'];
 
         if (grade != null) {
           await _fetchCategories(grade);
         }
-
       }
     } catch (e) {
       if (kDebugMode) {
@@ -215,7 +250,8 @@ class _HomeTapState extends State<HomeTap> {
     try {
       final dio = Dio();
       final response = await dio.post(
-        ApiConstants.apiBaseUrlGraphQl, // Ensure this points to your GraphQL endpoint
+        ApiConstants.apiBaseUrlGraphQl,
+        // Ensure this points to your GraphQL endpoint
         data: {
           "query": """
             query Categories {
@@ -236,7 +272,8 @@ class _HomeTapState extends State<HomeTap> {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> categories = response.data['data']['categories']['items'][0]['childCategories'];
+        final List<dynamic> categories =
+            response.data['data']['categories']['items'][0]['childCategories'];
         setState(() {
           _categories.clear(); // Clear existing categories if any
           _categories.addAll(categories);
@@ -327,4 +364,3 @@ class _HomeTapState extends State<HomeTap> {
     );
   }
 }
-

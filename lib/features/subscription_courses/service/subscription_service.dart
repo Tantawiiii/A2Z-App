@@ -1,41 +1,35 @@
 import 'package:a2z_app/core/networking/const/api_constants.dart';
-
-import '../../../core/networking/clients/dio_client.dart';
-import '../widgets/bottom_sheet_subscribe_failed.dart';
-import '../widgets/bottom_sheet_subscribe_success.dart';
+import 'package:dio/dio.dart';
 
 class SubscriptionService {
-  final DioClient dioClient;
+  final Dio dio;
 
-  SubscriptionService(this.dioClient);
+  SubscriptionService(this.dio);
 
-  Future<Object> subscribeByCode(String courseId, String code) async {
+  Future<void> subscribeByCode(String courseId, String code, String token) async {
     try {
-
-      // Set the authorization token
-      await dioClient.setAuthorizationToken();
-
-      final response = await dioClient.dio.post(
+      final response = await dio.post(
         ApiConstants.apiSubscriptionByCode,
         data: {
           'courseId': courseId,
           'code': code,
         },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
       );
 
-      if (response.statusCode == 200) {
-        const BottomSheetSubscribeSuccess();
-        return true;
-
+      if (response.data['success']) {
+        // Handle successful subscription
       } else {
-        const BottomSheetSubscribeFailed();
-
-        return false;
+        // Handle subscription failure
+        throw Exception(response.data['errorMessage']);
       }
     } catch (e) {
-      print('Subscription failed: $e');
-      const BottomSheetSubscribeFailed();
-      return false;
+      // Handle any errors that occurred during the request
+      rethrow;
     }
   }
 }

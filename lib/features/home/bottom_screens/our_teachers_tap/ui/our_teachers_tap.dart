@@ -19,7 +19,6 @@ class OurTeachersTap extends StatelessWidget {
             child: BuildTextFormField(
               controller: _searchController,
               hintText: StringTextsNames.txtHintSearch,
-              validator: (String) {},
             ),
           ),
           Expanded(

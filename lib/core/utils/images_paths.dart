@@ -11,6 +11,7 @@ class ImagesPaths {
   static const String logoIconBack = "asset/icon/logo_back.svg";
   static const String imgTeacher = "asset/images/teacher.png";
   static const String imgEmptyCourses = "asset/images/no_courses.png";
+  static const String imgNoSubscribe = "asset/images/no_subscrib.png";
 
 
 

@@ -21,9 +21,8 @@ class DioClient {
 
   // Method to set the authorization token
   Future<void> setAuthorizationToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString(
-        'access_token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
 
     if (token != null) {
       _dio.options.headers['Authorization'] = 'Bearer $token';

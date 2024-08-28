@@ -38,7 +38,7 @@ class AppRouter {
       case Routes.changePasswordScreen:
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
         case Routes.courseSubscriptionCode:
-        return MaterialPageRoute(builder: (_) => const SubscriptionScreen());
+        return MaterialPageRoute(builder: (_) => const SubscriptionScreen(courseId: '',));
 
       default:
         return MaterialPageRoute(builder: (_) => const SplashScreen());

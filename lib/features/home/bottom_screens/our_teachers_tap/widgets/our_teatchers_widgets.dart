@@ -85,7 +85,7 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
       padding: const EdgeInsets.all(8.0),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 2 / 2,
+        childAspectRatio: 2 / 2.4,
         mainAxisSpacing: 8.0,
         crossAxisSpacing: 8.0,
       ),
@@ -134,7 +134,7 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
                       : SvgPicture.asset(
                     ImagesPaths.logoImage,
                     fit: BoxFit.cover,
-                    height: 100,
+                    height: 90,
                   ),
                 ),
               ),
@@ -144,6 +144,7 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text('${category['parent']?['name'] ?? 'Language Parent'}'),
+              verticalSpace(4),
             ],
           ),
         ),

@@ -25,12 +25,40 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     super.initState();
     _fetchProductDetails();
   }
+  void _playVideo(String contentUrl) {
+    // Create a VideoPlayerController
+    final controller = VideoPlayerController.network(contentUrl);
 
-  @override
-  void dispose() {
-    _videoController?.dispose();
-    super.dispose();
+    showDialog(
+      context: context,
+      builder: (context) {
+        // Initialize the controller
+        controller.initialize().then((_) {
+          // Update the state to rebuild the dialog with the video player
+          setState(() {});
+        });
+
+        return AlertDialog(
+          title: const Text('Video'),
+          content: SizedBox(
+            width: double.maxFinite,
+            height: 300,
+            child: VideoPlayer(controller),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Close'),
+              onPressed: () {
+                controller.dispose();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+
 
   Future<void> _fetchProductDetails() async {
     try {
@@ -69,10 +97,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           _isLoading = false;
         });
 
-        // Initialize the video player with the first video's content URL, if available
-        if (_productDetails!['videos']['totalCount'] > 0) {
-          _initializeVideoPlayer(_productDetails!['videos']['items'][0]['contentUrl']);
-        }
       } else {
         print('Failed to load product details');
         setState(() {
@@ -87,13 +111,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-  void _initializeVideoPlayer(String contentUrl) {
-    _videoController = VideoPlayerController.network(contentUrl)
-      ..initialize().then((_) {
-        setState(() {});
-        _videoController!.play(); // Auto-play the video
-      });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,14 +148,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ],
             ),
             SizedBox(height: 20.h),
-            // Display video player if initialized
-            _videoController != null && _videoController!.value.isInitialized
-                ? AspectRatio(
-              aspectRatio: _videoController!.value.aspectRatio,
-              child: VideoPlayer(_videoController!),
-            )
-                : const SizedBox.shrink(),
-            SizedBox(height: 20.h),
             // Display list of videos with play buttons
             _buildVideoList(),
           ],
@@ -158,11 +168,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ? Image.network(video['thumbnailUrl'], width: 50, height: 50)
               : const Icon(Icons.video_collection),
           title: Text(video['name'] ?? 'Unnamed Video'),
-          onTap: () {
-            _initializeVideoPlayer(video['contentUrl']);
-          },
+          trailing: IconButton(
+            icon: const Icon(Icons.play_arrow,color: Colors.redAccent,),
+            onPressed: () {
+              _playVideo(video['contentUrl']);
+            },
+          ),
         );
       }).toList(),
     );
   }
+
+
+
+  @override
+  void dispose() {
+    _videoController?.dispose();
+    super.dispose();
+  }
+
 }

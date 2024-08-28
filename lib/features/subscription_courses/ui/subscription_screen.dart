@@ -1,38 +1,59 @@
-import 'package:a2z_app/core/helpers/extentions.dart';
-import 'package:a2z_app/core/helpers/spacing.dart';
-import 'package:a2z_app/core/widgets/build_text_form_field.dart';
-import 'package:a2z_app/features/subscription_courses/widgets/bottom_sheet_subscribe_success.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/networking/clients/dio_client.dart';
-import '../../../core/routing/routers.dart';
+import '../../../core/helpers/spacing.dart';
+import '../../../core/networking/local/token_storage.dart';
 import '../../../core/theming/text_style.dart';
 import '../../../core/utils/StringsTexts.dart';
 import '../../../core/widgets/build_button.dart';
+import '../../../core/widgets/build_text_form_field.dart';
 import '../service/subscription_service.dart';
 import '../widgets/bottom_sheet_subscribe_failed.dart';
+import '../widgets/bottom_sheet_subscribe_success.dart';
 
 
 class SubscriptionScreen extends StatefulWidget {
-  const SubscriptionScreen({super.key});
+  const SubscriptionScreen({super.key, required this.courseId});
+
+  final String courseId;
 
   @override
   _SubscriptionScreenState createState() => _SubscriptionScreenState();
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  final SubscriptionService subscriptionService = SubscriptionService(DioClient());
+  final SubscriptionService subscriptionService =
+  SubscriptionService(Dio()); // Use Dio directly
 
-  final TextEditingController courseIdController = TextEditingController();
   final TextEditingController codeController = TextEditingController();
 
   void _subscribe() async {
-    String courseId = courseIdController.text;
     String code = codeController.text;
-    await subscriptionService.subscribeByCode(courseId, code);
+
+    try {
+      String? token = await TokenStorage().getToken();
+      if (token != null) {
+        // Pass the token to the subscription service
+        await subscriptionService.subscribeByCode(widget.courseId, code, token);
+        // Show success bottom sheet
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => const BottomSheetSubscribeSuccess(),
+        );
+      } else {
+        // Handle case when token is null
+        throw Exception('No token found. Please log in again.');
+      }
+    } catch (e) {
+      // Show error bottom sheet
+      showModalBottomSheet(
+        context: context,
+        builder: (context) => const BottomSheetSubscribeFailed(),
+      );
+      
+      print("error: ${e.toString()}");
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +74,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               style: TextStyles.font14DarkBlueMedium,
             ),
             verticalSpace(50),
-            // TODO: WILL REMOVE this in the future when call Course and take id
-            // TODO: when click on the Course or take courses ids from the Cart
-            BuildTextFormField(hintText:'Course ID' , controller:courseIdController ,),
-            verticalSpace(16),
-            BuildTextFormField(hintText:'Subscription Code' , controller:codeController ,),
+            BuildTextFormField(
+              hintText: 'Subscription Code',
+              controller: codeController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return StringTextsNames.txtValidateSubscriptionCode;
+                }
+                return null;
+              },
+            ),
             verticalSpace(50),
             BuildButton(
               textButton: StringTextsNames.txtSubscribe,

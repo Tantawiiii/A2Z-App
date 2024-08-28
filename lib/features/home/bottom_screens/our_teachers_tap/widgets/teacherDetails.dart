@@ -7,8 +7,11 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../../core/theming/text_style.dart';
 import '../../../../../core/utils/images_paths.dart';
+import '../../../../get_courses_id_proudact/service/product_service.dart';
+import '../../../../subscription_courses/ui/subscription_screen.dart';
+import '../../../courses/ui/course_details_screen.dart';
 
-class CategoryDetailsScreen extends StatelessWidget {
+class CategoryDetailsScreen extends StatefulWidget {
   final String categoryName;
   final String categoryId;
   final String? imageSrc;
@@ -25,14 +28,84 @@ class CategoryDetailsScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CategoryDetailsScreen> createState() => _CategoryDetailsScreenState();
+}
+
+class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
+
+
+  void _checkSubscription(String productId) async {
+    try {
+      final success = await ProductService.checkSubscription(productId);
+
+      if (success) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDetailsScreen(productId: productId),
+          ),
+        );
+      } else {
+        _showNoSubscriptionDialog(productId); // Pass productId here
+      }
+    } catch (e) {
+      print('Error checking subscription: $e');
+      _showNoSubscriptionDialog(productId); // Pass productId here
+    }
+  }
+
+  void _showNoSubscriptionDialog(String courseId) { // Add parameter here
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(ImagesPaths.imgNoSubscribe, fit: BoxFit.cover,),
+              SizedBox(height: 10.h),
+              Text(
+                'You don\'t have any subscription for this course.',
+                style: TextStyles.font14DarkBlueBold,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Subscribe',
+                  style: TextStyles.font14BlueSemiBold),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SubscriptionScreen(courseId: courseId),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(categoryName),
+        title: Text(widget.categoryName),
       ),
       body: Query(
         options: QueryOptions(
-          document: gql(_getProductsQuery(categoryId)),
+          document: gql(_getProductsQuery(widget.categoryId)),
         ),
         builder: (QueryResult result, {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.hasException) {
@@ -40,7 +113,7 @@ class CategoryDetailsScreen extends StatelessWidget {
           }
 
           if (result.isLoading) {
-            return _buildShimmerEffect(); // Replace the loading indicator with the Shimmer effect
+            return _buildShimmerEffect();
           }
 
           final products = result.data!['products']['items'] as List;
@@ -50,14 +123,14 @@ class CategoryDetailsScreen extends StatelessWidget {
             child: Column(
               children: [
                 Hero(
-                  tag: heroTag,
-                  child: imageSrc != null
-                      ? Image.network(imageSrc!, fit: BoxFit.cover, height: 300.h)
+                  tag: widget.heroTag,
+                  child: widget.imageSrc != null
+                      ? Image.network(widget.imageSrc!, fit: BoxFit.cover, height: 300.h)
                       : SvgPicture.asset(ImagesPaths.logoImage, height: 250),
                 ),
                 verticalSpace(16),
                 Text(
-                  parentName,
+                  widget.parentName,
                   style: TextStyles.font20BlueBold,
                 ),
                 verticalSpace(16),
@@ -167,6 +240,7 @@ class CategoryDetailsScreen extends StatelessWidget {
                   width: 90.w,
                 ),
                 title: Text(product['name']),
+                  onTap: () => _checkSubscription(product['id']),
               );
             },
           ),

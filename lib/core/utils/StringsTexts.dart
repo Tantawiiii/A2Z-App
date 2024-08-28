@@ -95,6 +95,10 @@ class StringTextsNames  {
    static const String txtSubscribeFailed = "Subscribe Failed";
    static const String txtSubscribeSuccessDes = "You have successfully subscribed to the course.";
    static const String txtSubscribeFailedDes = "You have failed to subscribe to the course.";
+   static const String txtNoCategoriesAval = "No categories available";
+   static const String txtNoProductsAval = "No products available.";
+
+   static const String txtValidateSubscriptionCode = "Please enter your Subscription Code.";
 
 
 

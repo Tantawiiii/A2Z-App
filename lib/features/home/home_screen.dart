@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:a2z_app/core/utils/colors_code.dart';
-import 'package:a2z_app/features/home/bottom_screens/cart_tap/cart_tap.dart';
 import 'package:a2z_app/features/home/bottom_screens/courses_tap/courses_tap.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const CoursesTap(),
     const HomeTap(),
      OurTeachersTap(),
-    const CartTap(),
+    // const CartTap(),
   ];
 
   @override
@@ -109,17 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   itemLabel: 'Teachers',
                 ),
-                BottomBarItem(
-                  inActiveItem: Icon(
-                    Icons.add_shopping_cart,
-                    color: Colors.black54,
-                  ),
-                  activeItem: Icon(
-                    Icons.add_shopping_cart,
-                    color: Colors.white,
-                  ),
-                  itemLabel: 'Cart',
-                ),
+                // BottomBarItem(
+                //   inActiveItem: Icon(
+                //     Icons.add_shopping_cart,
+                //     color: Colors.black54,
+                //   ),
+                //   activeItem: Icon(
+                //     Icons.add_shopping_cart,
+                //     color: Colors.white,
+                //   ),
+                //   itemLabel: 'Cart',
+                // ),
               ],
               onTap: (index) {
                 /// perform action on tab change and to update pages you can update pages without pages
