@@ -1,3 +1,4 @@
+import 'package:a2z_app/core/networking/const/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -47,28 +48,23 @@ class _CoursesTapState extends State<CoursesTap> {
     }
 
     try {
-      final response = await _dio.post(
+      final response = await _dio.get(
         'http://centera2z.com/api/Subscriptions/GetStudentSubscribedCourses',
-        options: Options(headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        }),
-        // data: {
-        //   "success": true,
-        //   "errorMessage": null,
-        //   "data": {
-        //     "totalCount": 0,
-        //     "data": []
-        //   }
-        // },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
       );
 
       if (response.statusCode == 200) {
         final data = response.data;
         setState(() {
-          _courseIds = List<String>.from(data['data']['data'].map((item) => item['id']));
+          _courseIds = List<String>.from(data['data']['data']);
         });
         _fetchProducts();
+        print('data: ${response.data}');
       } else {
         setState(() {
           _isLoading = false;
@@ -85,19 +81,19 @@ class _CoursesTapState extends State<CoursesTap> {
 
   Future<void> _fetchProducts() async {
     final String productsQuery = """
-      query Products(\$productIds: [ID!]) {
-        products(storeId: "A2Z", productIds: \$productIds) {
-          items {
-            id
-            productType
-            name
-            imgSrc
-          }
+    query Products(\$productIds: [String!]) {
+      products(storeId: "A2Z", productIds: \$productIds) {
+        items {
+          id
+          productType
+          name
+          imgSrc
         }
       }
-    """;
+    }
+  """;
 
-    final HttpLink httpLink = HttpLink('YOUR_GRAPHQL_ENDPOINT_HERE');
+    final HttpLink httpLink = HttpLink(ApiConstants.apiBaseUrlGraphQl);
 
     final GraphQLClient client = GraphQLClient(
       cache: GraphQLCache(),
@@ -123,12 +119,13 @@ class _CoursesTapState extends State<CoursesTap> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : _products.isEmpty
           ? const BuildEmptyCourses(txtNot: StringTextsNames.txtNoCourses)
           : ListView.builder(

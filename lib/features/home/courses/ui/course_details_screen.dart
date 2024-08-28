@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../../core/networking/const/api_constants.dart';
 import '../../../../core/utils/images_paths.dart';
 
@@ -18,46 +19,53 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Map<String, dynamic>? _productDetails;
   bool _isLoading = true;
-  VideoPlayerController? _videoController;
+  YoutubePlayerController? _youtubeController;
+
 
   @override
   void initState() {
     super.initState();
     _fetchProductDetails();
   }
-  void _playVideo(String contentUrl) {
-    // Create a VideoPlayerController
-    final controller = VideoPlayerController.network(contentUrl);
+  void _playYouTubeVideo(String youtubeUrl) {
+    final videoId = YoutubePlayer.convertUrlToId(youtubeUrl);
+    if (videoId != null) {
+      _youtubeController = YoutubePlayerController(
+        initialVideoId: videoId,
+        flags: const YoutubePlayerFlags(
+          autoPlay: true,
+          mute: false,
+        ),
+      );
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        // Initialize the controller
-        controller.initialize().then((_) {
-          // Update the state to rebuild the dialog with the video player
-          setState(() {});
-        });
-
-        return AlertDialog(
-          title: const Text('Video'),
-          content: SizedBox(
-            width: double.maxFinite,
-            height: 300,
-            child: VideoPlayer(controller),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Close'),
-              onPressed: () {
-                controller.dispose();
-                Navigator.of(context).pop();
-              },
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Video'),
+            content: YoutubePlayer(
+              controller: _youtubeController!,
+              showVideoProgressIndicator: true,
+              progressIndicatorColor: Colors.red,
             ),
-          ],
-        );
-      },
-    );
+            actions: [
+              TextButton(
+                child: const Text('Close'),
+                onPressed: () {
+                  _youtubeController?.pause();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      print("Invalid YouTube URL.");
+    }
   }
+
+
 
 
   Future<void> _fetchProductDetails() async {
@@ -96,6 +104,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           _productDetails = data;
           _isLoading = false;
         });
+
+        print("data: ${response.data['data']['product']}");
 
       } else {
         print('Failed to load product details');
@@ -169,9 +179,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               : const Icon(Icons.video_collection),
           title: Text(video['name'] ?? 'Unnamed Video'),
           trailing: IconButton(
-            icon: const Icon(Icons.play_arrow,color: Colors.redAccent,),
+            icon: const Icon(Icons.play_arrow, color: Colors.redAccent,),
             onPressed: () {
-              _playVideo(video['contentUrl']);
+              _playYouTubeVideo(video['contentUrl']);
             },
           ),
         );
@@ -181,9 +191,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
 
 
+
   @override
   void dispose() {
-    _videoController?.dispose();
+    _youtubeController?.dispose();
     super.dispose();
   }
 
