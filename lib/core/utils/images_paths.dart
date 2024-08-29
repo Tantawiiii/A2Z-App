@@ -12,6 +12,7 @@ class ImagesPaths {
   static const String imgTeacher = "asset/images/teacher.png";
   static const String imgEmptyCourses = "asset/images/no_courses.png";
   static const String imgNoSubscribe = "asset/images/no_subscrib.png";
+  static const String imgEmptyExam = "asset/images/empty_exams.png";
 
 
 

@@ -42,7 +42,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailsScreen(productId: productId),
+            builder: (context) => CoursesDetailsScreen(productId: productId),
           ),
         );
       } else {

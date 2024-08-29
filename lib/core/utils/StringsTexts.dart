@@ -99,6 +99,7 @@ class StringTextsNames  {
    static const String txtNoProductsAval = "No products available.";
 
    static const String txtValidateSubscriptionCode = "Please enter your Subscription Code.";
+   static const String txtEmptyExams = "Don't worry, there is still time left for the exam. Be ready with us.";
 
 
 

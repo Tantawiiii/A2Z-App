@@ -1,5 +1,6 @@
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
+import 'package:a2z_app/core/theming/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../core/utils/StringsTexts.dart';
 import '../../../../core/utils/images_paths.dart';
+import '../../../get_courses_id_proudact/ui/ProductListScreen.dart';
+import '../../courses/ui/course_details_screen.dart';
 import '../../widgets/build_empty_courses.dart';
 
 class CoursesTap extends StatefulWidget {
@@ -172,38 +175,57 @@ class _CoursesTapState extends State<CoursesTap> {
                     // Handle null values by providing default text or image
                     //  final imgSrc = product['imgSrc'] ?? 'https://via.placeholder.com/150';
                     final name = product['name'] ?? 'Unknown Product';
-                    final productType = product['productType'] ?? 'Unknown Type';
+                    final productType =
+                        product['productType'] ?? 'Unknown Type';
                     final categoryName = product['category']?['name'] ?? 'Unknown Category';
-
-                    return Padding(
-                      padding:
-                          EdgeInsets.only(top: 10.h, right: 14.h, left: 14.h),
-                      child: Card(
-                        elevation: 1.5,
-                        shadowColor: Colors.cyan,
-                        child: Row(
-                          children: [
-                            product['imgSrc'] != null
-                                ? Image.network(
-                                    product['imgSrc'],
-                                    fit: BoxFit.cover,
-                                    width: 120,
-                                    height: 100,
-                                  )
-                                : SvgPicture.asset(
-                                    ImagesPaths.logoImage,
-                                    height: 90.h,
-                                    width: 60.w,
-                                    fit: BoxFit.cover,
+                    final productId = product['id'];
+                    return GestureDetector(
+                      onTap: () {
+                        // Navigate to the ProductListScreen with the productId
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                CoursesDetailsScreen(productId: productId),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(top: 10.h, right: 14.h, left: 14.h),
+                        child: Card(
+                          elevation: 1.5,
+                          shadowColor: Colors.cyan,
+                          child: Row(
+                            children: [
+                              product['imgSrc'] != null
+                                  ? Image.network(
+                                      product['imgSrc'],
+                                      fit: BoxFit.cover,
+                                      width: 120,
+                                      height: 100,
+                                    )
+                                  : SvgPicture.asset(
+                                      ImagesPaths.logoImage,
+                                      height: 90.h,
+                                      width: 60.w,
+                                      fit: BoxFit.cover,
+                                    ),
+                              horizontalSpace(8),
+                              Column(
+                                children: [
+                                  Text(
+                                    name,
+                                    style: TextStyles.font18BlueSemiBold,
                                   ),
-                            horizontalSpace(8),
-                            Column(
-                              children: [
-                                Text(name),
-                                Text(categoryName),
-                              ],
-                            ),
-                          ],
+                                  Text(
+                                    categoryName,
+                                    style: TextStyles.font13BlueSemiBold,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );

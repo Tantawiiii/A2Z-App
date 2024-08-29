@@ -12,7 +12,7 @@ class ApiConstants {
   static String apiChangePassword = "$apiBaseUrl/api/platform/security/currentuser/changepassword";
   static String apiGetBanners = "$apiBaseUrl/api/marketing/GetBannars";
 
-  static String apiSubscriptionByCode = "$apiBaseUrl/Subscriptions/SubscripeByCode";
+  static String apiSubscriptionByCode = "$apiBaseUrl/api/Subscriptions/SubscripeByCode";
   static String apiCheckStudentSubscription = "$apiBaseUrl/api/Subscriptions/CheckStudentSubscription";
 
 }

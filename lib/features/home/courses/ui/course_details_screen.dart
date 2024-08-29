@@ -1,32 +1,36 @@
+import 'package:a2z_app/core/helpers/spacing.dart';
+import 'package:a2z_app/core/theming/text_style.dart';
+import 'package:a2z_app/core/utils/StringsTexts.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../../core/networking/const/api_constants.dart';
+import '../../../../core/utils/colors_code.dart';
 import '../../../../core/utils/images_paths.dart';
+import '../../widgets/FullScreenVideoPlayer.dart';
 
-class ProductDetailsScreen extends StatefulWidget {
+class CoursesDetailsScreen extends StatefulWidget {
   final String productId;
 
-  const ProductDetailsScreen({super.key, required this.productId});
+  const CoursesDetailsScreen({super.key, required this.productId});
 
   @override
-  _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
+  _CoursesDetailsScreenState createState() => _CoursesDetailsScreenState();
 }
 
-class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
   Map<String, dynamic>? _productDetails;
   bool _isLoading = true;
   YoutubePlayerController? _youtubeController;
-
 
   @override
   void initState() {
     super.initState();
     _fetchProductDetails();
   }
+
   void _playYouTubeVideo(String youtubeUrl) {
     final videoId = YoutubePlayer.convertUrlToId(youtubeUrl);
     if (videoId != null) {
@@ -38,35 +42,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
       );
 
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Video'),
-            content: YoutubePlayer(
-              controller: _youtubeController!,
-              showVideoProgressIndicator: true,
-              progressIndicatorColor: Colors.red,
-            ),
-            actions: [
-              TextButton(
-                child: const Text('Close'),
-                onPressed: () {
-                  _youtubeController?.pause();
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
+      // Navigate to the full screen video player
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FullScreenVideoPlayer(controller: _youtubeController!),
+        ),
       );
     } else {
       print("Invalid YouTube URL.");
     }
   }
-
-
-
 
   Future<void> _fetchProductDetails() async {
     try {
@@ -81,6 +67,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               productType
               name
               imgSrc
+              descriptions {
+                  content
+                 }
               videos {
                 totalCount
                 items {
@@ -121,74 +110,177 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_productDetails?['name'] ?? 'Loading...'),
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _productDetails != null
-          ? Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: ListView(
-          children: [
-            Row(
-              children: [
-                _productDetails!['imgSrc'] != null
-                    ? Image.network(
-                  _productDetails!['imgSrc'],
-                  width: 150,
-                  height: 100,
-                )
-                    : SvgPicture.asset(
-                  ImagesPaths.logoImage,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    _productDetails!['name'],
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20.h),
-            // Display list of videos with play buttons
-            _buildVideoList(),
-          ],
+    return DefaultTabController(
+      length: 3, // Number of tabs
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_productDetails?['name'] ?? 'Loading...'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Details'),
+              Tab(text: 'Videos'),
+              Tab(text: 'Exams'),
+            ],
+          ),
         ),
-      )
-          : const Center(child: Text('Product not found.')),
+        body: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : _productDetails != null
+            ? Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: TabBarView(
+            children: [
+              _buildDetailsTab(),
+              _buildVideoList(),
+              _buildReviewsTab(),
+            ],
+          ),
+        )
+            : const Center(child: Text('Product not found.')),
+      ),
+    );
+  }
+
+  Widget _buildDetailsTab() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _productDetails!['imgSrc'] != null
+            ? Image.network(
+          _productDetails!['imgSrc'],
+          width: 300,
+          height: 250,
+        )
+            : SvgPicture.asset(
+          ImagesPaths.logoImage,
+        ),
+        SizedBox(height: 16),
+        Text(
+          _productDetails!['name'] ?? 'Product Name',
+          style: const TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 16),
+        if (_productDetails!['descriptions'] != null &&
+            (_productDetails!['descriptions'] as List).isNotEmpty)
+          ...(_productDetails!['descriptions'] as List).map<Widget>((desc) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                desc['content'] ?? 'No description available.',
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          }).toList()
+        else
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              'No description available.',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+      ],
+    );
+  }
+
+
+  Widget _buildReviewsTab() {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(ImagesPaths.imgEmptyExam,width: 290.w,),
+          verticalSpace(12),
+          Text(StringTextsNames.txtEmptyExams,style: TextStyles.font14BlueSemiBold,textAlign: TextAlign.center,),
+        ],
+      ),
     );
   }
 
   Widget _buildVideoList() {
-    final videos = _productDetails!['videos']['items'] as List;
+    // Extract and cast the videos list from the product details
+    final videos = List<Map<String, dynamic>>.from(_productDetails!['videos']['items']);
+
+    // Sort the videos based on the 'sortOrder' key
+    videos.sort((a, b) => (a['sortOrder'] as int).compareTo(b['sortOrder'] as int));
+
+    // Initialize a variable to keep track of the current section
+    int currentSection = 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: videos.map((video) {
-        return ListTile(
-          leading: video['thumbnailUrl'] != null
-              ? Image.network(video['thumbnailUrl'], width: 50, height: 50)
-              : const Icon(Icons.video_collection),
-          title: Text(video['name'] ?? 'Unnamed Video'),
-          trailing: IconButton(
-            icon: const Icon(Icons.play_arrow, color: Colors.redAccent,),
-            onPressed: () {
-              _playYouTubeVideo(video['contentUrl']);
-            },
+        int sectionNumber = video['sortOrder']; // Assuming 'sortOrder' defines sections
+
+        List<Widget> sectionWidgets = [];
+
+        // Check if we need to add a new section header
+        if (sectionNumber != currentSection) {
+          currentSection = sectionNumber;
+          sectionWidgets.add(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
+                'Section $currentSection',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          );
+        }
+
+        // Add the video row
+        sectionWidgets.add(
+          Row(
+            children: [
+              video['thumbnailUrl'] != null
+                  ? Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.network(
+                    video['thumbnailUrl'],
+                    width: 120,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.play_circle_outline_sharp,
+                      color: ColorsCode.mainBlue,
+                      size: 50,
+                    ),
+                    onPressed: () {
+                      _playYouTubeVideo(video['contentUrl']);
+                    },
+                  ),
+                ],
+              )
+                  : const Icon(Icons.video_collection),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  video['name'] ?? 'Unnamed Video',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
+        );
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: sectionWidgets,
         );
       }).toList(),
     );
   }
-
 
 
 
@@ -197,5 +289,4 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     _youtubeController?.dispose();
     super.dispose();
   }
-
 }

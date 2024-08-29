@@ -20,6 +20,10 @@ class ProductService {
               id
               name
               imgSrc
+               category {
+          id
+          name
+        }
             }
           }
         }
