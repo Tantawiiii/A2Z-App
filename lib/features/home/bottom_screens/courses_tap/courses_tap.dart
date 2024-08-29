@@ -172,8 +172,6 @@ class _CoursesTapState extends State<CoursesTap> {
                   itemCount: _products.length,
                   itemBuilder: (context, index) {
                     final product = _products[index];
-                    // Handle null values by providing default text or image
-                    //  final imgSrc = product['imgSrc'] ?? 'https://via.placeholder.com/150';
                     final name = product['name'] ?? 'Unknown Product';
                     final productType =
                         product['productType'] ?? 'Unknown Type';

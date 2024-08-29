@@ -40,6 +40,8 @@ class ProductItemTile extends StatelessWidget {
                 ? Image.network(
               product['imgSrc'],
               fit: BoxFit.cover,
+              width: 120,
+              height: 100,
             )
                 : SvgPicture.asset(
               ImagesPaths.logoImage,
@@ -52,12 +54,12 @@ class ProductItemTile extends StatelessWidget {
               children: [
                 Text(
                   product['name'],
-                  style: TextStyles.font24BlueBold,
+                  style: TextStyles.font20BlueBold,
                 ),
                 horizontalSpace(8),
                 Text(
                   categoryName,
-                  style: TextStyles.font20BlueBold,
+                  style: TextStyles.font18BlueSemiBold,
                 ),
               ],
             ),

@@ -9,9 +9,6 @@ class FullScreenVideoPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white60,
-      ),
       body: Center(
         child: YoutubePlayer(
           controller: controller,

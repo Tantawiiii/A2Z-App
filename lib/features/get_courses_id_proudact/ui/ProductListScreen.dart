@@ -140,7 +140,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           children: [
             Image.asset(
               ImagesPaths.imgEmptyCourses,
-              width: 280.w,
+              width: 250.w,
             ),
             verticalSpace(20.h),
             Text(
