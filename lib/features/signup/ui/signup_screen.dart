@@ -131,7 +131,7 @@ class _SignupScreenState extends State<SignupScreen> {
       maxWidth: 1024,
       maxHeight: 1024,
       preferredCameraDevice: CameraDevice.rear,
-      //imageQuality: 85,
+      imageQuality: 85,
     );
 
     if (pickedFile != null) {

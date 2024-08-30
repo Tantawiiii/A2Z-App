@@ -172,7 +172,6 @@ class _CoursesTapState extends State<CoursesTap> {
                     // Handle null values by providing default text or image
                     //  final imgSrc = product['imgSrc'] ?? 'https://via.placeholder.com/150';
                     final name = product['name'] ?? 'Unknown Product';
-                    final productType = product['productType'] ?? 'Unknown Type';
                     final categoryName = product['category']?['name'] ?? 'Unknown Category';
 
                     return Padding(
