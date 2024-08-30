@@ -22,8 +22,7 @@ class SubscriptionScreen extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  final SubscriptionService subscriptionService =
-  SubscriptionService(Dio()); // Use Dio directly
+  final SubscriptionService subscriptionService = SubscriptionService(Dio());
 
   final TextEditingController codeController = TextEditingController();
 
@@ -31,27 +30,23 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     String code = codeController.text;
 
     try {
-      String? token = await TokenStorage().getToken();
-      if (token != null) {
-        // Pass the token to the subscription service
-        await subscriptionService.subscribeByCode(widget.courseId, code, token);
+
+        await subscriptionService.subscribeByCode(widget.courseId, code);
         // Show success bottom sheet
         showModalBottomSheet(
           context: context,
           builder: (context) => const BottomSheetSubscribeSuccess(),
         );
-      } else {
-        // Handle case when token is null
-        throw Exception('No token found. Please log in again.');
-      }
+
     } catch (e) {
       // Show error bottom sheet
+      print("error1: ${e.toString()}");
       showModalBottomSheet(
         context: context,
         builder: (context) => const BottomSheetSubscribeFailed(),
       );
       
-      print("error: ${e.toString()}");
+      print("error2: ${e.toString()}");
     }
   }
 

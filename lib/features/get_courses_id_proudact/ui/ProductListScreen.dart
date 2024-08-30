@@ -57,7 +57,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailsScreen(productId: productId),
+            builder: (context) => CoursesDetailsScreen(productId: productId),
           ),
         );
       } else {
@@ -101,9 +101,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SubscriptionScreen(courseId: courseId), // Pass courseId to SubscriptionScreen
+                    // Pass courseId to SubscriptionScreen
+                    builder: (context) => SubscriptionScreen(courseId: courseId),
                   ),
+
                 );
+                print("courseId: "+courseId);
               },
             ),
           ],
@@ -137,7 +140,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           children: [
             Image.asset(
               ImagesPaths.imgEmptyCourses,
-              width: 280.w,
+              width: 250.w,
             ),
             verticalSpace(20.h),
             Text(

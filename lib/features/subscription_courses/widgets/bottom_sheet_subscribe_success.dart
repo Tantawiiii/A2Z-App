@@ -45,7 +45,7 @@ class BottomSheetSubscribeSuccess extends StatelessWidget {
               textButton: StringTextsNames.txtDone,
               textStyle: TextStyles.font16WhiteMedium,
               onPressed: () {
-                context.pushNamedAndRemoveUntil(Routes.loginScreen, predicate:  (route) => false);
+                context.pushNamedAndRemoveUntil(Routes.homeScreen, predicate:  (route) => false);
               },
             ),
           ],

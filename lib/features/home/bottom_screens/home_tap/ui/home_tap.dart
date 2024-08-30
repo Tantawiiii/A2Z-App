@@ -143,7 +143,7 @@ class _HomeTapState extends State<HomeTap> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 2 / 2.3,
+                      childAspectRatio: 2 / 2.5,
                       mainAxisSpacing: 8.0,
                       crossAxisSpacing: 8.0,
                     ),
@@ -164,7 +164,7 @@ class _HomeTapState extends State<HomeTap> {
                           );
                         },
                         child: SizedBox(
-                          height: 150.h,
+                          height: 160.h,
                           child: Card(
                             elevation: 4,
                             child: Padding(
@@ -176,7 +176,7 @@ class _HomeTapState extends State<HomeTap> {
                                       ? Image.network(
                                           category['imgSrc'],
                                           fit: BoxFit.cover,
-                                          height: 100,
+                                          height: 130,
                                           width: double.infinity,
                                         )
                                       : SvgPicture.asset(
@@ -188,8 +188,7 @@ class _HomeTapState extends State<HomeTap> {
                                   Text(
                                     category['name'],
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyles.font13BlueSemiBold,
                                   ),
                                 ],
                               ),
