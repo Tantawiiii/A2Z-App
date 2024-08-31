@@ -19,6 +19,8 @@ import '../../../../../core/helpers/spacing.dart';
 import '../../../../../core/theming/text_style.dart';
 import '../../../core/widgets/build_button.dart';
 
+
+
 class SignupScreen extends StatefulWidget {
   SignupScreen({super.key});
 
@@ -131,7 +133,7 @@ class _SignupScreenState extends State<SignupScreen> {
       maxWidth: 1024,
       maxHeight: 1024,
       preferredCameraDevice: CameraDevice.rear,
-      //imageQuality: 85,
+      imageQuality: 85,
     );
 
     if (pickedFile != null) {
