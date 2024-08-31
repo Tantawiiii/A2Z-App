@@ -10,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../core/utils/StringsTexts.dart';
 import '../../../../core/utils/images_paths.dart';
-import '../../../get_courses_id_proudact/ui/ProductListScreen.dart';
 import '../../courses/ui/course_details_screen.dart';
 import '../../widgets/build_empty_courses.dart';
 

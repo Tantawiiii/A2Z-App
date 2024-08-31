@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
-import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
 import '../../../../../core/utils/StringsTexts.dart';
 import '../../../../../core/utils/images_paths.dart';
-import '../../../../get_courses_id_proudact/ui/ProductListScreen.dart';
+import '../../../get_courses_id_proudact/ui/ProductListScreen.dart';
 import '../../profile_tap/services/graphql_getprofile_service.dart';
 
 class HomeTap extends StatefulWidget {
@@ -41,12 +40,6 @@ class _HomeTapState extends State<HomeTap> {
     // Fetch profile and banners
     _fetchProfile();
     _fetchBanners();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override
@@ -219,10 +212,16 @@ class _HomeTapState extends State<HomeTap> {
     );
   }
 
-  // Fetch profile data and categories
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   Future<void> _fetchProfile() async {
     try {
       final data = await _profileService.fetchProfile(context);
+      if (!mounted) return; // Check if widget is still in the tree
       setState(() {
         _profileData = data;
       });
@@ -230,7 +229,7 @@ class _HomeTapState extends State<HomeTap> {
       final dynamicProperties = _profileData?['contact']?['dynamicProperties'];
       if (dynamicProperties != null) {
         final grade = dynamicProperties.firstWhere(
-            (prop) => prop['name'] == 'grade',
+                (prop) => prop['name'] == 'grade',
             orElse: () => null)?['value'];
 
         if (grade != null) {
@@ -244,37 +243,36 @@ class _HomeTapState extends State<HomeTap> {
     }
   }
 
-  // Fetch categories based on the grade
   Future<void> _fetchCategories(String grade) async {
     try {
       final dio = Dio();
       final response = await dio.post(
         ApiConstants.apiBaseUrlGraphQl,
-        // Ensure this points to your GraphQL endpoint
         data: {
           "query": """
-            query Categories {
-              categories(query: "$grade", storeId: "A2Z") {
-                items {
-                  childCategories {
-                    imgSrc
-                    name
-                    id
-                    level
-                  }
+          query Categories {
+            categories(query: "$grade", storeId: "A2Z") {
+              items {
+                childCategories {
+                  imgSrc
+                  name
+                  id
+                  level
                 }
               }
             }
-          """
+          }
+        """
         },
         options: Options(contentType: Headers.jsonContentType),
       );
 
+      if (!mounted) return; // Check if widget is still in the tree
       if (response.statusCode == 200) {
         final List<dynamic> categories =
-            response.data['data']['categories']['items'][0]['childCategories'];
+        response.data['data']['categories']['items'][0]['childCategories'];
         setState(() {
-          _categories.clear(); // Clear existing categories if any
+          _categories.clear();
           _categories.addAll(categories);
         });
       } else {
@@ -289,7 +287,6 @@ class _HomeTapState extends State<HomeTap> {
     }
   }
 
-  // Fetch Banners
   Future<void> _fetchBanners() async {
     try {
       final dio = Dio();
@@ -298,6 +295,7 @@ class _HomeTapState extends State<HomeTap> {
         queryParameters: {'BannarArea': 'Home'},
       );
 
+      if (!mounted) return; // Check if widget is still in the tree
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
         setState(() {
@@ -314,6 +312,7 @@ class _HomeTapState extends State<HomeTap> {
       }
     }
   }
+
 
   // Auto-scroll Banners
   void _startAutoScroll() {

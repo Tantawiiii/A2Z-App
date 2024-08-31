@@ -7,9 +7,9 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../../core/theming/text_style.dart';
 import '../../../../../core/utils/images_paths.dart';
-import '../../../../get_courses_id_proudact/service/product_service.dart';
 import '../../../../subscription_courses/ui/subscription_screen.dart';
 import '../../../courses/ui/course_details_screen.dart';
+import '../../../get_courses_id_proudact/service/product_service.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {
   final String categoryName;

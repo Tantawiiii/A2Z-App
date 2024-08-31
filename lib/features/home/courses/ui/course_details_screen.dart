@@ -144,25 +144,30 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
   }
 
   Widget _buildDetailsTab() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
       children: [
-        _productDetails!['imgSrc'] != null
-            ? Image.network(
-          _productDetails!['imgSrc'],
-          width: 300,
-          height: 250,
-        )
-            : SvgPicture.asset(
-          ImagesPaths.logoImage,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _productDetails!['imgSrc'] != null
+                ? Image.network(
+              _productDetails!['imgSrc'],
+
+              fit: BoxFit.cover,
+            )
+                : SvgPicture.asset(
+              ImagesPaths.logoImage,
+            ),
+            verticalSpace(16),
+            Text(
+              _productDetails!['name'] ?? 'Product Name',
+              style: const TextStyle(
+                  fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            verticalSpace(16),
+
+          ],
         ),
-        SizedBox(height: 16),
-        Text(
-          _productDetails!['name'] ?? 'Product Name',
-          style: const TextStyle(
-              fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 16),
         if (_productDetails!['descriptions'] != null &&
             (_productDetails!['descriptions'] as List).isNotEmpty)
           ...(_productDetails!['descriptions'] as List).map<Widget>((desc) {
@@ -170,18 +175,10 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 desc['content'] ?? 'No description available.',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
             );
           }).toList()
-        else
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              'No description available.',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
       ],
     );
   }
@@ -201,82 +198,78 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
     );
   }
 
+
   Widget _buildVideoList() {
-    // Extract and cast the videos list from the product details
     final videos = List<Map<String, dynamic>>.from(_productDetails!['videos']['items']);
 
-    // Sort the videos based on the 'sortOrder' key
+    // Sort videos by 'sortOrder'
     videos.sort((a, b) => (a['sortOrder'] as int).compareTo(b['sortOrder'] as int));
 
-    // Initialize a variable to keep track of the current section
-    int currentSection = 0;
+    Map<int, List<Map<String, dynamic>>> sections = {};
+
+    // Group videos by section
+    for (var video in videos) {
+      int sectionNumber = video['sortOrder'];
+      if (!sections.containsKey(sectionNumber)) {
+        sections[sectionNumber] = [];
+      }
+      sections[sectionNumber]!.add(video);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: videos.map((video) {
-        int sectionNumber = video['sortOrder']; // Assuming 'sortOrder' defines sections
+      children: sections.entries.map((entry) {
+        int sectionNumber = entry.key;
+        List<Map<String, dynamic>> sectionVideos = entry.value;
 
-        List<Widget> sectionWidgets = [];
-
-        // Check if we need to add a new section header
-        if (sectionNumber != currentSection) {
-          currentSection = sectionNumber;
-          sectionWidgets.add(
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Text(
-                'Section $currentSection',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+        return ExpansionTile(
+          title: Text(
+            'Section $sectionNumber',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-          );
-        }
-
-        // Add the video row
-        sectionWidgets.add(
-          Row(
-            children: [
-              video['thumbnailUrl'] != null
-                  ? Stack(
-                alignment: Alignment.center,
+          ),
+          children: sectionVideos.map((video) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0),
+              child: Row(
                 children: [
-                  Image.network(
-                    video['thumbnailUrl'],
-                    width: 120,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.play_circle_outline_sharp,
-                      color: ColorsCode.mainBlue,
-                      size: 50,
+                  video['thumbnailUrl'] != null
+                      ? Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.network(
+                        video['thumbnailUrl'],
+                        width: 120,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.play_circle_outline_sharp,
+                          color: ColorsCode.mainBlue,
+                          size: 50,
+                        ),
+                        onPressed: () {
+                          _playYouTubeVideo(video['contentUrl']);
+                        },
+                      ),
+                    ],
+                  )
+                      : const Icon(Icons.video_collection),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      video['name'] ?? 'Unnamed Video',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    onPressed: () {
-                      _playYouTubeVideo(video['contentUrl']);
-                    },
                   ),
                 ],
-              )
-                  : const Icon(Icons.video_collection),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  video['name'] ?? 'Unnamed Video',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
               ),
-            ],
-          ),
-        );
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: sectionWidgets,
+            );
+          }).toList(),
         );
       }).toList(),
     );

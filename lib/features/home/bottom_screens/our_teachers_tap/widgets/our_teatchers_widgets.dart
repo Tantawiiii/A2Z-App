@@ -51,6 +51,9 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
 
   Future<void> _fetchCategories(GraphQLClient client) async {
     final categories = await _categoriesService.fetchCategories(client);
+
+    if (!mounted) return; // Check if the widget is still mounted
+
     if (_categories != categories) {
       setState(() {
         _categories = categories;
@@ -58,6 +61,7 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

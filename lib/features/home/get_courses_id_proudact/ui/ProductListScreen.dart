@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../core/utils/StringsTexts.dart';
-import '../../../core/utils/images_paths.dart';
-import '../../../core/helpers/spacing.dart';
-import '../../../core/theming/text_style.dart';
-import '../../home/courses/ui/course_details_screen.dart';
+import '../../../../core/helpers/spacing.dart';
+import '../../../../core/theming/text_style.dart';
+import '../../../../core/utils/StringsTexts.dart';
+import '../../../../core/utils/images_paths.dart';
+import '../../../subscription_courses/ui/subscription_screen.dart';
+import '../../courses/ui/course_details_screen.dart';
 import '../service/product_service.dart';
 import '../widget/product_item_tile.dart';
-import '../../subscription_courses/ui/subscription_screen.dart'; // Import SubscriptionScreen
 
 class ProductListScreen extends StatefulWidget {
   final String categoryId;
