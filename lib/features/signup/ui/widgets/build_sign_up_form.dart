@@ -47,12 +47,11 @@ class _SignupFormState extends State<SignupForm> {
 
   List<String> _grades = [];
   List<DropdownMenuItem<String>> _dropdownItems = [];
-   late GraphQLClient client;
+  late GraphQLClient client;
 
   @override
   void initState() {
     super.initState();
-
 
     // Ensure the client is initialized
     GraphQLClientInstance.initializeClient();
@@ -63,9 +62,9 @@ class _SignupFormState extends State<SignupForm> {
         _grades = fetchedCategories;
         _dropdownItems = _grades
             .map((String category) => DropdownMenuItem<String>(
-          value: category,
-          child: Text(category),
-        ))
+                  value: category,
+                  child: Text(category),
+                ))
             .toList();
       });
     });
@@ -84,7 +83,6 @@ class _SignupFormState extends State<SignupForm> {
   //   });
   // }
 
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -98,6 +96,7 @@ class _SignupFormState extends State<SignupForm> {
               SizedBox(
                 width: 150.w,
                 child: BuildTextFormField(
+                  inputType: TextInputType.text,
                   controller: widget.firstNameController,
                   hintText: StringTextsNames.txtFirstName,
                   validator: (value) {
@@ -110,6 +109,7 @@ class _SignupFormState extends State<SignupForm> {
               SizedBox(
                 width: 150.w,
                 child: BuildTextFormField(
+                  inputType: TextInputType.text,
                   controller: widget.lastNameController,
                   hintText: StringTextsNames.txtLastName,
                   validator: (value) {
@@ -125,10 +125,11 @@ class _SignupFormState extends State<SignupForm> {
           BuildTextFormField(
             controller: widget.usernameController,
             hintText: StringTextsNames.txtUserName,
+            inputType: TextInputType.text,
             validator: (value) {
               if (value == null || value.isEmpty
-              //|| !AppRegex.isPhoneNumValid(value)
-              ) {
+                  //|| !AppRegex.isPhoneNumValid(value)
+                  ) {
                 return StringTextsNames.txtUserName;
               }
             },
@@ -137,6 +138,7 @@ class _SignupFormState extends State<SignupForm> {
           BuildTextFormField(
             controller: widget.phoneNumberController,
             hintText: StringTextsNames.txtPhoneNumber,
+            inputType: TextInputType.phone,
             validator: (value) {
               if (value == null || value.isEmpty
                   //|| !AppRegex.isPhoneNumValid(value)
@@ -149,6 +151,7 @@ class _SignupFormState extends State<SignupForm> {
           BuildTextFormField(
             controller: widget.emailController,
             hintText: StringTextsNames.txtEmail,
+            inputType: TextInputType.emailAddress,
             validator: (value) {
               if (value == null ||
                   value.isEmpty ||
@@ -211,7 +214,4 @@ class _SignupFormState extends State<SignupForm> {
       ),
     );
   }
-
-
-
 }

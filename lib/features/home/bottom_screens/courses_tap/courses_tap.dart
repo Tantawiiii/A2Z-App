@@ -70,8 +70,14 @@ class _CoursesTapState extends State<CoursesTap> {
         setState(() {
           _courseIds = List<String>.from(data['data']['data']);
         });
-        _fetchProducts();
-        print('data: ${response.data}');
+        if (_courseIds.isNotEmpty) {
+          _fetchProducts();
+        } else {
+          setState(() {
+            _isLoading = false;
+          });
+          print('No subscribed courses found');
+        }
       } else {
         setState(() {
           _isLoading = false;
@@ -136,98 +142,97 @@ class _CoursesTapState extends State<CoursesTap> {
       backgroundColor: Colors.white,
       body: _isLoading
           ? Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.blue[200]!,
-              child: ListView.builder(
-                itemCount: 6,
-                // Adjust the number based on how many shimmer items you want
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: ListTile(
-                      leading: Container(
-                        width: 50.0,
-                        height: 50.0,
-                        color: Colors.white,
-                      ),
-                      title: Container(
-                        width: double.infinity,
-                        height: 16.0,
-                        color: Colors.white,
-                      ),
-                      subtitle: Container(
-                        width: double.infinity,
-                        height: 14.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            )
-          : _products.isEmpty
-              ? const BuildEmptyCourses(txtNot: StringTextsNames.txtNoCourses)
-              : ListView.builder(
-                  itemCount: _products.length,
-                  itemBuilder: (context, index) {
-                    final product = _products[index];
-                    final name = product['name'] ?? 'Unknown Product';
-                    final productType =
-                        product['productType'] ?? 'Unknown Type';
-                    final categoryName = product['category']?['name'] ?? 'Unknown Category';
-                    final productId = product['id'];
-                    return GestureDetector(
-                      onTap: () {
-                        // Navigate to the ProductListScreen with the productId
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                CoursesDetailsScreen(productId: productId),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding:
-                            EdgeInsets.only(top: 10.h, right: 14.h, left: 14.h),
-                        child: Card(
-                          elevation: 1.5,
-                          shadowColor: Colors.cyan,
-                          child: Row(
-                            children: [
-                              product['imgSrc'] != null
-                                  ? Image.network(
-                                      product['imgSrc'],
-                                      fit: BoxFit.cover,
-                                      width: 120,
-                                      height: 100,
-                                    )
-                                  : SvgPicture.asset(
-                                      ImagesPaths.logoImage,
-                                      height: 90.h,
-                                      width: 60.w,
-                                      fit: BoxFit.cover,
-                                    ),
-                              horizontalSpace(8),
-                              Column(
-                                children: [
-                                  Text(
-                                    name,
-                                    style: TextStyles.font18BlueSemiBold,
-                                  ),
-                                  Text(
-                                    categoryName,
-                                    style: TextStyles.font13BlueSemiBold,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.blue[200]!,
+        child: ListView.builder(
+          itemCount: 6,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: ListTile(
+                leading: Container(
+                  width: 50.0,
+                  height: 50.0,
+                  color: Colors.white,
                 ),
+                title: Container(
+                  width: double.infinity,
+                  height: 16.0,
+                  color: Colors.white,
+                ),
+                subtitle: Container(
+                  width: double.infinity,
+                  height: 14.0,
+                  color: Colors.white,
+                ),
+              ),
+            );
+          },
+        ),
+      )
+          : _products.isEmpty
+          ? const BuildEmptyCourses(txtNot: StringTextsNames.txtNoCourses)
+          : ListView.builder(
+        itemCount: _products.length,
+        itemBuilder: (context, index) {
+          final product = _products[index];
+          final name = product['name'] ?? 'Unknown Product';
+          final productType =
+              product['productType'] ?? 'Unknown Type';
+          final categoryName = product['category']?['name'] ?? 'Unknown Category';
+          final productId = product['id'];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      CoursesDetailsScreen(productId: productId),
+                ),
+              );
+            },
+            child: Padding(
+              padding:
+              EdgeInsets.only(top: 10.h, right: 14.h, left: 14.h),
+              child: Card(
+                elevation: 1.5,
+                shadowColor: Colors.cyan,
+                child: Row(
+                  children: [
+                    product['imgSrc'] != null
+                        ? Image.network(
+                      product['imgSrc'],
+                      fit: BoxFit.cover,
+                      width: 120,
+                      height: 100,
+                    )
+                        : SvgPicture.asset(
+                      ImagesPaths.logoImage,
+                      height: 90.h,
+                      width: 60.w,
+                      fit: BoxFit.cover,
+                    ),
+                    horizontalSpace(8),
+                    Column(
+                      children: [
+                        Text(
+                          name,
+                          style: TextStyles.font18BlueSemiBold,
+                        ),
+                        Text(
+                          categoryName,
+                          style: TextStyles.font13BlueSemiBold,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
+
