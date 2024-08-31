@@ -1,4 +1,3 @@
-
 import 'package:a2z_app/core/theming/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +17,8 @@ class BuildTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.fillBackgroundColor,
     this.controller,
-     this.validator,
+    this.validator,
+    this.inputType,
   });
 
   final EdgeInsetsGeometry? contentPadding;
@@ -32,11 +32,13 @@ class BuildTextFormField extends StatelessWidget {
   final Color? fillBackgroundColor;
   final TextEditingController? controller;
   final Function(String?)? validator;
+  final TextInputType? inputType;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: inputType ?? TextInputType.text,
       decoration: InputDecoration(
         isDense: true,
         contentPadding: contentPadding ??
@@ -82,7 +84,7 @@ class BuildTextFormField extends StatelessWidget {
       ),
       obscureText: isObscureText ?? false,
       style: inputTextStyle ?? TextStyles.font14DarkBlueMedium,
-      validator: (value){
+      validator: (value) {
         return validator!(value);
       },
     );
