@@ -138,7 +138,7 @@ class _SignupFormState extends State<SignupForm> {
           BuildTextFormField(
             controller: widget.phoneNumberController,
             hintText: StringTextsNames.txtPhoneNumber,
-            inputType: TextInputType.phone,
+            inputType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty
                   //|| !AppRegex.isPhoneNumValid(value)

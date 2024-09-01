@@ -47,9 +47,11 @@ class _CoursesTapState extends State<CoursesTap> {
   Future<void> _fetchSubscribedCourses() async {
     final token = await getToken();
     if (token == null) {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
       print('No token found');
       return;
     }
@@ -67,27 +69,35 @@ class _CoursesTapState extends State<CoursesTap> {
 
       if (response.statusCode == 200) {
         final data = response.data;
-        setState(() {
-          _courseIds = List<String>.from(data['data']['data']);
-        });
+        if (mounted) {
+          setState(() {
+            _courseIds = List<String>.from(data['data']['data']);
+          });
+        }
         if (_courseIds.isNotEmpty) {
           _fetchProducts();
         } else {
-          setState(() {
-            _isLoading = false;
-          });
+          if (mounted) {
+            setState(() {
+              _isLoading = false;
+            });
+          }
           print('No subscribed courses found');
         }
       } else {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
         print('Failed to load courses');
       }
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
       print('Error fetching courses: $e');
     }
   }
@@ -179,7 +189,8 @@ class _CoursesTapState extends State<CoursesTap> {
           final name = product['name'] ?? 'Unknown Product';
           final productType =
               product['productType'] ?? 'Unknown Type';
-          final categoryName = product['category']?['name'] ?? 'Unknown Category';
+          final categoryName =
+              product['category']?['name'] ?? 'Unknown Category';
           final productId = product['id'];
           return GestureDetector(
             onTap: () {

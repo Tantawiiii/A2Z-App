@@ -46,7 +46,8 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => FullScreenVideoPlayer(controller: _youtubeController!),
+          builder: (context) =>
+              FullScreenVideoPlayer(controller: _youtubeController!),
         ),
       );
     } else {
@@ -95,7 +96,6 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
         });
 
         print("data: ${response.data['data']['product']}");
-
       } else {
         print('Failed to load product details');
         setState(() {
@@ -113,32 +113,34 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3, // Number of tabs
+      length: 4, // Number of tabs
       child: Scaffold(
         appBar: AppBar(
           title: Text(_productDetails?['name'] ?? 'Loading...'),
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'Details'),
-              Tab(text: 'Videos'),
-              Tab(text: 'Exams'),
+              Tab(text: StringTextsNames.txtDetails),
+              Tab(text: StringTextsNames.txtVideos),
+              Tab(text: StringTextsNames.txtExams),
+              Tab(text: StringTextsNames.txtAttachment),
             ],
           ),
         ),
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
             : _productDetails != null
-            ? Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: TabBarView(
-            children: [
-              _buildDetailsTab(),
-              _buildVideoList(),
-              _buildReviewsTab(),
-            ],
-          ),
-        )
-            : const Center(child: Text('Product not found.')),
+                ? Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: TabBarView(
+                      children: [
+                        _buildDetailsTab(),
+                        _buildVideoList(),
+                        _buildExamsTab(),
+                        _buildAttachmentTab(),
+                      ],
+                    ),
+                  )
+                : const Center(child: Text(StringTextsNames.txtNoProducts)),
       ),
     );
   }
@@ -151,21 +153,18 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
           children: [
             _productDetails!['imgSrc'] != null
                 ? Image.network(
-              _productDetails!['imgSrc'],
-
-              fit: BoxFit.cover,
-            )
+                    _productDetails!['imgSrc'],
+                    fit: BoxFit.cover,
+                  )
                 : SvgPicture.asset(
-              ImagesPaths.logoImage,
-            ),
+                    ImagesPaths.logoImage,
+                  ),
             verticalSpace(16),
             Text(
               _productDetails!['name'] ?? 'Product Name',
-              style: const TextStyle(
-                  fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             verticalSpace(16),
-
           ],
         ),
         if (_productDetails!['descriptions'] != null &&
@@ -183,27 +182,55 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
     );
   }
 
-
-  Widget _buildReviewsTab() {
+  Widget _buildExamsTab() {
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(ImagesPaths.imgEmptyExam,width: 290.w,),
+          Image.asset(
+            ImagesPaths.imgEmptyExam,
+            width: 290.w,
+          ),
           verticalSpace(12),
-          Text(StringTextsNames.txtEmptyExams,style: TextStyles.font14BlueSemiBold,textAlign: TextAlign.center,),
+          Text(
+            StringTextsNames.txtEmptyExams,
+            style: TextStyles.font14BlueSemiBold,
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
   }
 
+  Widget _buildAttachmentTab() {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            ImagesPaths.imgEmptyExam,
+            width: 290.w,
+          ),
+          verticalSpace(12),
+          Text(
+            StringTextsNames.txtEmptyExams,
+            style: TextStyles.font14BlueSemiBold,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildVideoList() {
-    final videos = List<Map<String, dynamic>>.from(_productDetails!['videos']['items']);
+    final videos =
+        List<Map<String, dynamic>>.from(_productDetails!['videos']['items']);
 
     // Sort videos by 'sortOrder'
-    videos.sort((a, b) => (a['sortOrder'] as int).compareTo(b['sortOrder'] as int));
+    videos.sort(
+        (a, b) => (a['sortOrder'] as int).compareTo(b['sortOrder'] as int));
 
     Map<int, List<Map<String, dynamic>>> sections = {};
 
@@ -237,26 +264,26 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
                 children: [
                   video['thumbnailUrl'] != null
                       ? Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.network(
-                        video['thumbnailUrl'],
-                        width: 120,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.play_circle_outline_sharp,
-                          color: ColorsCode.mainBlue,
-                          size: 50,
-                        ),
-                        onPressed: () {
-                          _playYouTubeVideo(video['contentUrl']);
-                        },
-                      ),
-                    ],
-                  )
+                          alignment: Alignment.center,
+                          children: [
+                            Image.network(
+                              video['thumbnailUrl'],
+                              width: 120,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.play_circle_outline_sharp,
+                                color: ColorsCode.mainBlue,
+                                size: 50,
+                              ),
+                              onPressed: () {
+                                _playYouTubeVideo(video['contentUrl']);
+                              },
+                            ),
+                          ],
+                        )
                       : const Icon(Icons.video_collection),
                   const SizedBox(width: 8),
                   Expanded(
@@ -274,8 +301,6 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
       }).toList(),
     );
   }
-
-
 
   @override
   void dispose() {
