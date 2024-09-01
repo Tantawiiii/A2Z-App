@@ -23,7 +23,7 @@ class ProductItemTile extends StatelessWidget {
       shadowColor: Colors.cyan,
       child: Container(
         height: 120.h,
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
@@ -46,8 +46,9 @@ class ProductItemTile extends StatelessWidget {
             )
                 : SvgPicture.asset(
               ImagesPaths.logoImage,
-              height: 90.h,
-              width: 90.w,
+              fit: BoxFit.cover,
+              width: 70,
+              height: 90,
             ),
             SizedBox(width: 16.w),
             Column(
@@ -55,12 +56,12 @@ class ProductItemTile extends StatelessWidget {
               children: [
                 Text(
                   product['name'],
-                  style: TextStyles.font20BlueBold,
+                  style: TextStyles.font18BlueSemiBold,
                 ),
                 horizontalSpace(8),
                 Text(
                   categoryName,
-                  style: TextStyles.font18BlueSemiBold,
+                  style: TextStyles.font15DarkBlueMedium,
                 ),
               ],
             ),
