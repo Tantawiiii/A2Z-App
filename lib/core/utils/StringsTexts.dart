@@ -72,7 +72,6 @@ class StringTextsNames  {
    static const String txtChangePassDes = "Now you can change your password with the new password and the old password.";
    static const String txtOldPassword = "Enter Your Old Password";
 
-   static const String txtExams = "Exams";
    static const String txtFaq = "FAQ";
    static const String txtAboutUs = "About US";
    static const String txtLogOut = "LogOut";
@@ -101,6 +100,10 @@ class StringTextsNames  {
    static const String txtValidateSubscriptionCode = "Please enter your Subscription Code.";
    static const String txtEmptyExams = "Don't worry, there is still time left for the exam. Be ready with us.";
 
-
+   static const String txtNoProducts = "Product not found.";
+   static const String txtDetails = "Details";
+   static const String txtVideos = "Videos";
+   static const String txtExams = "Exams";
+   static const String txtAttachment = "Attachment";
 
 }

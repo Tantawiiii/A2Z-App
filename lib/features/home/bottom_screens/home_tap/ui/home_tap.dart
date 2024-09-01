@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -104,25 +105,38 @@ class _HomeTapState extends State<HomeTap> {
             verticalSpace(20),
             _banners.isNotEmpty
                 ? SizedBox(
-                    height: 150,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _banners.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: Image.network(
-                            _banners[index],
-                            fit: BoxFit.cover,
-                            width: 300,
-                            height: 150,
-                          ),
-                        );
-                      },
+              height: 150,
+              child: ListView.builder(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                itemCount: _banners.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: CachedNetworkImage(
+                      imageUrl: _banners[index],
+                      fit: BoxFit.cover,
+                      width: 300,
+                      height: 150,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          width: 300,
+                          height: 150,
+                          color: Colors.white,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => SvgPicture.asset(
+                        ImagesPaths.logoImage,
+                      ),
                     ),
-                  )
+                  );
+                },
+              ),
+            )
                 : _buildShimmerBannerPlaceholder(),
+
             verticalSpace(24),
             Text(
               StringTextsNames.txtCategories,

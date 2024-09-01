@@ -64,13 +64,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     });
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         child: Stack(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h),
+              padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h,),
               child: ListView(
                 children: [
                   Column(
@@ -151,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             ),
             if (_isLoading)
               const Center(
-                child: SpinKitFadingCircle(
+                child: SpinKitCircle(
                   color: ColorsCode.mainBlue,
                   size: 50.0,
                 ),
@@ -160,6 +153,15 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         ),
       ),
     );
+  }
+
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   void _login() async {
