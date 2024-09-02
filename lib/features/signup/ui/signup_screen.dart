@@ -11,7 +11,7 @@ import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/widgets/build_toast.dart';
 import '../../../core/networking/clients/get_grades_graphql_client.dart';
-import '../../../core/utils/StringsTexts.dart';
+import '../../../core/language/StringsTexts.dart';
 import '../../../core/utils/colors_code.dart';
 import 'widgets/already_have_account_text.dart';
 import 'widgets/build_sign_up_form.dart';

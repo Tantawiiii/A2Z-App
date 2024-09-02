@@ -53,6 +53,8 @@ class ProductService {
       queryParameters: {'CourseId': productId},
     );
 
+    print('Student Subscription: ${response.data}');
+
     return response.data['success'] == true;
   }
 

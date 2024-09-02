@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/theming/text_style.dart';
-import '../../../core/utils/StringsTexts.dart';
+import '../../../core/language/StringsTexts.dart';
 import '../../../core/utils/images_paths.dart';
 
 class OnBoardingScreen extends StatefulWidget {

@@ -14,6 +14,10 @@
              <string>UIInterfaceOrientationPortrait</string>
              <string>UIInterfaceOrientationPortraitUpsideDown</string>
          </array>
+         <key>NSPhotoLibraryUsageDescription</key>
+         <string>We need access to your photo library to download files.</string>
+         <key>NSMicrophoneUsageDescription</key>
+         <string>We need access to your microphone to record videos.</string>
         <key>NSCameraUsageDescription</key>
         <string>We need access to your camera to take pictures.</string>
         <key>NSPhotoLibraryUsageDescription</key>

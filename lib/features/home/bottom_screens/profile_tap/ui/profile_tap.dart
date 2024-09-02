@@ -8,7 +8,7 @@ import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/clients/dio_client_graphql.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
-import 'package:a2z_app/core/utils/StringsTexts.dart';
+import 'package:a2z_app/core/language/StringsTexts.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

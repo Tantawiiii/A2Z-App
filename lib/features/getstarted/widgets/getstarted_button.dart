@@ -1,6 +1,6 @@
 import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
-import 'package:a2z_app/core/utils/StringsTexts.dart';
+import 'package:a2z_app/core/language/StringsTexts.dart';
 import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:motion/motion.dart';

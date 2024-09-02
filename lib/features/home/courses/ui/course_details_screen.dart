@@ -1,15 +1,19 @@
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
-import 'package:a2z_app/core/utils/StringsTexts.dart';
+import 'package:a2z_app/core/language/StringsTexts.dart';
+import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../../core/networking/const/api_constants.dart';
 import '../../../../core/utils/colors_code.dart';
 import '../../../../core/utils/images_paths.dart';
 import '../../widgets/FullScreenVideoPlayer.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 class CoursesDetailsScreen extends StatefulWidget {
   final String productId;
@@ -62,29 +66,34 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
         ApiConstants.apiBaseUrlGraphQl,
         data: {
           'query': '''
-          query Product {
-            product(id: "${widget.productId}", storeId: "A2Z") {
-              id
-              productType
-              name
-              imgSrc
-              descriptions {
-                  content
-                 }
-              videos {
-                totalCount
-                items {
-                  name
-                  description
-                  uploadDate
-                  thumbnailUrl
-                  contentUrl
-                  sortOrder
-                }
+        query Product {
+          product(id: "${widget.productId}", storeId: "A2Z") {
+            id
+            productType
+            name
+            imgSrc
+            descriptions {
+              content
+            }
+            videos {
+              totalCount
+              items {
+                name
+                description
+                uploadDate
+                thumbnailUrl
+                contentUrl
+                sortOrder
               }
             }
+            assets {
+              id
+              name
+              url
+            }
           }
-          '''
+        }
+        '''
         },
       );
 
@@ -109,6 +118,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -204,24 +214,79 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
   }
 
   Widget _buildAttachmentTab() {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            ImagesPaths.imgEmptyExam,
-            width: 290.w,
+    final assets = _productDetails?['assets'];
+
+    if (assets == null || assets.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "asset/images/no_doc.png",
+              width: 290.w,
+            ),
+            verticalSpace(12),
+            Text(
+              StringTextsNames.txtEmptyDoc,
+              style: TextStyles.font14BlueSemiBold,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+    return ListView.builder(
+      itemCount: assets.length,
+      itemBuilder: (context, index) {
+        final asset = assets[index];
+        return Bounce(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            margin: const EdgeInsets.symmetric(vertical: 4.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.attachment_outlined,
+                  size: 24,
+                  color: ColorsCode.mainBlue,
+                ),
+                horizontalSpace(16),
+                Expanded(
+                  child: Text(
+                    asset['name'] ?? 'Unnamed Asset',
+                    style: TextStyles.font16BlueSemiBold,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.download),
+                  onPressed: () async {
+                    final url = asset['url'];
+                    final name = asset['name'];
+                    if (url != null && name != null) {
+                      await _downloadFile(url, name);
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
-          verticalSpace(12),
-          Text(
-            StringTextsNames.txtEmptyExams,
-            style: TextStyles.font14BlueSemiBold,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+        );
+      },
     );
+
   }
 
   Widget _buildVideoList() {
@@ -300,6 +365,42 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
         );
       }).toList(),
     );
+  }
+
+  Future<void> _downloadFile(String url, String fileName) async {
+    try {
+      // Request storage permission
+      if (await Permission.storage.request().isGranted) {
+        final dio = Dio();
+
+        // Get the external storage directory (e.g., Downloads folder)
+        final dir = await getExternalStorageDirectory();
+
+        if (dir != null) {
+          final filePath = '${dir.path}/$fileName';
+
+          // Download the file
+          await dio.download(url, filePath);
+
+          // Optionally, show a message that the download was successful
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Downloaded $fileName')),
+          );
+        } else {
+          print('Failed to get storage directory');
+        }
+      } else {
+        // Handle permission denied
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Storage permission denied')),
+        );
+      }
+    } catch (e) {
+      print('Download failed: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to download $fileName')),
+      );
+    }
   }
 
   @override

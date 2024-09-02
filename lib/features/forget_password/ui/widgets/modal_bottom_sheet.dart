@@ -2,7 +2,7 @@ import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
-import 'package:a2z_app/core/utils/StringsTexts.dart';
+import 'package:a2z_app/core/language/StringsTexts.dart';
 import 'package:a2z_app/core/utils/images_paths.dart';
 import 'package:a2z_app/core/widgets/build_button.dart';
 import 'package:flutter/material.dart';

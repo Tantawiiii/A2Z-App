@@ -99,11 +99,17 @@ class StringTextsNames  {
 
    static const String txtValidateSubscriptionCode = "Please enter your Subscription Code.";
    static const String txtEmptyExams = "Don't worry, there is still time left for the exam. Be ready with us.";
+   static const String txtEmptyDoc = "Not available documentation for the course yet.";
 
    static const String txtNoProducts = "Product not found.";
    static const String txtDetails = "Details";
    static const String txtVideos = "Videos";
    static const String txtExams = "Exams";
    static const String txtAttachment = "Attachment";
+
+   static const String txtNoInternet = "No Internet Connection";
+   static const String txtPleaseCheckInternet = "Please check your internet connection and try again.";
+
+   static const String txtRetry = "Retry";
 
 }
