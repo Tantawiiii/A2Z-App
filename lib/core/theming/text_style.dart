@@ -57,6 +57,13 @@ class TextStyles {
     color: ColorsCode.mainBlue,
   );
 
+  static TextStyle font16BlueSemiBold = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 16.sp,
+    fontWeight: FontWeightHelper.semiBold,
+    color: ColorsCode.mainBlue,
+  );
+
 
   static TextStyle font13GrayNormal = TextStyle(
     fontFamily: 'Poppins',

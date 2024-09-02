@@ -5,10 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'a2z_app.dart';
 import 'core/routing/app_router.dart';
 import 'core/networking/clients/get_grades_graphql_client.dart';
+
+String language = "EN";
+late Locale _locale;
 
 void main() async {
   await ScreenUtil.ensureScreenSize();
@@ -22,11 +26,15 @@ void main() async {
     link: httpLink,
     cache: GraphQLCache(store: HiveStore()),
   );
+  SharedPreferences.getInstance().then((value) {
+    if (value.getString("language") == null) {
+      language = "EN";
+      _locale = const Locale("EN");
+    } else {
+      language = value.getString("language") as String;
+      _locale = Locale(value.getString("language")!.toLowerCase());
+    }
 
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]).then((_) {
     runApp(
       ChangeNotifierProvider(
         create: (context) => AppStateProvider(),

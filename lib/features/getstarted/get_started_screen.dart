@@ -1,9 +1,11 @@
-import 'package:a2z_app/core/utils/StringsTexts.dart';
+import 'package:a2z_app/core/language/StringsTexts.dart';
+import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:a2z_app/features/getstarted/widgets/teacher_image_text_widget.dart';
 import 'package:a2z_app/features/getstarted/widgets/getstarted_button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 import '../../core/theming/text_style.dart';
 
@@ -26,7 +28,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerPr
     // Initialize animation controller
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 600),
     );
 
     // Initialize slide animation
@@ -61,6 +63,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerPr
           padding: EdgeInsetsDirectional.only(top: 30.0.h, bottom: 30.h),
           child: ListView(
             children: [
+
               AnimatedOpacity(
                 opacity: _visible ? 1.0 : 0.0,
                 duration: const Duration(milliseconds: 800),

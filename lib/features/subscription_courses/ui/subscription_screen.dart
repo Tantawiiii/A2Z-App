@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../core/helpers/spacing.dart';
 import '../../../core/networking/local/token_storage.dart';
 import '../../../core/theming/text_style.dart';
-import '../../../core/utils/StringsTexts.dart';
+import '../../../core/language/StringsTexts.dart';
 import '../../../core/widgets/build_button.dart';
 import '../../../core/widgets/build_text_form_field.dart';
 import '../service/subscription_service.dart';

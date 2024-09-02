@@ -23,11 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _controller = NotchBottomBarController(index: 2);
   int maxCount = 5;
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+
 
   /// widget list
   final List<Widget> bottomBarPages = [
@@ -35,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     const CoursesTap(),
     const HomeTap(),
      OurTeachersTap(),
-    // const CartTap(),
   ];
 
   @override
@@ -108,17 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   itemLabel: 'Teachers',
                 ),
-                // BottomBarItem(
-                //   inActiveItem: Icon(
-                //     Icons.add_shopping_cart,
-                //     color: Colors.black54,
-                //   ),
-                //   activeItem: Icon(
-                //     Icons.add_shopping_cart,
-                //     color: Colors.white,
-                //   ),
-                //   itemLabel: 'Cart',
-                // ),
               ],
               onTap: (index) {
                 /// perform action on tab change and to update pages you can update pages without pages
@@ -131,4 +115,12 @@ class _HomeScreenState extends State<HomeScreen> {
           : null,
     );
   }
+
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
 }

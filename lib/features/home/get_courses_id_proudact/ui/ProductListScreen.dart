@@ -4,7 +4,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/theming/text_style.dart';
-import '../../../../core/utils/StringsTexts.dart';
+import '../../../../core/language/StringsTexts.dart';
 import '../../../../core/utils/images_paths.dart';
 import '../../../subscription_courses/ui/subscription_screen.dart';
 import '../../courses/ui/course_details_screen.dart';

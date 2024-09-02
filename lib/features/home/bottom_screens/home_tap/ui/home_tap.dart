@@ -11,7 +11,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
-import '../../../../../core/utils/StringsTexts.dart';
+import '../../../../../core/language/StringsTexts.dart';
 import '../../../../../core/utils/images_paths.dart';
 import '../../../get_courses_id_proudact/ui/ProductListScreen.dart';
 import '../../profile_tap/services/graphql_getprofile_service.dart';

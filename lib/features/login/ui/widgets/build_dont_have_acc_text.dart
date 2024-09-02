@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/routing/routers.dart';
 import '../../../../core/theming/text_style.dart';
-import '../../../../core/utils/StringsTexts.dart';
+import '../../../../core/language/StringsTexts.dart';
 
 class DontHaveAccountText extends StatelessWidget {
   const DontHaveAccountText({super.key});
