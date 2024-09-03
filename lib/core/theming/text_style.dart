@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,7 +6,7 @@ import '../utils/colors_code.dart';
 
 class TextStyles {
   static TextStyle font26BlackBold = TextStyle(
-   fontFamily: 'Poppins',
+    fontFamily: 'Poppins',
     fontSize: 26.sp,
     fontWeight: FontWeightHelper.bold,
     color: ColorsCode.black,
@@ -26,13 +25,17 @@ class TextStyles {
     color: ColorsCode.mainBlue,
   );
 
-
   static TextStyle font24BlueBold = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 24.sp,
     fontWeight: FontWeightHelper.bold,
     color: ColorsCode.mainBlue,
-
+  );
+  static TextStyle font22BlueBold = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 22.sp,
+    fontWeight: FontWeightHelper.bold,
+    color: ColorsCode.mainBlue,
   );
 
   static TextStyle font20BlueBold = TextStyle(
@@ -40,7 +43,13 @@ class TextStyles {
     fontSize: 20.sp,
     fontWeight: FontWeightHelper.bold,
     color: ColorsCode.mainBlue,
+  );
 
+  static TextStyle font22RedBold = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 22.sp,
+    fontWeight: FontWeightHelper.bold,
+    color: ColorsCode.fillRed,
   );
 
   static TextStyle font13BlueNormal = TextStyle(
@@ -63,7 +72,6 @@ class TextStyles {
     fontWeight: FontWeightHelper.semiBold,
     color: ColorsCode.mainBlue,
   );
-
 
   static TextStyle font13GrayNormal = TextStyle(
     fontFamily: 'Poppins',
@@ -136,7 +144,12 @@ class TextStyles {
     fontWeight: FontWeightHelper.medium,
     color: ColorsCode.darkBlue,
   );
-
+  static TextStyle font18DarkBlueMedium = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 18.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: ColorsCode.darkBlue,
+  );
 
   static TextStyle font13DarkBlueRegular = TextStyle(
     fontFamily: 'Poppins',
@@ -152,4 +165,10 @@ class TextStyles {
     color: ColorsCode.white,
   );
 
+  static TextStyle font18WhiteSemiBold = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 18.sp,
+    fontWeight: FontWeightHelper.semiBold,
+    color: ColorsCode.white,
+  );
 }

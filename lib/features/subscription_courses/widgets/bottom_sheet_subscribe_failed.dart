@@ -32,15 +32,15 @@ class BottomSheetSubscribeFailed extends StatelessWidget {
               // to solve the load problem
               frameRate: FrameRate.max,
             ),
-            verticalSpace(16.h),
+            verticalSpace(12.h),
             Text(
               Language.instance.txtSubscribeFailed(),
-              style: TextStyles.font20BlueBold,
+              style: TextStyles.font22RedBold,
             ),
             verticalSpace(8.h),
             Text(
               Language.instance.txtSubscribeFailedDes(),
-              style: TextStyles.font13DarkBlueRegular,
+              style: TextStyles.font18DarkBlueMedium,
               textAlign: TextAlign.center,
             ),
             verticalSpace(20.h),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../a2z_app.dart';
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/theming/text_style.dart';
 import '../../../../core/utils/images_paths.dart';
@@ -69,7 +70,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     }
   }
 
-  void _showNoSubscriptionDialog(String courseId) { // Add parameter here
+  void _showNoSubscriptionDialog(String courseId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -80,7 +81,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               Image.asset(ImagesPaths.imgNoSubscribe, fit: BoxFit.cover,),
               SizedBox(height: 10.h),
               Text(
-                Language.instance.txtSubscribe(),
+                Language.instance.txtEmptySubscription(),
                 style: TextStyles.font14DarkBlueBold,
                 textAlign: TextAlign.center,
               ),
@@ -88,25 +89,22 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child:  Text(Language.instance.txtCancel()),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Subscribe',
+              child: Text(Language.instance.txtSubscribe(),
                   style: TextStyles.font14BlueSemiBold),
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    // Pass courseId to SubscriptionScreen
                     builder: (context) => SubscriptionScreen(courseId: courseId),
                   ),
-
                 );
-                print("courseId: "+courseId);
               },
             ),
           ],
@@ -114,41 +112,48 @@ class _ProductListScreenState extends State<ProductListScreen> {
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Products'),
-        backgroundColor: Colors.white,
-      ),
-      body: _isLoading
-          ? _buildShimmerLoader()
-          : _products.isNotEmpty
-          ? ListView.builder(
-        itemCount: _products.length,
-        itemBuilder: (context, index) {
-          final product = _products[index];
-          return GestureDetector(
-            onTap: () => _checkSubscription(product['id']),
-            child: ProductItemTile(product: product),
-          );
-        },
-      )
-          : Center(
-        child: Column(
-          children: [
-            Image.asset(
-              ImagesPaths.imgEmptyCourses,
-              width: 250.w,
-            ),
-            verticalSpace(20.h),
-            Text(
-              Language.instance.txtNoProductsAval(),
-              style: TextStyles.font13GrayNormal,
-            ),
-          ],
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
+
+    return Directionality(
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            Language.instance.txtCourses(),
+            style: TextStyles.font18DarkBlueMedium,
+          ),
+          backgroundColor: Colors.white,
         ),
+        body: _isLoading
+            ? _buildShimmerLoader()
+            : _products.isNotEmpty
+                ? ListView.builder(
+                    itemCount: _products.length,
+                    itemBuilder: (context, index) {
+                      final product = _products[index];
+                      return GestureDetector(
+                        onTap: () => _checkSubscription(product['id']),
+                        child: ProductItemTile(product: product),
+                      );
+                    },
+                  )
+                : Center(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          ImagesPaths.imgEmptyCourses,
+                          width: 250.w,
+                        ),
+                        verticalSpace(20.h),
+                        Text(
+                          Language.instance.txtNoProductsAval(),
+                          style: TextStyles.font13GrayNormal,
+                        ),
+                      ],
+                    ),
+                  ),
       ),
     );
   }

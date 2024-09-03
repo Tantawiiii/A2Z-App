@@ -34,12 +34,12 @@ class BottomSheetSubscribeSuccess extends StatelessWidget {
             verticalSpace(16.h),
             Text(
               Language.instance.txtSubscribeSuccess(),
-              style: TextStyles.font20BlueBold,
+              style: TextStyles.font22BlueBold,
             ),
             verticalSpace(8.h),
             Text(
               Language.instance.txtSubscribeSuccessDes(),
-              style: TextStyles.font13DarkBlueRegular,
+              style: TextStyles.font18DarkBlueMedium,
               textAlign: TextAlign.center,
             ),
             verticalSpace(20.h),

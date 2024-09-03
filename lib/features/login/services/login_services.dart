@@ -1,4 +1,5 @@
 import 'package:a2z_app/core/helpers/extentions.dart';
+import 'package:a2z_app/core/language/language.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:dio/dio.dart';
@@ -46,10 +47,10 @@ class AuthService {
         context.pushNamedAndRemoveUntil(Routes.homeScreen,
             predicate: (route) => false);
         print("Token saved: 2");
-        buildSuccessToast(context, "Successfully logged in A2Z");
+        buildSuccessToast(context, Language.instance.txtLoggedA2z());
       } else {
         // Show error message
-        buildFailedToast(context, 'Login failed, please try again with correct credentials');
+        buildFailedToast(context,Language.instance.txtLoginFailed() );
 
         if (kDebugMode) {
           print(
@@ -58,14 +59,14 @@ class AuthService {
       }
     } on DioError catch (e) {
       if (e.response != null) {
-        buildFailedToast(context, 'Error while logging in A2Z, Try Again');
+        buildFailedToast(context, Language.instance.txtLoginError());
 
         if (kDebugMode) {
           print(
               'Error response: ${e.response?.statusCode} ${e.response?.statusMessage}');
         }
       } else {
-        buildFailedToast(context, 'Error while logging in A2Z, Try Again');
+        buildFailedToast(context, Language.instance.txtLoginError());
 
         if (kDebugMode) {
           print('Error: ${e.message}');

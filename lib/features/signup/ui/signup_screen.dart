@@ -10,9 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/widgets/build_toast.dart';
+import '../../../a2z_app.dart';
 import '../../../core/language/language.dart';
 import '../../../core/networking/clients/get_grades_graphql_client.dart';
-import '../../../core/language/StringsTexts.dart';
 import '../../../core/utils/colors_code.dart';
 import 'widgets/already_have_account_text.dart';
 import 'widgets/build_sign_up_form.dart';
@@ -45,71 +45,75 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
-        child: ListView(
-          children: [
-            Text(
-              Language.instance.txtCreateAccount(),
-              style: TextStyles.font24BlueBold,
-            ),
-            verticalSpace(8),
-            Text(
-              Language.instance.txtCreateAccDes(),
-              style: TextStyles.font14GrayNormal,
-            ),
-            verticalSpace(36),
-            GestureDetector(
-              onTap: _pickImage,
-              child: CircleAvatar(
-                radius: 75,
-                backgroundImage: _profileImage != null
-                    ? null // Set to null since we're using the `child` property to display the image
-                    : const AssetImage('asset/images/teacher.png')
-                        as ImageProvider,
-                child: _profileImage == null
-                    ? const Icon(Icons.add_a_photo)
-                    : ClipOval(
-                        // Ensures the image fits the circular shape
-                        child: Image.file(
-                          File(_profileImage!.path),
-                          width: 140, // Adjust to your needs (2 * radius)
-                          height: 140,
-                          fit: BoxFit
-                              .cover, // Ensures the image covers the circle
-                        ),
-                      ),
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
+    return Directionality(
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+          child: ListView(
+            children: [
+              Text(
+                Language.instance.txtCreateAccount(),
+                style: TextStyles.font24BlueBold,
               ),
-            ),
-            verticalSpace(24),
-            SignupForm(
-              formKey: _formKey,
-              firstNameController: _firstNameController,
-              lastNameController: _lastNameController,
-              phoneNumberController: _phoneNumberController,
-              emailController: _emailController,
-              usernameController: _usernameController,
-              passwordController: _passwordController,
-              gradeController: _gradeController,
-            ),
-            verticalSpace(40),
-            _isLoading
-                ? const Center(
-                    child: SpinKitFadingCircle(
-                    color: ColorsCode.mainBlue,
-                    size: 50.0,
-                  ))
-                : BuildButton(
-                    textButton: Language.instance.txtCreateAccount(),
-                    textStyle: TextStyles.font16WhiteMedium,
-                    onPressed: _register,
-                  ),
-            verticalSpace(16),
-            const AlreadyHaveAccountText(),
-            verticalSpace(160),
-          ],
+              verticalSpace(8),
+              Text(
+                Language.instance.txtCreateAccDes(),
+                style: TextStyles.font14GrayNormal,
+              ),
+              verticalSpace(36),
+              GestureDetector(
+                onTap: _pickImage,
+                child: CircleAvatar(
+                  radius: 75,
+                  backgroundImage: _profileImage != null
+                      ? null // Set to null since we're using the `child` property to display the image
+                      : const AssetImage('asset/images/teacher.png')
+                          as ImageProvider,
+                  child: _profileImage == null
+                      ? const Icon(Icons.add_a_photo)
+                      : ClipOval(
+                          // Ensures the image fits the circular shape
+                          child: Image.file(
+                            File(_profileImage!.path),
+                            width: 140, // Adjust to your needs (2 * radius)
+                            height: 140,
+                            fit: BoxFit
+                                .cover, // Ensures the image covers the circle
+                          ),
+                        ),
+                ),
+              ),
+              verticalSpace(24),
+              SignupForm(
+                formKey: _formKey,
+                firstNameController: _firstNameController,
+                lastNameController: _lastNameController,
+                phoneNumberController: _phoneNumberController,
+                emailController: _emailController,
+                usernameController: _usernameController,
+                passwordController: _passwordController,
+                gradeController: _gradeController,
+              ),
+              verticalSpace(40),
+              _isLoading
+                  ? const Center(
+                      child: SpinKitFadingCircle(
+                      color: ColorsCode.mainBlue,
+                      size: 50.0,
+                    ))
+                  : BuildButton(
+                      textButton: Language.instance.txtCreateAccount(),
+                      textStyle: TextStyles.font18WhiteSemiBold,
+                      onPressed: _register,
+                    ),
+              verticalSpace(16),
+              const AlreadyHaveAccountText(),
+              verticalSpace(160),
+            ],
+          ),
         ),
       ),
     );
@@ -251,13 +255,14 @@ class _SignupScreenState extends State<SignupScreen> {
         final succeeded = response['result']['succeeded'] as bool;
 
         if (succeeded) {
-          buildSuccessToast(context, "Successfully registered");
+          buildSuccessToast(context, Language.instance.txtSuccessRegister());
           context.pushNamed(Routes.loginScreen);
         } else {
           final errors = response['result']['errors'] as List<dynamic>;
           for (var error in errors) {
             print('Error: ${error['description']}');
-            buildFailedToast(context, "${error['description']}");
+
+            buildFailedToast(context, Language.instance.txtFailedRegister());
           }
         }
       }

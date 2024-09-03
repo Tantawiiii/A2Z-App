@@ -19,7 +19,6 @@ class Language extends ChangeNotifier {
     _lang = lang;
   }
 
-
   titleOnBoard1() {
     if (getLanguage() == 'EN') {
       return "Discover Your Learning Journey";
@@ -116,7 +115,6 @@ class Language extends ChangeNotifier {
     }
   }
 
-
   txtWelcomeBack() {
     if (getLanguage() == 'EN') {
       return "Welcome Back";
@@ -124,7 +122,6 @@ class Language extends ChangeNotifier {
       return "مرحبًا بعودتك";
     }
   }
-
 
   txtWelcome() {
     if (getLanguage() == 'EN') {
@@ -146,7 +143,7 @@ class Language extends ChangeNotifier {
     if (getLanguage() == 'EN') {
       return "Email";
     } else if (getLanguage() == 'AR') {
-      return "بريد إلكتروني";
+      return "البريد الالكتروني";
     }
   }
 
@@ -189,7 +186,6 @@ class Language extends ChangeNotifier {
       return "الرجاء إدخال كلمة مرور صالحة.";
     }
   }
-
 
   txtDontHaveAcc() {
     if (getLanguage() == 'EN') {
@@ -267,7 +263,7 @@ class Language extends ChangeNotifier {
     if (getLanguage() == 'EN') {
       return "ex: 01** *** ****";
     } else if (getLanguage() == 'AR') {
-      return "مثال: 01** *** ****";
+      return "ex: 01** *** ****";
     }
   }
 
@@ -491,7 +487,7 @@ class Language extends ChangeNotifier {
     if (getLanguage() == 'EN') {
       return "Categories";
     } else if (getLanguage() == 'AR') {
-      return "الفئات";
+      return "المواد";
     }
   }
 
@@ -553,9 +549,9 @@ class Language extends ChangeNotifier {
 
   txtSubscribeDes() {
     if (getLanguage() == 'EN') {
-      return "Subscription Codes App makes the learner enrollment process faster and more automated.";
+      return "Please enter the subscription code to enjoy an excellent educational course with us.";
     } else if (getLanguage() == 'AR') {
-      return "تطبيق رموز الاشتراك يجعل عملية تسجيل المتعلم أسرع وأكثر تلقائية.";
+      return "أدخل كود الاشتراك من فضلك لكى تستمتع معنا ب دوره تعليميه ممتازه.";
     }
   }
 
@@ -585,9 +581,9 @@ class Language extends ChangeNotifier {
 
   txtSubscribeFailedDes() {
     if (getLanguage() == 'EN') {
-      return "You have failed to subscribe to the course.";
+      return "You have failed to subscribe to the course.Try again please";
     } else if (getLanguage() == 'AR') {
-      return "لقد فشلت في الاشتراك في الدورة.";
+      return "لقد فشلت في الاشتراك في الدورة. من فضلك حاول مره اخرى";
     }
   }
 
@@ -595,7 +591,7 @@ class Language extends ChangeNotifier {
     if (getLanguage() == 'EN') {
       return "No categories available";
     } else if (getLanguage() == 'AR') {
-      return "لا توجد فئات متاحة";
+      return "لا توجد مواد متاحة";
     }
   }
 
@@ -603,7 +599,7 @@ class Language extends ChangeNotifier {
     if (getLanguage() == 'EN') {
       return "No products available.";
     } else if (getLanguage() == 'AR') {
-      return "لا توجد منتجات متاحة.";
+      return "لا توجد كورسات متاحة.";
     }
   }
 
@@ -667,7 +663,7 @@ class Language extends ChangeNotifier {
     if (getLanguage() == 'EN') {
       return "Attachment";
     } else if (getLanguage() == 'AR') {
-      return "مرفق";
+      return "الملفات";
     }
   }
 
@@ -747,9 +743,10 @@ class Language extends ChangeNotifier {
     if (getLanguage() == 'EN') {
       return "You don\'t have any subscription for this course.";
     } else if (getLanguage() == 'AR') {
-      return "ليس لديك أي اشتراك لهذه الدورة.";
+      return "أنت لست مشترك حتى الأن فى هذه الدورة";
     }
   }
+
   txtSubscridsbe() {
     if (getLanguage() == 'EN') {
       return "You don\'t have any subscription for this course.";
@@ -774,5 +771,140 @@ class Language extends ChangeNotifier {
     }
   }
 
+  txtValidData() {
+    if (getLanguage() == 'EN') {
+      return "Please enter your valid Data.";
+    } else if (getLanguage() == 'AR') {
+      return "الرجاء إدخال بياناتك الصحيحة.";
+    }
+  }
+
+  txtSelectGrade() {
+    if (getLanguage() == 'EN') {
+      return "Select Grade";
+    } else if (getLanguage() == 'AR') {
+      return "أختر صفك الدراسى";
+    }
+  }
+
+  txtPleaseSelectGrade() {
+    if (getLanguage() == 'EN') {
+      return "Please select a grade.";
+    } else if (getLanguage() == 'AR') {
+      return "الرجاء اختيار صفك الدراسى";
+    }
+  }
+
+  txtAlreadyHaveAcc() {
+    if (getLanguage() == 'EN') {
+      return "Already have an account? ";
+    } else if (getLanguage() == 'AR') {
+      return "هل لديك حساب بالفعل؟ ";
+    }
+  }
+
+  txtSuccessRegister() {
+    if (getLanguage() == 'EN') {
+      return "Successfully registered";
+    } else if (getLanguage() == 'AR') {
+      return "تم التسجيل بنجاح.";
+    }
+  }
+
+  txtFailedRegister() {
+    if (getLanguage() == 'EN') {
+      return "Failed registered try again.";
+    } else if (getLanguage() == 'AR') {
+      return "فشل التسجيل حاول مره اخرى";
+    }
+  }
+
+  txtBothFields() {
+    if (getLanguage() == 'EN') {
+      return "Please fill in both fields.";
+    } else if (getLanguage() == 'AR') {
+      return "من فضلك إملأ البيانات.";
+    }
+  }
+
+  txtLoggedA2z() {
+    if (getLanguage() == 'EN') {
+      return "You have successfully logged in A2Z.";
+    } else if (getLanguage() == 'AR') {
+      return "لقد قمت بتسجيل الدخول بنجاح إلى A2Z.";
+    }
+  }
+
+  txtLoginFailed() {
+    if (getLanguage() == 'EN') {
+      return "The login failed, please try again with the correct credentials.";
+    } else if (getLanguage() == 'AR') {
+      return "فشل تسجيل الدخول، يرجى المحاولة مرة أخرى باستخدام البيانات الصحيحة";
+    }
+  }
+  txtLoginError() {
+    if (getLanguage() == 'EN') {
+      return "Error while logging in to A2Z, Try Again.";
+    } else if (getLanguage() == 'AR') {
+      return "خطأ أثناء تسجيل الدخول إلى A2Z، حاول مرة أخرى.";
+    }
+  }
+
+
+  txtProfile() {
+    if (getLanguage() == 'EN') {
+      return "Profile";
+    } else if (getLanguage() == 'AR') {
+      return "الشخصى";
+    }
+  }
+
+  txtHome() {
+    if (getLanguage() == 'EN') {
+      return "Home";
+    } else if (getLanguage() == 'AR') {
+      return "الرئسيه";
+    }
+  }
+
+  txtTeachers() {
+    if (getLanguage() == 'EN') {
+      return "Teachers";
+    } else if (getLanguage() == 'AR') {
+      return "مدرسينا";
+    }
+  }
+
+  txtFailedDownload() {
+    if (getLanguage() == 'EN') {
+      return "Failed to download";
+    } else if (getLanguage() == 'AR') {
+      return "فشل التنزيل";
+    }
+  }
+
+  txtSuccessDownload() {
+    if (getLanguage() == 'EN') {
+      return "Successfully downloaded";
+    } else if (getLanguage() == 'AR') {
+      return "تم التنزيل بنجاح";
+    }
+  }
+
+  txtCancel() {
+    if (getLanguage() == 'EN') {
+      return "Cancel";
+    } else if (getLanguage() == 'AR') {
+      return "الغاء";
+    }
+  }
+
+  txtSubscriptionCode() {
+    if (getLanguage() == 'EN') {
+      return "Subscription Code";
+    } else if (getLanguage() == 'AR') {
+      return "كود الأشتراك";
+    }
+  }
 
 }

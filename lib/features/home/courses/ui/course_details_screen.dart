@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../../../../a2z_app.dart';
 import '../../../../core/language/language.dart';
 import '../../../../core/networking/const/api_constants.dart';
 import '../../../../core/utils/colors_code.dart';
@@ -121,39 +122,43 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4, // Number of tabs
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(_productDetails?['name'] ?? 'Loading...'),
-          bottom: TabBar(
-            tabs: [
-              Tab(text: Language.instance.txtDetails()),
-              Tab(text: Language.instance.txtVideos()),
-              Tab(text: Language.instance.txtExams()),
-              Tab(text: Language.instance.txtAttachment()),
-            ],
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
+    return Directionality(
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      child: DefaultTabController(
+        length: 4, // Number of tabs
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(_productDetails?['name'] ?? 'Product'),
+            bottom: TabBar(
+              tabs: [
+                Tab(text: Language.instance.txtDetails()),
+                Tab(text: Language.instance.txtVideos()),
+                Tab(text: Language.instance.txtExams()),
+                Tab(text: Language.instance.txtAttachment()),
+              ],
+            ),
           ),
+          body: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _productDetails != null
+                  ? Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: TabBarView(
+                        children: [
+                          _buildDetailsTab(),
+                          _buildVideoList(),
+                          _buildExamsTab(),
+                          _buildAttachmentTab(),
+                        ],
+                      ),
+                    )
+                  : Center(
+                      child: Text(
+                        Language.instance.txtNoProducts(),
+                      ),
+                    ),
         ),
-        body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : _productDetails != null
-                ? Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: TabBarView(
-                      children: [
-                        _buildDetailsTab(),
-                        _buildVideoList(),
-                        _buildExamsTab(),
-                        _buildAttachmentTab(),
-                      ],
-                    ),
-                  )
-                : Center(
-                    child: Text(
-                      Language.instance.txtNoProducts(),
-                    ),
-                  ),
       ),
     );
   }
@@ -387,7 +392,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
 
           // Optionally, show a message that the download was successful
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Downloaded $fileName')),
+            SnackBar(content: Text(Language.instance.txtSuccessDownload())),
           );
         } else {
           print('Failed to get storage directory');
@@ -401,7 +406,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
     } catch (e) {
       print('Download failed: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to download $fileName')),
+        SnackBar(content: Text(Language.instance.txtFailedDownload())),
       );
     }
   }

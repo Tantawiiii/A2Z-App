@@ -189,7 +189,7 @@ class _SignupFormState extends State<SignupForm> {
             value: widget.gradeController.text.isEmpty
                 ? null
                 : widget.gradeController.text,
-            hint: Text('Select Grade'),
+            hint: Text(Language.instance.txtSelectGrade()),
             items: _dropdownItems,
             onChanged: (String? newValue) {
               setState(() {
@@ -198,7 +198,7 @@ class _SignupFormState extends State<SignupForm> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a grade';
+                return Language.instance.txtPleaseSelectGrade();
               }
               return null;
             },
