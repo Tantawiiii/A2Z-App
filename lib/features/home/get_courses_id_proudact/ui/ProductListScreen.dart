@@ -1,10 +1,10 @@
+import 'package:a2z_app/core/language/language.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/theming/text_style.dart';
-import '../../../../core/language/StringsTexts.dart';
 import '../../../../core/utils/images_paths.dart';
 import '../../../subscription_courses/ui/subscription_screen.dart';
 import '../../courses/ui/course_details_screen.dart';
@@ -80,7 +80,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               Image.asset(ImagesPaths.imgNoSubscribe, fit: BoxFit.cover,),
               SizedBox(height: 10.h),
               Text(
-                'You don\'t have any subscription for this course.',
+                Language.instance.txtSubscribe(),
                 style: TextStyles.font14DarkBlueBold,
                 textAlign: TextAlign.center,
               ),
@@ -144,7 +144,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             ),
             verticalSpace(20.h),
             Text(
-              StringTextsNames.txtNoProductsAval,
+              Language.instance.txtNoProductsAval(),
               style: TextStyles.font13GrayNormal,
             ),
           ],

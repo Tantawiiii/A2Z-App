@@ -8,10 +8,10 @@ import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/clients/dio_client_graphql.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
-import 'package:a2z_app/core/language/StringsTexts.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/language/language.dart';
 import '../services/graphql_getprofile_service.dart';
 import '../services/logout_services.dart';
 import '../widgets/build_profile_options.dart';
@@ -151,7 +151,7 @@ class _ProfileTapState extends State<ProfileTap> {
           verticalSpace(40.h),
           BuildProfileOptions(
             icon: Icons.lock_outline,
-            text: StringTextsNames.txtChangePass,
+            text: Language.instance.txtChangePass(),
             color: ColorsCode.gray,
             onTap: () {
               print('Change Password Tapped');
@@ -160,7 +160,7 @@ class _ProfileTapState extends State<ProfileTap> {
           ),
           BuildProfileOptions(
             icon: Icons.school,
-            text: StringTextsNames.txtExams,
+            text: Language.instance.txtExams(),
             color: ColorsCode.gray,
             onTap: () {
               print('My Exams Tapped');
@@ -168,7 +168,7 @@ class _ProfileTapState extends State<ProfileTap> {
           ),
           BuildProfileOptions(
             icon: Icons.help_outline,
-            text: StringTextsNames.txtFaq,
+            text: Language.instance.txtFaq(),
             color: ColorsCode.gray,
             onTap: () {
               print('FAQ Tapped');
@@ -176,7 +176,7 @@ class _ProfileTapState extends State<ProfileTap> {
           ),
           BuildProfileOptions(
             icon: Icons.info_outline,
-            text: StringTextsNames.txtAboutUs,
+            text: Language.instance.txtAboutUs(),
             color: ColorsCode.gray,
             onTap: () {
               print('About Us Tapped');
@@ -184,7 +184,7 @@ class _ProfileTapState extends State<ProfileTap> {
           ),
           BuildProfileOptions(
             icon: Icons.exit_to_app,
-            text: StringTextsNames.txtLogOut,
+            text: Language.instance.txtLogOut(),
             color: Colors.red,
             onTap: () {
               _logout_services.logout(context);

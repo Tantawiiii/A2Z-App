@@ -1,4 +1,5 @@
 import 'package:a2z_app/core/helpers/spacing.dart';
+import 'package:a2z_app/core/language/language.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -65,7 +66,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
               Image.asset(ImagesPaths.imgNoSubscribe, fit: BoxFit.cover,),
               SizedBox(height: 10.h),
               Text(
-                'You don\'t have any subscription for this course.',
+                Language.instance.txtEmptySubscription(),
                 style: TextStyles.font14DarkBlueBold,
                 textAlign: TextAlign.center,
               ),
@@ -79,7 +80,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
               },
             ),
             TextButton(
-              child: Text('Subscribe',
+              child: Text(Language.instance.txtSubscribe(),
                   style: TextStyles.font14BlueSemiBold),
               onPressed: () {
                 Navigator.of(context).pop();

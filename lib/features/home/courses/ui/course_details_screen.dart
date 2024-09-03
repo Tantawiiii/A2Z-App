@@ -8,12 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../../../../core/language/language.dart';
 import '../../../../core/networking/const/api_constants.dart';
 import '../../../../core/utils/colors_code.dart';
 import '../../../../core/utils/images_paths.dart';
 import '../../widgets/FullScreenVideoPlayer.dart';
 import 'package:path_provider/path_provider.dart';
-
 
 class CoursesDetailsScreen extends StatefulWidget {
   final String productId;
@@ -119,7 +119,6 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -127,12 +126,12 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(_productDetails?['name'] ?? 'Loading...'),
-          bottom: const TabBar(
+          bottom: TabBar(
             tabs: [
-              Tab(text: StringTextsNames.txtDetails),
-              Tab(text: StringTextsNames.txtVideos),
-              Tab(text: StringTextsNames.txtExams),
-              Tab(text: StringTextsNames.txtAttachment),
+              Tab(text: Language.instance.txtDetails()),
+              Tab(text: Language.instance.txtVideos()),
+              Tab(text: Language.instance.txtExams()),
+              Tab(text: Language.instance.txtAttachment()),
             ],
           ),
         ),
@@ -150,7 +149,11 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
                       ],
                     ),
                   )
-                : const Center(child: Text(StringTextsNames.txtNoProducts)),
+                : Center(
+                    child: Text(
+                      Language.instance.txtNoProducts(),
+                    ),
+                  ),
       ),
     );
   }
@@ -187,7 +190,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
                 style: const TextStyle(fontSize: 16),
               ),
             );
-          }).toList()
+          })
       ],
     );
   }
@@ -204,7 +207,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
           ),
           verticalSpace(12),
           Text(
-            StringTextsNames.txtEmptyExams,
+            Language.instance.txtEmptyExams(),
             style: TextStyles.font14BlueSemiBold,
             textAlign: TextAlign.center,
           ),
@@ -228,7 +231,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
             ),
             verticalSpace(12),
             Text(
-              StringTextsNames.txtEmptyDoc,
+              Language.instance.txtEmptyDoc(),
               style: TextStyles.font14BlueSemiBold,
               textAlign: TextAlign.center,
             ),
@@ -242,7 +245,8 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
         final asset = assets[index];
         return Bounce(
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             margin: const EdgeInsets.symmetric(vertical: 4.0),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -286,7 +290,6 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
         );
       },
     );
-
   }
 
   Widget _buildVideoList() {
@@ -316,7 +319,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
 
         return ExpansionTile(
           title: Text(
-            'Section $sectionNumber',
+            '${Language.instance.txtSection()} $sectionNumber',
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -392,7 +395,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
       } else {
         // Handle permission denied
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Storage permission denied')),
+          SnackBar(content: Text(Language.instance.txtStoragePermission())),
         );
       }
     } catch (e) {

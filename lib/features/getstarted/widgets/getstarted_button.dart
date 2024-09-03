@@ -1,10 +1,10 @@
 import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
-import 'package:a2z_app/core/language/StringsTexts.dart';
 import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:motion/motion.dart';
 
+import '../../../core/language/language.dart';
 import '../../../core/routing/routers.dart';
 import '../../../core/utils/colors_code.dart';
 
@@ -30,7 +30,7 @@ class GetStartedButton extends StatelessWidget {
             ),
           ),
           child: Text(
-            StringTextsNames.txGetStartedButton,
+            Language.instance.txGetStartedButton(),
             style: TextStyles.font16WhiteMedium,
           ),
         ),

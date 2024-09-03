@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
+import '../../core/language/language.dart';
 import '../../core/theming/text_style.dart';
 
 class GetStartedScreen extends StatefulWidget {
@@ -80,7 +81,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerPr
                       opacity: _visible ? 1.0 : 0.0,
                       duration: const Duration(milliseconds: 800),
                       child: Text(
-                        StringTextsNames.txtOnBoardingDescription,
+                        Language.instance.txtOnBoardingDescription(),
                         style: TextStyles.font13GrayNormal,
                         textAlign: TextAlign.center,
                       ),

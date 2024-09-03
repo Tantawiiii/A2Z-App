@@ -1,4 +1,5 @@
 import 'package:a2z_app/core/helpers/extentions.dart';
+import 'package:a2z_app/core/language/language.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:a2z_app/core/widgets/build_toast.dart';
@@ -16,13 +17,13 @@ void handleSuccessResponse(BuildContext context, dynamic data) {
 
 void handlePlainTextResponse(BuildContext context, String data) {
   if (data == "User does not exist") {
-    buildFailedToast(context, 'User does not exist. Please check your phone number.');
+    buildFailedToast(context, Language.instance.txtUserNotExist());
   } else {
     if (kDebugMode) {
       print("OTP >>> $data");
     }
     context.pushNamed(Routes.verifyOtpScreen);
-    buildSuccessToast(context, "OTP $data successful. Please check your email. ");
+    buildSuccessToast(context, Language.instance.txtOTPSuccessful());
   }
 }
 
@@ -39,18 +40,18 @@ void handleJsonResponse(BuildContext context, Map<String, dynamic> data) {
   }
 
   if (data['succeeded'] == false) {
-    buildFailedToast(context, 'User does not exist. Please check your phone number.');
+    buildFailedToast(context, Language.instance.txtUserNotExist());
   } else {
     if (kDebugMode) {
       print("OTP >>> $data");
     }
     context.pushNamed(Routes.verifyOtpScreen);
-    buildSuccessToast(context, "OTP request successful. Please check your email.");
+    buildSuccessToast(context,  Language.instance.txtOTPSuccessful());
   }
 }
 
 void handleFailedRequest(BuildContext context) {
-  buildFailedToast(context, 'Failed to request password reset. Please try again.');
+  buildFailedToast(context, Language.instance.txtFailedPasswordReset());
 }
 
 void handleError(BuildContext context, dynamic e) {

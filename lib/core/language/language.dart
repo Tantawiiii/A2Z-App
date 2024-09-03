@@ -695,5 +695,84 @@ class Language extends ChangeNotifier {
     }
   }
 
+  txtUserNotExist() {
+    if (getLanguage() == 'EN') {
+      return "User does not exist. Please check your phone number.";
+    } else if (getLanguage() == 'AR') {
+      return "المستخدم غير موجود. يرجى التحقق من رقم هاتفك.";
+    }
+  }
+
+  txtOTPSuccessful() {
+    if (getLanguage() == 'EN') {
+      return "OTP successful. Please check your email.";
+    } else if (getLanguage() == 'AR') {
+      return "تم تنفيذ عملية OTP بنجاح. يرجى التحقق من بريدك الإلكتروني.";
+    }
+  }
+
+  txtFailedPasswordReset() {
+    if (getLanguage() == 'EN') {
+      return "Failed to request password reset. Please try again.";
+    } else if (getLanguage() == 'AR') {
+      return "فشل طلب إعادة تعيين كلمة المرور. يرجى المحاولة مرة أخرى.";
+    }
+  }
+
+  txtValidPhoneNumber() {
+    if (getLanguage() == 'EN') {
+      return "Please enter a valid phone number";
+    } else if (getLanguage() == 'AR') {
+      return "الرجاء إدخال رقم هاتف صالح";
+    }
+  }
+
+  txtEnterOTPCode() {
+    if (getLanguage() == 'EN') {
+      return "Please enter a OTP Code";
+    } else if (getLanguage() == 'AR') {
+      return "الرجاء إدخال رمز OTP";
+    }
+  }
+
+  txtEnterNewPass() {
+    if (getLanguage() == 'EN') {
+      return "Please enter a new password";
+    } else if (getLanguage() == 'AR') {
+      return "الرجاء إدخال كلمة مرور جديدة";
+    }
+  }
+
+  txtEmptySubscription() {
+    if (getLanguage() == 'EN') {
+      return "You don\'t have any subscription for this course.";
+    } else if (getLanguage() == 'AR') {
+      return "ليس لديك أي اشتراك لهذه الدورة.";
+    }
+  }
+  txtSubscridsbe() {
+    if (getLanguage() == 'EN') {
+      return "You don\'t have any subscription for this course.";
+    } else if (getLanguage() == 'AR') {
+      return "ليس لديك أي اشتراك لهذه الدورة.";
+    }
+  }
+
+  txtSection() {
+    if (getLanguage() == 'EN') {
+      return "Section";
+    } else if (getLanguage() == 'AR') {
+      return "الفصل";
+    }
+  }
+
+  txtStoragePermission() {
+    if (getLanguage() == 'EN') {
+      return "Storage permission denied";
+    } else if (getLanguage() == 'AR') {
+      return "تم رفض إذن التخزين";
+    }
+  }
+
 
 }
