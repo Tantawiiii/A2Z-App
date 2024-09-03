@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/helpers/spacing.dart';
+import '../../../../../core/language/language.dart';
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
 import '../../../../../core/language/StringsTexts.dart';
@@ -57,12 +58,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         child: ListView(
           children: [
             Text(
-              StringTextsNames.txtChangePass,
+              Language.instance.txtChangePass(),
               style: TextStyles.font24BlueBold,
             ),
             verticalSpace(8),
             Text(
-              StringTextsNames.txtChangePassDes,
+              Language.instance.txtChangePassDes(),
               style: TextStyles.font14GrayNormal,
             ),
             verticalSpace(42),
@@ -71,7 +72,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             //   hintText: _profileData?['userName'] ?? "Default Username",
             //   validator: (value) {
             //     if (value == null || value.isEmpty) {
-            //       return StringTextsNames.txtNameValid;
+            //       return Language.instance.txtNameValid;
             //     }
             //     return null;
             //   },
@@ -79,7 +80,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
            // verticalSpace(14),
             BuildTextFormField(
               controller: oldPasswordController,
-              hintText: StringTextsNames.txtOldPassword,
+              hintText: Language.instance.txtOldPassword(),
               isObscureText: isObscuredText,
               suffixIcon: GestureDetector(
                 onTap: () {
@@ -93,7 +94,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return StringTextsNames.txtPasswordIsValid;
+                  return Language.instance.txtPasswordIsValid;
                 }
                 return null;
               },
@@ -101,7 +102,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             verticalSpace(14),
             BuildTextFormField(
               controller: newPasswordController,
-              hintText: StringTextsNames.txtNewPassword,
+              hintText: Language.instance.txtNewPassword(),
               isObscureText: newIsObscuredText,
               suffixIcon: GestureDetector(
                 onTap: () {
@@ -115,14 +116,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return StringTextsNames.txtPasswordIsValid;
+                  return Language.instance.txtPasswordIsValid;
                 }
                 return null;
               },
             ),
             verticalSpace(50),
             BuildButton(
-              textButton: StringTextsNames.txtChangePass,
+              textButton: Language.instance.txtChangePass(),
               textStyle: TextStyles.font16WhiteMedium,
               onPressed: () {
                 changePassword(

@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../../core/language/language.dart';
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
 import '../../../../../core/language/StringsTexts.dart';
@@ -79,7 +80,7 @@ class _HomeTapState extends State<HomeTap> {
             )
                 : RichText(
               text: TextSpan(
-                text: '${StringTextsNames.txtWelcome}\n',
+                text: '${Language.instance.txtWelcome}\n',
                 style: TextStyles.font13GrayNormal,
                 children: <TextSpan>[
                   TextSpan(
@@ -92,11 +93,11 @@ class _HomeTapState extends State<HomeTap> {
             verticalSpace(8),
             RichText(
               text: TextSpan(
-                text: StringTextsNames.txtHowAre,
+                text: Language.instance.txtHowAre(),
                 style: TextStyles.font13GrayNormal,
                 children: <TextSpan>[
                   TextSpan(
-                    text: StringTextsNames.txtReady,
+                    text: Language.instance.txtReady(),
                     style: TextStyles.font13BlueSemiBold,
                   ),
                 ],
@@ -139,7 +140,7 @@ class _HomeTapState extends State<HomeTap> {
 
             verticalSpace(24),
             Text(
-              StringTextsNames.txtCategories,
+              Language.instance.txtCategories(),
               style: TextStyles.font14BlueSemiBold,
             ),
             verticalSpace(14),
@@ -214,7 +215,7 @@ class _HomeTapState extends State<HomeTap> {
                         ),
                         verticalSpace(20.h),
                         Text(
-                          StringTextsNames.txtNoCategoriesAval,
+                          Language.instance.txtNoCategoriesAval(),
                           style: TextStyles.font13GrayNormal,
                         ),
                       ],

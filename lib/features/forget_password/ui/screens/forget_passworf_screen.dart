@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/spacing.dart';
+import '../../../../core/language/language.dart';
 import '../../../../core/theming/text_style.dart';
 import '../../../../core/language/StringsTexts.dart';
 import '../../../../core/widgets/build_button.dart';
@@ -34,18 +35,18 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           child: ListView(
             children: [
               Text(
-                StringTextsNames.txtForgetPasswordTitle,
+                Language.instance.txtForgetPasswordTitle(),
                 style: TextStyles.font24BlueBold,
               ),
               verticalSpace(8),
               Text(
-                StringTextsNames.txtForgetPasswordDes,
+                Language.instance.txtForgetPasswordDes(),
                 style: TextStyles.font13GrayNormal,
               ),
               verticalSpace(42),
               BuildTextFormField(
                 controller: phoneNumberController,
-                hintText: StringTextsNames.txtHintValidPhoneNum,
+                hintText: Language.instance.txtHintValidPhoneNum(),
                 validator: (value) {
                   if (value == null ||
                       value.isEmpty ||
@@ -56,7 +57,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
               ),
               verticalSpace(160),
               BuildButton(
-                textButton: StringTextsNames.txtPasswordReset,
+                textButton: Language.instance.txtPasswordReset(),
                 textStyle: TextStyles.font16WhiteMedium,
                 onPressed: () {
                   final loginOrEmail = phoneNumberController.text;

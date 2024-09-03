@@ -31,12 +31,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     });
   }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _pageNotifier.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -136,5 +131,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _pageNotifier.dispose();
+    super.dispose();
   }
 }

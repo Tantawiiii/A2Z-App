@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/language/StringsTexts.dart';
+import '../../../../../core/language/language.dart';
 import '../../../../../core/widgets/build_text_form_field.dart';
 import '../widgets/our_teatchers_widgets.dart';
 
@@ -18,7 +18,7 @@ class OurTeachersTap extends StatelessWidget {
             padding: const EdgeInsets.only(top: 40.0, right: 12, left: 12,bottom: 24),
             child: BuildTextFormField(
               controller: _searchController,
-              hintText: StringTextsNames.txtHintSearch,
+              hintText: Language.instance.txtHintSearch(),
             ),
           ),
           Expanded(
