@@ -7,7 +7,9 @@ import 'package:a2z_app/core/language/StringsTexts.dart';
 import 'package:a2z_app/core/widgets/build_button.dart';
 import 'package:a2z_app/core/widgets/build_toast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import '../../../../a2z_app.dart';
 import '../../../../core/helpers/spacing.dart';
+import '../../../../core/language/language.dart';
 import '../../../../core/routing/routers.dart';
 import '../../services/login_services.dart';
 import '../widgets/build_dont_have_acc_text.dart';
@@ -67,89 +69,94 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h,),
-              child: ListView(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SlideTransition(
-                        position: _slideAnimation,
-                        child: FadeTransition(
-                          opacity: _fadeAnimation,
-                          child: Text(
-                            StringTextsNames.txtWelcomeBack,
-                            style: TextStyles.font24BlueBold,
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
+
+    return Directionality(
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h,),
+                child: ListView(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SlideTransition(
+                          position: _slideAnimation,
+                          child: FadeTransition(
+                            opacity: _fadeAnimation,
+                            child: Text(
+                              Language.instance.txtWelcomeBack(),
+                              style: TextStyles.font24BlueBold,
+                            ),
                           ),
                         ),
-                      ),
-                      verticalSpace(8),
-                      SlideTransition(
-                        position: _slideAnimation,
-                        child: FadeTransition(
-                          opacity: _fadeAnimation,
-                          child: Text(
-                            StringTextsNames.txtDescriptionLogin,
-                            style: TextStyles.font14GrayNormal,
+                        verticalSpace(8),
+                        SlideTransition(
+                          position: _slideAnimation,
+                          child: FadeTransition(
+                            opacity: _fadeAnimation,
+                            child: Text(
+                              Language.instance.txtDescriptionLogin(),
+                              style: TextStyles.font14GrayNormal,
+                            ),
                           ),
                         ),
-                      ),
-                      verticalSpace(44),
-                      SlideTransition(
-                        position: _slideAnimation,
-                        child: FadeTransition(
-                          opacity: _fadeAnimation,
-                          child: Column(
-                            children: [
-                              BuildEmailAndPassword(
-                                emailController: _usernameController,
-                                passwordController: _passwordController,
-                              ),
-                              verticalSpace(12),
-                              Align(
-                                alignment: AlignmentDirectional.centerEnd,
-                                child: InkWell(
-                                  child: Text(
-                                    StringTextsNames.txtForgetPassword,
-                                    style: TextStyles.font13BlueNormal,
-                                  ),
-                                  onTap: () {
-                                    context.pushNamed(Routes.forgetPasswordScreen);
-                                  },
+                        verticalSpace(44),
+                        SlideTransition(
+                          position: _slideAnimation,
+                          child: FadeTransition(
+                            opacity: _fadeAnimation,
+                            child: Column(
+                              children: [
+                                BuildEmailAndPassword(
+                                  emailController: _usernameController,
+                                  passwordController: _passwordController,
                                 ),
-                              ),
-                              verticalSpace(50),
-                              BuildButton(
-                                textButton: StringTextsNames.txtLogin,
-                                textStyle: TextStyles.font16WhiteMedium,
-                                onPressed: _login,
-                              ),
-                              verticalSpace(24),
-                              const DontHaveAccountText(),
-                              verticalSpace(50),
-                            ],
+                                verticalSpace(12),
+                                Align(
+                                  alignment: AlignmentDirectional.centerEnd,
+                                  child: InkWell(
+                                    child: Text(
+                                      Language.instance.txtForgetPassword(),
+                                      style: TextStyles.font13BlueNormal,
+                                    ),
+                                    onTap: () {
+                                      context.pushNamed(Routes.forgetPasswordScreen);
+                                    },
+                                  ),
+                                ),
+                                verticalSpace(50),
+                                BuildButton(
+                                  textButton: Language.instance.txtLogin(),
+                                  textStyle: TextStyles.font16WhiteMedium,
+                                  onPressed: _login,
+                                ),
+                                verticalSpace(24),
+                                const DontHaveAccountText(),
+                                verticalSpace(50),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            if (_isLoading)
-              const Center(
-                child: SpinKitCircle(
-                  color: ColorsCode.mainBlue,
-                  size: 50.0,
+                      ],
+                    ),
+                  ],
                 ),
               ),
-          ],
+              if (_isLoading)
+                const Center(
+                  child: SpinKitCircle(
+                    color: ColorsCode.mainBlue,
+                    size: 50.0,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

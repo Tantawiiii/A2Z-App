@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../core/language/language.dart';
+
 class BottomSheetSubscribeFailed extends StatelessWidget {
   const BottomSheetSubscribeFailed({super.key});
 
@@ -32,18 +34,18 @@ class BottomSheetSubscribeFailed extends StatelessWidget {
             ),
             verticalSpace(16.h),
             Text(
-              StringTextsNames.txtSubscribeFailed,
+              Language.instance.txtSubscribeFailed(),
               style: TextStyles.font20BlueBold,
             ),
             verticalSpace(8.h),
             Text(
-              StringTextsNames.txtSubscribeFailedDes,
+              Language.instance.txtSubscribeFailedDes(),
               style: TextStyles.font13DarkBlueRegular,
               textAlign: TextAlign.center,
             ),
             verticalSpace(20.h),
             BuildButton(
-              textButton: StringTextsNames.txtDone,
+              textButton: Language.instance.txtDone(),
               textStyle: TextStyles.font16WhiteMedium,
               onPressed: () {
                 // Close the dialog

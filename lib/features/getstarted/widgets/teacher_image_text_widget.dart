@@ -18,7 +18,6 @@ class TeacherImageTextWidget extends StatefulWidget {
 }
 
 class _TeacherImageTextWidgetState extends State<TeacherImageTextWidget> {
-  String currentLang = "";
 
   @override
   Widget build(BuildContext context) {
@@ -40,38 +39,6 @@ class _TeacherImageTextWidgetState extends State<TeacherImageTextWidget> {
           child: Image.asset(ImagesPaths.imgTeacher),
         ),
         Positioned(
-          top: 8,
-          left: 8,
-          child: Container(
-            width: 125,
-            height: 40,
-            child: LiteRollingSwitch(
-              value: true,
-              textOn: 'English',
-              textOff: 'Arabic',
-              colorOn: ColorsCode.mainBlue,
-              colorOff: ColorsCode.darkBlue,
-              iconOn: Icons.done,
-              iconOff: Icons.remove_circle_outline,
-              textSize: 14.0,
-              onChanged: (bool state) {
-                print('Current State of SWITCH IS: $state');
-
-                setState(() {
-                  if (state) {
-                    changeLanguage("en");
-                  } else {
-                    changeLanguage("ar");
-                  }
-                });
-              },
-              onTap: () {},
-              onDoubleTap: () {},
-              onSwipe: () {},
-            ),
-          ),
-        ),
-        Positioned(
           bottom: 40,
           left: 0,
           right: 0,
@@ -87,30 +54,5 @@ class _TeacherImageTextWidgetState extends State<TeacherImageTextWidget> {
     );
   }
 
-  changeLanguage(lang) async {
-    if (A2ZApp.getLocal(context).languageCode == 'ar') {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("language", "EN");
 
-      Language.instance.setLanguage("EN");
-      currentLang = "EN";
-      setState(() {});
-      Locale newLocale = const Locale('en');
-      A2ZApp.setLocale(context, newLocale);
-    } else {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("language", "AR");
-
-      Language.instance.setLanguage("AR");
-      currentLang = "AR";
-      setState(() {});
-      Locale newLocale = const Locale('ar');
-      A2ZApp.setLocale(context, newLocale);
-    }
-
-    // setState(() {
-    //   //EasyLoading.showSuccess("Changed");
-    //   Phoenix.rebirth(context);
-    // });
-  }
 }

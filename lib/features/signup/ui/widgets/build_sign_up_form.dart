@@ -5,6 +5,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/spacing.dart';
+import '../../../../core/language/language.dart';
 import '../../../../core/widgets/build_text_form_field.dart';
 import '../../../login/ui/widgets/build_password_validatons.dart';
 import '../../helper/fetch_grades.dart';
@@ -98,10 +99,10 @@ class _SignupFormState extends State<SignupForm> {
                 child: BuildTextFormField(
                   inputType: TextInputType.text,
                   controller: widget.firstNameController,
-                  hintText: StringTextsNames.txtFirstName,
+                  hintText: Language.instance.txtFirstName(),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return StringTextsNames.txtFirstNameValid;
+                      return Language.instance.txtFirstNameValid;
                     }
                   },
                 ),
@@ -111,10 +112,10 @@ class _SignupFormState extends State<SignupForm> {
                 child: BuildTextFormField(
                   inputType: TextInputType.text,
                   controller: widget.lastNameController,
-                  hintText: StringTextsNames.txtLastName,
+                  hintText: Language.instance.txtLastName(),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return StringTextsNames.txtLastNameValid;
+                      return Language.instance.txtLastNameValid;
                     }
                   },
                 ),
@@ -124,46 +125,46 @@ class _SignupFormState extends State<SignupForm> {
           verticalSpace(18),
           BuildTextFormField(
             controller: widget.usernameController,
-            hintText: StringTextsNames.txtUserName,
+            hintText: Language.instance.txtUserName(),
             inputType: TextInputType.text,
             validator: (value) {
               if (value == null || value.isEmpty
                   //|| !AppRegex.isPhoneNumValid(value)
                   ) {
-                return StringTextsNames.txtUserName;
+                return Language.instance.txtUserName;
               }
             },
           ),
           verticalSpace(18),
           BuildTextFormField(
             controller: widget.phoneNumberController,
-            hintText: StringTextsNames.txtPhoneNumber,
+            hintText: Language.instance.txtPhoneNumber(),
             inputType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty
                   //|| !AppRegex.isPhoneNumValid(value)
                   ) {
-                return StringTextsNames.txtHintValidPhoneNum;
+                return Language.instance.txtHintValidPhoneNum;
               }
             },
           ),
           verticalSpace(18),
           BuildTextFormField(
             controller: widget.emailController,
-            hintText: StringTextsNames.txtEmail,
+            hintText: Language.instance.txtEmail(),
             inputType: TextInputType.emailAddress,
             validator: (value) {
               if (value == null ||
                   value.isEmpty ||
                   !AppRegex.isEmailValid(value)) {
-                return StringTextsNames.txtEmailIsValid;
+                return Language.instance.txtEmailIsValid;
               }
             },
           ),
           verticalSpace(18),
           BuildTextFormField(
             controller: widget.passwordController,
-            hintText: StringTextsNames.txtPassword,
+            hintText: Language.instance.txtPassword(),
             isObscureText: isPasswordObscureText,
             suffixIcon: GestureDetector(
               onTap: () {
@@ -179,7 +180,7 @@ class _SignupFormState extends State<SignupForm> {
               if (value == null || value.isEmpty
                   // || !AppRegex.isPasswordValid(value)
                   ) {
-                return StringTextsNames.txtPasswordIsValid;
+                return Language.instance.txtPasswordIsValid;
               }
             },
           ),

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
+import '../../a2z_app.dart';
 import '../../core/language/language.dart';
 import '../../core/theming/text_style.dart';
 
@@ -58,47 +59,51 @@ class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsetsDirectional.only(top: 30.0.h, bottom: 30.h),
-          child: ListView(
-            children: [
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
 
-              AnimatedOpacity(
-                opacity: _visible ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 800),
-                child: SlideTransition(
-                  position: _slideAnimation,
-                  child: const TeacherImageTextWidget(),
+    return Directionality(
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(top: 30.0.h, bottom: 30.h),
+            child: ListView(
+              children: [
+                AnimatedOpacity(
+                  opacity: _visible ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 800),
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: const TeacherImageTextWidget(),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
-                child: Column(
-                  children: [
-                    AnimatedOpacity(
-                      opacity: _visible ? 1.0 : 0.0,
-                      duration: const Duration(milliseconds: 800),
-                      child: Text(
-                        Language.instance.txtOnBoardingDescription(),
-                        style: TextStyles.font13GrayNormal,
-                        textAlign: TextAlign.center,
+                Padding(
+                  padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
+                  child: Column(
+                    children: [
+                      AnimatedOpacity(
+                        opacity: _visible ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 800),
+                        child: Text(
+                          Language.instance.txtOnBoardingDescription(),
+                          style: TextStyles.font13GrayNormal,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 30.h),
-                    AnimatedOpacity(
-                      opacity: _visible ? 1.0 : 0.0,
-                      duration: const Duration(milliseconds: 800),
-                      child: SlideTransition(
-                        position: _slideAnimation,
-                        child: const GetStartedButton(),
+                      SizedBox(height: 30.h),
+                      AnimatedOpacity(
+                        opacity: _visible ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 800),
+                        child: SlideTransition(
+                          position: _slideAnimation,
+                          child: const GetStartedButton(),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

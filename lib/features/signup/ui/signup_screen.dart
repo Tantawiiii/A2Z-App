@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/widgets/build_toast.dart';
+import '../../../core/language/language.dart';
 import '../../../core/networking/clients/get_grades_graphql_client.dart';
 import '../../../core/language/StringsTexts.dart';
 import '../../../core/utils/colors_code.dart';
@@ -51,12 +52,12 @@ class _SignupScreenState extends State<SignupScreen> {
         child: ListView(
           children: [
             Text(
-              StringTextsNames.txtCreateAccount,
+              Language.instance.txtCreateAccount(),
               style: TextStyles.font24BlueBold,
             ),
             verticalSpace(8),
             Text(
-              StringTextsNames.txtCreateAccDes,
+              Language.instance.txtCreateAccDes(),
               style: TextStyles.font14GrayNormal,
             ),
             verticalSpace(36),
@@ -101,7 +102,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     size: 50.0,
                   ))
                 : BuildButton(
-                    textButton: StringTextsNames.txtCreateAccount,
+                    textButton: Language.instance.txtCreateAccount(),
                     textStyle: TextStyles.font16WhiteMedium,
                     onPressed: _register,
                   ),

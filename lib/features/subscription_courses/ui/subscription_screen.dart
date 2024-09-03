@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/helpers/spacing.dart';
+import '../../../core/language/language.dart';
 import '../../../core/networking/local/token_storage.dart';
 import '../../../core/theming/text_style.dart';
 import '../../../core/language/StringsTexts.dart';
@@ -55,7 +56,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          StringTextsNames.txtSubscribeAppBar,
+          Language.instance.txtSubscribeAppBar(),
           style: TextStyles.font18BlueSemiBold,
         ),
       ),
@@ -65,7 +66,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           children: <Widget>[
             verticalSpace(12),
             Text(
-              StringTextsNames.txtSubscribeDes,
+              Language.instance.txtSubscribeDes(),
               style: TextStyles.font14DarkBlueMedium,
             ),
             verticalSpace(50),
@@ -74,14 +75,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               controller: codeController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return StringTextsNames.txtValidateSubscriptionCode;
+                  return Language.instance.txtValidateSubscriptionCode;
                 }
                 return null;
               },
             ),
             verticalSpace(50),
             BuildButton(
-              textButton: StringTextsNames.txtSubscribe,
+              textButton: Language.instance.txtSubscribe(),
               textStyle: TextStyles.font16WhiteMedium,
               onPressed: _subscribe,
             ),
