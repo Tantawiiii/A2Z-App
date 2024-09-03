@@ -1,11 +1,8 @@
-import 'package:a2z_app/core/language/StringsTexts.dart';
-import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:a2z_app/features/getstarted/widgets/teacher_image_text_widget.dart';
 import 'package:a2z_app/features/getstarted/widgets/getstarted_button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 import '../../a2z_app.dart';
 import '../../core/language/language.dart';
@@ -18,7 +15,8 @@ class GetStartedScreen extends StatefulWidget {
   State<GetStartedScreen> createState() => _GetStartedScreenState();
 }
 
-class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerProviderStateMixin {
+class _GetStartedScreenState extends State<GetStartedScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
   bool _visible = false;
@@ -86,7 +84,9 @@ class _GetStartedScreenState extends State<GetStartedScreen> with SingleTickerPr
                         duration: const Duration(milliseconds: 800),
                         child: Text(
                           Language.instance.txtOnBoardingDescription(),
-                          style: TextStyles.font13GrayNormal,
+                          style: isArabic
+                              ? TextStyles.font15DarkBlueMedium
+                              : TextStyles.font13GrayNormal,
                           textAlign: TextAlign.center,
                         ),
                       ),

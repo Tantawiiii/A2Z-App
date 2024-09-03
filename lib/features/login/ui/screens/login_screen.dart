@@ -22,7 +22,8 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
@@ -66,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
@@ -79,7 +79,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           child: Stack(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.h,),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 24.h,
+                  vertical: 24.h,
+                ),
                 child: ListView(
                   children: [
                     Column(
@@ -126,16 +129,24 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                       style: TextStyles.font13BlueNormal,
                                     ),
                                     onTap: () {
-                                      context.pushNamed(Routes.forgetPasswordScreen);
+                                      context.pushNamed(
+                                          Routes.forgetPasswordScreen);
                                     },
                                   ),
                                 ),
                                 verticalSpace(50),
-                                BuildButton(
-                                  textButton: Language.instance.txtLogin(),
-                                  textStyle: TextStyles.font16WhiteMedium,
-                                  onPressed: _login,
-                                ),
+                                _isLoading
+                                    ? const Center(
+                                        child: SpinKitFadingCircle(
+                                        color: ColorsCode.mainBlue,
+                                        size: 50.0,
+                                      ))
+                                    : BuildButton(
+                                        textButton:
+                                            Language.instance.txtLogin(),
+                                        textStyle: TextStyles.font16WhiteMedium,
+                                        onPressed: _login,
+                                      ),
                                 verticalSpace(24),
                                 const DontHaveAccountText(),
                                 verticalSpace(50),
@@ -148,20 +159,12 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   ],
                 ),
               ),
-              if (_isLoading)
-                const Center(
-                  child: SpinKitCircle(
-                    color: ColorsCode.mainBlue,
-                    size: 50.0,
-                  ),
-                ),
             ],
           ),
         ),
       ),
     );
   }
-
 
   @override
   void dispose() {
@@ -186,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         _isLoading = false; // Stop loading after response
       });
     } else {
-      buildFailedToast(context, 'Please fill in both fields.');
+      buildFailedToast(context, Language.instance.txtBothFields());
     }
   }
 }

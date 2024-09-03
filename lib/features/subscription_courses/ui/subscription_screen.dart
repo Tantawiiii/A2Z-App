@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../../../a2z_app.dart';
 import '../../../core/helpers/spacing.dart';
 import '../../../core/language/language.dart';
-import '../../../core/networking/local/token_storage.dart';
 import '../../../core/theming/text_style.dart';
-import '../../../core/language/StringsTexts.dart';
 import '../../../core/widgets/build_button.dart';
 import '../../../core/widgets/build_text_form_field.dart';
 import '../service/subscription_service.dart';
@@ -53,40 +52,45 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          Language.instance.txtSubscribeAppBar(),
-          style: TextStyles.font18BlueSemiBold,
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
+
+    return Directionality(
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            Language.instance.txtSubscribeAppBar(),
+            style: TextStyles.font15DarkBlueMedium,
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: <Widget>[
-            verticalSpace(12),
-            Text(
-              Language.instance.txtSubscribeDes(),
-              style: TextStyles.font14DarkBlueMedium,
-            ),
-            verticalSpace(50),
-            BuildTextFormField(
-              hintText: 'Subscription Code',
-              controller: codeController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return Language.instance.txtValidateSubscriptionCode;
-                }
-                return null;
-              },
-            ),
-            verticalSpace(50),
-            BuildButton(
-              textButton: Language.instance.txtSubscribe(),
-              textStyle: TextStyles.font16WhiteMedium,
-              onPressed: _subscribe,
-            ),
-          ],
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: <Widget>[
+              verticalSpace(12),
+              Text(
+                Language.instance.txtSubscribeDes(),
+                style: TextStyles.font14DarkBlueMedium,
+              ),
+              verticalSpace(50),
+              BuildTextFormField(
+                hintText: Language.instance.txtSubscriptionCode(),
+                controller: codeController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return Language.instance.txtValidateSubscriptionCode;
+                  }
+                  return null;
+                },
+              ),
+              verticalSpace(50),
+              BuildButton(
+                textButton: Language.instance.txtSubscribe(),
+                textStyle: TextStyles.font18WhiteSemiBold,
+                onPressed: _subscribe,
+              ),
+            ],
+          ),
         ),
       ),
     );

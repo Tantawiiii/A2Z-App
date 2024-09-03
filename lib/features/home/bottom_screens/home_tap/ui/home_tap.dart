@@ -9,10 +9,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../../a2z_app.dart';
 import '../../../../../core/language/language.dart';
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
-import '../../../../../core/language/StringsTexts.dart';
 import '../../../../../core/utils/images_paths.dart';
 import '../../../get_courses_id_proudact/ui/ProductListScreen.dart';
 import '../../profile_tap/services/graphql_getprofile_service.dart';
@@ -46,182 +46,186 @@ class _HomeTapState extends State<HomeTap> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 24.w),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            _profileData == null
-                ? Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 200,
-                      height: 20,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      width: 150,
-                      height: 20,
-                      color: Colors.white,
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
+    return Directionality(
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 24.w),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              _profileData == null
+                  ? Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 200,
+                        height: 20,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        width: 150,
+                        height: 20,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+                  : RichText(
+                text: TextSpan(
+                  text: '${Language.instance.txtWelcome()}\n',
+                  style: TextStyles.font15DarkBlueMedium,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: (_profileData?['userName'] ?? ""),
+                      style: TextStyles.font18BlueSemiBold,
                     ),
                   ],
                 ),
               ),
-            )
-                : RichText(
-              text: TextSpan(
-                text: '${Language.instance.txtWelcome}\n',
-                style: TextStyles.font13GrayNormal,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: (_profileData?['userName'] ?? ""),
-                    style: TextStyles.font18BlueSemiBold,
-                  ),
-                ],
+              verticalSpace(8),
+              RichText(
+                text: TextSpan(
+                  text: Language.instance.txtHowAre(),
+                  style: TextStyles.font15DarkBlueMedium,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: Language.instance.txtReady(),
+                      style: TextStyles.font13BlueSemiBold,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            verticalSpace(8),
-            RichText(
-              text: TextSpan(
-                text: Language.instance.txtHowAre(),
-                style: TextStyles.font13GrayNormal,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: Language.instance.txtReady(),
-                    style: TextStyles.font13BlueSemiBold,
-                  ),
-                ],
-              ),
-            ),
-            verticalSpace(20),
-            _banners.isNotEmpty
-                ? SizedBox(
-              height: 150,
-              child: ListView.builder(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                itemCount: _banners.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: CachedNetworkImage(
-                      imageUrl: _banners[index],
-                      fit: BoxFit.cover,
-                      width: 300,
-                      height: 150,
-                      placeholder: (context, url) => Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          width: 300,
-                          height: 150,
-                          color: Colors.white,
+              verticalSpace(20),
+              _banners.isNotEmpty
+                  ? SizedBox(
+                height: 150,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _banners.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: CachedNetworkImage(
+                        imageUrl: _banners[index],
+                        fit: BoxFit.cover,
+                        width: 300,
+                        height: 150,
+                        placeholder: (context, url) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: 300,
+                            height: 150,
+                            color: Colors.white,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => SvgPicture.asset(
+                          ImagesPaths.logoImage,
                         ),
                       ),
-                      errorWidget: (context, url, error) => SvgPicture.asset(
-                        ImagesPaths.logoImage,
-                      ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
+              )
+                  : _buildShimmerBannerPlaceholder(),
+
+              verticalSpace(24),
+              Text(
+                Language.instance.txtCategories(),
+                style: TextStyles.font14BlueSemiBold,
               ),
-            )
-                : _buildShimmerBannerPlaceholder(),
+              verticalSpace(14),
+              _categories.isNotEmpty
+                  ? GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 2 / 2.5,
+                        mainAxisSpacing: 8.0,
+                        crossAxisSpacing: 8.0,
+                      ),
+                      itemCount: _categories.length,
+                      itemBuilder: (context, index) {
+                        final category = _categories[index];
+                        final categoryId = category['id']; // Get the category ID
 
-            verticalSpace(24),
-            Text(
-              Language.instance.txtCategories(),
-              style: TextStyles.font14BlueSemiBold,
-            ),
-            verticalSpace(14),
-            _categories.isNotEmpty
-                ? GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 2 / 2.5,
-                      mainAxisSpacing: 8.0,
-                      crossAxisSpacing: 8.0,
-                    ),
-                    itemCount: _categories.length,
-                    itemBuilder: (context, index) {
-                      final category = _categories[index];
-                      final categoryId = category['id']; // Get the category ID
-
-                      return GestureDetector(
-                        onTap: () {
-                          // Navigate to the ProductListScreen with the category ID
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductListScreen(categoryId: categoryId),
-                            ),
-                          );
-                        },
-                        child: SizedBox(
-                          height: 160.h,
-                          child: Card(
-                            elevation: 4,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  category['imgSrc'] != null
-                                      ? Image.network(
-                                          category['imgSrc'],
-                                          fit: BoxFit.cover,
-                                          height: 130,
-                                          width: double.infinity,
-                                        )
-                                      : SvgPicture.asset(
-                                          ImagesPaths.logoImage,
-                                          height: 110.h,
-                                          width: 90.w,
-                                        ),
-                                  verticalSpace(12.0),
-                                  Text(
-                                    category['name'],
-                                    textAlign: TextAlign.center,
-                                    style: TextStyles.font13BlueSemiBold,
-                                  ),
-                                ],
+                        return GestureDetector(
+                          onTap: () {
+                            // Navigate to the ProductListScreen with the category ID
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductListScreen(categoryId: categoryId),
+                              ),
+                            );
+                          },
+                          child: SizedBox(
+                            height: 160.h,
+                            child: Card(
+                              elevation: 4,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    category['imgSrc'] != null
+                                        ? Image.network(
+                                            category['imgSrc'],
+                                            fit: BoxFit.cover,
+                                            height: 130,
+                                            width: double.infinity,
+                                          )
+                                        : SvgPicture.asset(
+                                            ImagesPaths.logoImage,
+                                            height: 110.h,
+                                            width: 90.w,
+                                          ),
+                                    verticalSpace(12.0),
+                                    Text(
+                                      category['name'],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyles.font13BlueSemiBold,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  )
-                : Center(
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          ImagesPaths.imgEmptyCourses,
-                          width: 280.w,
-                        ),
-                        verticalSpace(20.h),
-                        Text(
-                          Language.instance.txtNoCategoriesAval(),
-                          style: TextStyles.font13GrayNormal,
-                        ),
-                      ],
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            ImagesPaths.imgEmptyCourses,
+                            width: 280.w,
+                          ),
+                          verticalSpace(20.h),
+                          Text(
+                            Language.instance.txtNoCategoriesAval(),
+                            style: TextStyles.font13GrayNormal,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     );

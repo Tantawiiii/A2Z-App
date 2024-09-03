@@ -1,4 +1,6 @@
 import 'package:a2z_app/core/helpers/extentions.dart';
+import 'package:a2z_app/core/helpers/spacing.dart';
+import 'package:a2z_app/core/language/language.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -16,11 +18,11 @@ class AlreadyHaveAccountText extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: 'Already have an account?',
+            text: Language.instance.txtAlreadyHaveAcc(),
             style: TextStyles.font13DarkBlueRegular,
           ),
           TextSpan(
-            text: ' Login',
+            text: Language.instance.txtLogin(),
             style: TextStyles.font13BlueSemiBold,
             recognizer: TapGestureRecognizer()
               ..onTap = () {

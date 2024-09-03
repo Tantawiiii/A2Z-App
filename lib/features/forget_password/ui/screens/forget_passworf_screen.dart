@@ -3,11 +3,11 @@ import 'package:a2z_app/features/forget_password/services/provider/app_state_pro
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../../../../a2z_app.dart';
 import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/language/language.dart';
 import '../../../../core/theming/text_style.dart';
-import '../../../../core/language/language.dart';
 import '../../../../core/widgets/build_button.dart';
 import '../../../../core/widgets/build_text_form_field.dart';
 import '../../services/network/password_reset_service.dart';
@@ -27,54 +27,59 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 30.h),
-          child: ListView(
-            children: [
-              Text(
-                Language.instance.txtForgetPasswordTitle(),
-                style: TextStyles.font24BlueBold,
-              ),
-              verticalSpace(8),
-              Text(
-                Language.instance.txtForgetPasswordDes(),
-                style: TextStyles.font13GrayNormal,
-              ),
-              verticalSpace(42),
-              BuildTextFormField(
-                controller: phoneNumberController,
-                hintText: Language.instance.txtHintValidPhoneNum(),
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      !AppRegex.isPhoneNumberValid(value)) {
-                    return 'Please enter a valid phone number';
-                  }
-                },
-              ),
-              verticalSpace(160),
-              BuildButton(
-                textButton: Language.instance.txtPasswordReset(),
-                textStyle: TextStyles.font16WhiteMedium,
-                onPressed: () {
-                  final loginOrEmail = phoneNumberController.text;
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
 
-                  if (loginOrEmail.isNotEmpty) {
-                    _passwordResetService.requestPasswordReset(
-                        context, loginOrEmail);
+    return Directionality(
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 30.h),
+            child: ListView(
+              children: [
+                Text(
+                  Language.instance.txtForgetPasswordTitle(),
+                  style: TextStyles.font24BlueBold,
+                ),
+                verticalSpace(8),
+                Text(
+                  Language.instance.txtForgetPasswordDes(),
+                  style: TextStyles.font13GrayNormal,
+                ),
+                verticalSpace(42),
+                BuildTextFormField(
+                  controller: phoneNumberController,
+                  hintText: Language.instance.txtHintValidPhoneNum(),
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        !AppRegex.isPhoneNumberValid(value)) {
+                      return Language.instance.txtHintValidPhoneNum;
+                    }
+                  },
+                ),
+                verticalSpace(160),
+                BuildButton(
+                  textButton: Language.instance.txtPasswordReset(),
+                  textStyle: TextStyles.font18WhiteSemiBold,
+                  onPressed: () {
+                    final loginOrEmail = phoneNumberController.text;
 
-                    // Update state with the new data
-                    Provider.of<AppStateProvider>(context, listen: false)
-                        .setData(loginOrEmail);
-                  } else {
-                    buildSuccessToast(context, "please enter your valid Data.");
-                  }
-                },
-              )
-            ],
+                    if (loginOrEmail.isNotEmpty) {
+                      _passwordResetService.requestPasswordReset(
+                          context, loginOrEmail);
+
+                      // Update state with the new data
+                      Provider.of<AppStateProvider>(context, listen: false)
+                          .setData(loginOrEmail);
+                    } else {
+                      buildSuccessToast(context, Language.instance.txtValidData());
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),

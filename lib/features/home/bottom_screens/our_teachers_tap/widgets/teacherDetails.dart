@@ -55,7 +55,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
     }
   }
 
-  void _showNoSubscriptionDialog(String courseId) { // Add parameter here
+  void _showNoSubscriptionDialog(String courseId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -74,7 +74,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child:  Text(Language.instance.txtCancel()),
               onPressed: () {
                 Navigator.of(context).pop();
               },
