@@ -3,9 +3,9 @@ import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/language/language.dart';
 import '../../../../core/routing/routers.dart';
 import '../../../../core/theming/text_style.dart';
-import '../../../../core/language/StringsTexts.dart';
 
 class DontHaveAccountText extends StatelessWidget {
   const DontHaveAccountText({super.key});
@@ -17,11 +17,11 @@ class DontHaveAccountText extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: StringTextsNames.txtDontHaveAcc,
+            text: Language.instance.txtDontHaveAcc(),
             style: TextStyles.font13DarkBlueRegular,
           ),
           TextSpan(
-            text: StringTextsNames.txtSignUp,
+            text: Language.instance.txtSignUp(),
             style: TextStyles.font13BlueSemiBold,
             recognizer: TapGestureRecognizer()
               ..onTap = () {

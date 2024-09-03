@@ -1,11 +1,17 @@
+import 'dart:async';
+
 import 'package:a2z_app/core/helpers/extentions.dart';
 import 'package:a2z_app/core/routing/routers.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:a2z_app/features/onboarding/widgets/build_onboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../a2z_app.dart';
+import '../../../core/language/language.dart';
 import '../../../core/theming/text_style.dart';
 import '../../../core/language/StringsTexts.dart';
 import '../../../core/utils/images_paths.dart';
@@ -22,6 +28,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final ValueNotifier<double> _pageNotifier = ValueNotifier<double>(0.0);
 
   bool onLastPage = false;
+  String currentLang = "";
+
 
   @override
   void initState() {
@@ -29,110 +37,181 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     _pageController.addListener(() {
       _pageNotifier.value = _pageController.page ?? 0.0;
     });
+    super.initState();
   }
-
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorsCode.white,
-      body: Container(
-        padding: EdgeInsetsDirectional.only(bottom: 40.h, start: 26.h, end: 26.h),
-        child: Stack(
-          children: [
-            AnimatedBuilder(
-              animation: _pageNotifier,
-              builder: (context, child) {
-                return PageView(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      onLastPage = (index == 2);
-                    });
-                  },
-                  children: [
-                    for (int i = 0; i < 3; i++)
-                      Transform.translate(
-                        offset: Offset(
-                          0,
-                          50 * (_pageNotifier.value - i).clamp(-1, 1),
-                        ),
-                        child: Opacity(
-                          opacity: 1 - (_pageNotifier.value - i).abs().clamp(0.0, 1.0),
-                          child: [
-                            const BuildOnboardingScreen(
-                              svgBodyPath: ImagesPaths.logoImage,
-                              titleBoard: StringTextsNames.titleOnBoard1,
-                              desBoard: StringTextsNames.desOnBoard1,
-                            ),
-                            const BuildOnboardingScreen(
-                              svgBodyPath: ImagesPaths.animBodyOnBoarding2,
-                              titleBoard: StringTextsNames.titleOnBoard2,
-                              desBoard: StringTextsNames.desOnBoard2,
-                            ),
-                            const BuildOnboardingScreen(
-                              svgBodyPath: ImagesPaths.animBodyOnBoarding3,
-                              titleBoard: StringTextsNames.titleOnBoard3,
-                              desBoard: StringTextsNames.desOnBoard3,
-                            ),
-                          ][i],
-                        ),
-                      ),
-                  ],
-                );
-              },
-            ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
+
+    return Directionality(
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+            backgroundColor: ColorsCode.white,
+            body: Container(
+              padding: EdgeInsetsDirectional.only(
+                bottom: 40.h,
+                start: isArabic ? 26.h : 26.h,
+                end: isArabic ? 26.h : 26.h,
+              ),
+              child: Stack(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      context.pushNamed(Routes.getStartedScreen);
-                    },
-                    child: Text(
-                      StringTextsNames.txtSkip,
-                      style: TextStyles.font18BlueSemiBold,
-                    ),
-                  ),
-                  SmoothPageIndicator(
-                    controller: _pageController,
-                    count: 3,
-                    effect: const ExpandingDotsEffect(),
-                  ),
-                  onLastPage
-                      ? GestureDetector(
-                    onTap: () {
-                      context.pushNamed(Routes.getStartedScreen);
-                    },
-                    child: Text(
-                      StringTextsNames.txtDone,
-                      style: TextStyles.font18BlueSemiBold,
-                    ),
-                  )
-                      : GestureDetector(
-                    onTap: () {
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeIn,
+                  AnimatedBuilder(
+                    animation: _pageNotifier,
+                    builder: (context, child) {
+                      return PageView(
+                        controller: _pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            onLastPage = (index == 2);
+                          });
+                        },
+                        children: [
+                          for (int i = 0; i < 3; i++)
+                            Transform.translate(
+                              offset: Offset(
+                                0,
+                                50 * (_pageNotifier.value - i).clamp(-1, 1),
+                              ),
+                              child: Opacity(
+                                opacity: 1 - (_pageNotifier.value - i).abs().clamp(0.0, 1.0),
+                                child: [
+                                   BuildOnboardingScreen(
+                                    svgBodyPath: ImagesPaths.logoImage,
+                                    titleBoard: Language.instance.titleOnBoard1(),
+                                    desBoard: Language.instance.desOnBoard1(),
+                                  ),
+                                   BuildOnboardingScreen(
+                                    svgBodyPath: ImagesPaths.animBodyOnBoarding2,
+                                    titleBoard: Language.instance.titleOnBoard2(),
+                                    desBoard: Language.instance.desOnBoard2(),
+                                  ),
+                                   BuildOnboardingScreen(
+                                    svgBodyPath: ImagesPaths.animBodyOnBoarding3,
+                                    titleBoard: Language.instance.titleOnBoard3(),
+                                    desBoard: Language.instance.desOnBoard3(),
+                                  ),
+                                ][i],
+                              ),
+                            ),
+                        ],
                       );
                     },
-                    child: Text(
-                      StringTextsNames.txtNext,
-                      style: TextStyles.font18BlueSemiBold,
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            context.pushNamed(Routes.getStartedScreen);
+                          },
+                          child: Text(
+                            Language.instance.txtSkip(),
+                            style: TextStyles.font18BlueSemiBold,
+                          ),
+                        ),
+                        SmoothPageIndicator(
+                          controller: _pageController,
+                          count: 3,
+                          effect: const ExpandingDotsEffect(),
+                        ),
+                        onLastPage
+                            ? GestureDetector(
+                          onTap: () {
+                            context.pushNamed(Routes.getStartedScreen);
+                          },
+                          child: Text(
+                            Language.instance.txtDone(),
+                            style: TextStyles.font18BlueSemiBold,
+                          ),
+                        )
+                            : GestureDetector(
+                          onTap: () {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeIn,
+                            );
+                          },
+                          child: Text(
+                            Language.instance.txtNext(),
+                            style: TextStyles.font18BlueSemiBold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  Positioned(
+                    top: 50.h,
+                    right: isArabic ? 8.w :  null,
+                    left: isArabic ?  null : 8.w,
+                    child: SizedBox(
+                      width: 130,
+                      height: 40,
+                      child: LiteRollingSwitch(
+                        value: false,
+                        textOn: 'English',
+                        textOff: 'Arabic',
+                        colorOn: ColorsCode.mainBlue,
+                        colorOff: ColorsCode.darkBlue,
+                        iconOn: Icons.done,
+                        iconOff: Icons.remove_circle_outline,
+                        textSize: 14.0,
+                        width: 55,
+                        onChanged: (bool state) {
+                          print('Current State of SWITCH IS: $state');
+                          setState(() {
+                            if (state) {
+                              changeLanguage("en");
+                            } else {
+                              changeLanguage("ar");
+                            }
+                          });
+                        },
+                        onTap: () {},
+                        onDoubleTap: () {},
+                        onSwipe: () {},
+                      ),
+                    ),
+                  ),
+
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 
+
+  changeLanguage(lang) async {
+    if (A2ZApp.getLocal(context).languageCode == 'ar') {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("language", "EN");
+
+      Language.instance.setLanguage("EN");
+      currentLang = "EN";
+      setState(() {});
+      Locale newLocale = const Locale('en');
+      A2ZApp.setLocale(context, newLocale);
+    } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("language", "AR");
+
+      Language.instance.setLanguage("AR");
+      currentLang = "AR";
+      setState(() {});
+      Locale newLocale = const Locale('ar');
+      A2ZApp.setLocale(context, newLocale);
+    }
+
+    // setState(() {
+    //   //EasyLoading.showSuccess("Changed");
+    //   Phoenix.rebirth(context);
+    // });
+  }
   @override
   void dispose() {
     _pageController.dispose();

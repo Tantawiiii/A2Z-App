@@ -7,7 +7,7 @@ import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/language/language.dart';
 import '../../../../core/theming/text_style.dart';
-import '../../../../core/language/StringsTexts.dart';
+import '../../../../core/language/language.dart';
 import '../../../../core/widgets/build_button.dart';
 import '../../../../core/widgets/build_text_form_field.dart';
 import '../../services/network/password_reset_service.dart';

@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../core/language/language.dart';
+
 class BottomSheetSubscribeSuccess extends StatelessWidget {
   const BottomSheetSubscribeSuccess({super.key});
 
@@ -31,18 +33,18 @@ class BottomSheetSubscribeSuccess extends StatelessWidget {
             ),
             verticalSpace(16.h),
             Text(
-              StringTextsNames.txtSubscribeSuccess,
+              Language.instance.txtSubscribeSuccess(),
               style: TextStyles.font20BlueBold,
             ),
             verticalSpace(8.h),
             Text(
-              StringTextsNames.txtSubscribeSuccessDes,
+              Language.instance.txtSubscribeSuccessDes(),
               style: TextStyles.font13DarkBlueRegular,
               textAlign: TextAlign.center,
             ),
             verticalSpace(20.h),
             BuildButton(
-              textButton: StringTextsNames.txtDone,
+              textButton: Language.instance.txtDone(),
               textStyle: TextStyles.font16WhiteMedium,
               onPressed: () {
                 context.pushNamedAndRemoveUntil(Routes.homeScreen, predicate:  (route) => false);

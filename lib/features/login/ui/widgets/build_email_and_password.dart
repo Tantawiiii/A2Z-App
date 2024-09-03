@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/helpers/app_regex.dart';
 import '../../../../core/helpers/spacing.dart';
-import '../../../../core/language/StringsTexts.dart';
+import '../../../../core/language/language.dart';
 import '../../../../core/widgets/build_text_form_field.dart';
 import 'build_password_validatons.dart';
 
@@ -52,10 +52,10 @@ class _BuildEmailAndPasswordState extends State<BuildEmailAndPassword> {
         children: [
           BuildTextFormField(
             controller: widget.emailController,
-            hintText: StringTextsNames.txtEmail,
+            hintText: Language.instance.txtEmail(),
             validator: (value) {
               if (value == null || value.isEmpty || !AppRegex.isEmailValid(value)) {
-                return StringTextsNames.txtEmailIsValid;
+                return Language.instance.txtEmailIsValid;
               }
               return null;
             },
@@ -63,7 +63,7 @@ class _BuildEmailAndPasswordState extends State<BuildEmailAndPassword> {
           verticalSpace(18),
           BuildTextFormField(
             controller: widget.passwordController,
-            hintText: StringTextsNames.txtPassword,
+            hintText: Language.instance.txtPassword(),
             isObscureText: isObscuredText,
             suffixIcon: GestureDetector(
               onTap: () {
@@ -77,7 +77,7 @@ class _BuildEmailAndPasswordState extends State<BuildEmailAndPassword> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return StringTextsNames.txtPasswordIsValid;
+                return Language.instance.txtPasswordIsValid;
               }
               return null;
             },

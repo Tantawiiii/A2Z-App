@@ -8,7 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../../core/language/StringsTexts.dart';
+import '../../../../core/language/language.dart';
 import '../../../../core/language/language.dart';
 import '../../../../core/utils/images_paths.dart';
 import '../../courses/ui/course_details_screen.dart';
