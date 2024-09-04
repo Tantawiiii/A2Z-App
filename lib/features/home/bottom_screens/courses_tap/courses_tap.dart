@@ -10,10 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../a2z_app.dart';
 import '../../../../core/language/language.dart';
-import '../../../../core/language/language.dart';
 import '../../../../core/utils/images_paths.dart';
-import '../../courses/ui/course_details_screen.dart';
-import '../../widgets/build_empty_courses.dart';
+import '../../../courses/ui/course_details_screen.dart';
+import '../../../courses/widgets/build_empty_courses.dart';
 
 class CoursesTap extends StatefulWidget {
   const CoursesTap({Key? key}) : super(key: key);

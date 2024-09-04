@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:a2z_app/core/language/language.dart';
+import 'package:a2z_app/features/no_internet/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../a2z_app.dart';
 import '../../../../core/helpers/spacing.dart';
 import '../../../../core/theming/text_style.dart';
 import '../../../../core/utils/images_paths.dart';
-import '../../../subscription_courses/ui/subscription_screen.dart';
 import '../../courses/ui/course_details_screen.dart';
+import '../../subscription_courses/ui/subscription_screen.dart';
 import '../service/product_service.dart';
 import '../widget/product_item_tile.dart';
 
@@ -25,10 +29,44 @@ class _ProductListScreenState extends State<ProductListScreen> {
   List<dynamic> _products = [];
   bool _isLoading = true;
 
+  // Internet Connection
+  bool isConnectedToInternet = true;
+  StreamSubscription? _internetConnectionStreamSubscription;
+
   @override
   void initState() {
     super.initState();
     _fetchProducts();
+
+
+    // start checker internet connection
+    _internetConnectionStreamSubscription =
+        InternetConnection().onStatusChange.listen((event) {
+          switch (event) {
+            case InternetStatus.connected:
+              setState(() {
+                isConnectedToInternet = true;
+              });
+              break;
+            case InternetStatus.disconnected:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+            default:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+          }
+        });
+
+  }
+
+  @override
+  void dispose() {
+    _internetConnectionStreamSubscription?.cancel();
+    super.dispose();
   }
 
   Future<void> _fetchProducts() async {
@@ -118,7 +156,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-      child: Scaffold(
+      child: isConnectedToInternet
+      ? Scaffold(
         appBar: AppBar(
           title: Text(
             Language.instance.txtCourses(),
@@ -154,7 +193,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       ],
                     ),
                   ),
-      ),
+      )
+      : const NoInternetScreen(),
     );
   }
 

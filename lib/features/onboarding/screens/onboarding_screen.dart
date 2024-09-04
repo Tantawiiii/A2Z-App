@@ -6,6 +6,7 @@ import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:a2z_app/features/onboarding/widgets/build_onboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -15,6 +16,7 @@ import '../../../core/language/language.dart';
 import '../../../core/theming/text_style.dart';
 import '../../../core/language/StringsTexts.dart';
 import '../../../core/utils/images_paths.dart';
+import '../../no_internet/no_internet_screen.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -30,6 +32,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   bool onLastPage = false;
   String currentLang = "";
 
+  // Internet Connection
+  bool isConnectedToInternet = true;
+  StreamSubscription? _internetConnectionStreamSubscription;
 
   @override
   void initState() {
@@ -37,7 +42,28 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     _pageController.addListener(() {
       _pageNotifier.value = _pageController.page ?? 0.0;
     });
-    super.initState();
+
+    // start checker internet connection
+    _internetConnectionStreamSubscription =
+        InternetConnection().onStatusChange.listen((event) {
+          switch (event) {
+            case InternetStatus.connected:
+              setState(() {
+                isConnectedToInternet = true;
+              });
+              break;
+            case InternetStatus.disconnected:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+            default:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+          }
+        });
   }
 
 
@@ -48,7 +74,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-      child: Scaffold(
+      child: isConnectedToInternet
+      ? Scaffold(
             backgroundColor: ColorsCode.white,
             body: Container(
               padding: EdgeInsetsDirectional.only(
@@ -181,7 +208,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ],
               ),
             ),
-          ),
+          )
+          : const NoInternetScreen(),
     );
   }
 
@@ -207,15 +235,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       A2ZApp.setLocale(context, newLocale);
     }
 
-    // setState(() {
-    //   //EasyLoading.showSuccess("Changed");
-    //   Phoenix.rebirth(context);
-    // });
+  setState(() {
+
+   });
   }
   @override
   void dispose() {
     _pageController.dispose();
     _pageNotifier.dispose();
+
+    _internetConnectionStreamSubscription?.cancel();
     super.dispose();
   }
 }

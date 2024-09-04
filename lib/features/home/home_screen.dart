@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:a2z_app/core/language/language.dart';
 import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:a2z_app/features/home/bottom_screens/courses_tap/courses_tap.dart';
+import 'package:a2z_app/features/no_internet/no_internet_screen.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import '../../a2z_app.dart';
 import '../../core/theming/text_style.dart';
@@ -26,6 +29,37 @@ class _HomeScreenState extends State<HomeScreen> {
   int maxCount = 5;
 
 
+  // Internet Connection
+  bool isConnectedToInternet = true;
+  StreamSubscription? _internetConnectionStreamSubscription;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    // start checker internet connection
+    _internetConnectionStreamSubscription =
+        InternetConnection().onStatusChange.listen((event) {
+          switch (event) {
+            case InternetStatus.connected:
+              setState(() {
+                isConnectedToInternet = true;
+              });
+              break;
+            case InternetStatus.disconnected:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+            default:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+          }
+        });
+  }
 
   /// widget list
   final List<Widget> bottomBarPages = [
@@ -41,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-      child: Scaffold(
+      child: isConnectedToInternet
+      ? Scaffold(
         body: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
@@ -117,7 +152,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 kIconSize: 24,
                 kBottomRadius: 0.0,
               ),
-      ),
+      )
+      : const NoInternetScreen(),
     );
   }
 
@@ -125,6 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     _pageController.dispose();
+    _internetConnectionStreamSubscription?.cancel();
     super.dispose();
   }
 

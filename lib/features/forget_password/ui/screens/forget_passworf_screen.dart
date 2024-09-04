@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:a2z_app/core/widgets/build_toast.dart';
 import 'package:a2z_app/features/forget_password/services/provider/app_state_provider.dart';
+import 'package:a2z_app/features/no_internet/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import '../../../../a2z_app.dart';
 import '../../../../core/helpers/app_regex.dart';
@@ -24,6 +28,43 @@ class ForgetPassword extends StatefulWidget {
 class _ForgetPasswordState extends State<ForgetPassword> {
   final TextEditingController phoneNumberController = TextEditingController();
   final PasswordResetService _passwordResetService = PasswordResetService();
+  // Internet Connection
+  bool isConnectedToInternet = true;
+  StreamSubscription? _internetConnectionStreamSubscription;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    // start checker internet connection
+    _internetConnectionStreamSubscription =
+        InternetConnection().onStatusChange.listen((event) {
+          switch (event) {
+            case InternetStatus.connected:
+              setState(() {
+                isConnectedToInternet = true;
+              });
+              break;
+            case InternetStatus.disconnected:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+            default:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+          }
+        });
+  }
+
+  @override
+  void dispose() {
+    _internetConnectionStreamSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +72,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-      child: Scaffold(
+      child: isConnectedToInternet
+      ? Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
@@ -82,7 +124,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             ),
           ),
         ),
-      ),
+      )
+      : const NoInternetScreen(),
     );
   }
 }
