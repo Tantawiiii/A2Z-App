@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:a2z_app/features/forget_password/services/network/change_password_by_otp.dart';
 import 'package:a2z_app/features/forget_password/services/provider/app_state_provider.dart';
+import 'package:a2z_app/features/no_internet/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../a2z_app.dart';
@@ -22,19 +26,60 @@ class VerifyOtpScreen extends StatefulWidget {
 }
 
 class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController otpController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+
+
+  // Internet Connection
+  bool isConnectedToInternet = true;
+  StreamSubscription? _internetConnectionStreamSubscription;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    // start checker internet connection
+    _internetConnectionStreamSubscription =
+        InternetConnection().onStatusChange.listen((event) {
+          switch (event) {
+            case InternetStatus.connected:
+              setState(() {
+                isConnectedToInternet = true;
+              });
+              break;
+            case InternetStatus.disconnected:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+            default:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+          }
+        });
+  }
+
+  @override
+  void dispose() {
+    _internetConnectionStreamSubscription?.cancel();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController phoneNumberController = TextEditingController();
-    final TextEditingController otpController = TextEditingController();
-    final TextEditingController newPasswordController = TextEditingController();
-
     String phoneNum = Provider.of<AppStateProvider>(context).phoneNumber;
 
     final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
 
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-      child: Scaffold(
+      child: isConnectedToInternet
+      ? Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
@@ -106,7 +151,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             ),
           ),
         ),
-      ),
+      )
+      : const NoInternetScreen(),
     );
   }
 

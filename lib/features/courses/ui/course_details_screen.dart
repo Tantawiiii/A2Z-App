@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
-import 'package:a2z_app/core/language/StringsTexts.dart';
+import 'package:a2z_app/features/no_internet/no_internet_screen.dart';
 import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../../a2z_app.dart';
@@ -13,8 +17,9 @@ import '../../../../core/language/language.dart';
 import '../../../../core/networking/const/api_constants.dart';
 import '../../../../core/utils/colors_code.dart';
 import '../../../../core/utils/images_paths.dart';
-import '../../widgets/FullScreenVideoPlayer.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../widgets/FullScreenVideoPlayer.dart';
 
 class CoursesDetailsScreen extends StatefulWidget {
   final String productId;
@@ -30,12 +35,51 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
   bool _isLoading = true;
   YoutubePlayerController? _youtubeController;
 
+  // Internet Connection
+  bool isConnectedToInternet = true;
+  StreamSubscription? _internetConnectionStreamSubscription;
+
   @override
   void initState() {
     super.initState();
     _fetchProductDetails();
-  }
+    _resetOrientation();
+    // start checker internet connection
+    _internetConnectionStreamSubscription =
+        InternetConnection().onStatusChange.listen((event) {
+          switch (event) {
+            case InternetStatus.connected:
+              setState(() {
+                isConnectedToInternet = true;
+              });
+              break;
+            case InternetStatus.disconnected:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+            default:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+          }
+        });
 
+  }
+  void _resetOrientation() async {
+    await SystemChrome.setPreferredOrientations([
+   // DeviceOrientation.landscapeLeft,
+   //    DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    setState(() {
+
+    });
+  }
+  // play YouTube Video
   void _playYouTubeVideo(String youtubeUrl) {
     final videoId = YoutubePlayer.convertUrlToId(youtubeUrl);
     if (videoId != null) {
@@ -44,6 +88,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
         flags: const YoutubePlayerFlags(
           autoPlay: true,
           mute: false,
+          hideControls: false,
         ),
       );
 
@@ -125,7 +170,8 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
     final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-      child: DefaultTabController(
+      child: isConnectedToInternet
+      ? DefaultTabController(
         length: 4, // Number of tabs
         child: Scaffold(
           appBar: AppBar(
@@ -159,7 +205,8 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
                       ),
                     ),
         ),
-      ),
+      )
+      : const NoInternetScreen(),
     );
   }
 
@@ -414,6 +461,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
   @override
   void dispose() {
     _youtubeController?.dispose();
+    _internetConnectionStreamSubscription?.cancel();
     super.dispose();
   }
 }

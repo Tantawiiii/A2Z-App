@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:a2z_app/features/getstarted/widgets/teacher_image_text_widget.dart';
 import 'package:a2z_app/features/getstarted/widgets/getstarted_button.dart';
+import 'package:a2z_app/features/no_internet/no_internet_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import '../../a2z_app.dart';
 import '../../core/language/language.dart';
@@ -21,6 +25,12 @@ class _GetStartedScreenState extends State<GetStartedScreen>
   late Animation<Offset> _slideAnimation;
   bool _visible = false;
 
+
+  // Internet Connection
+  bool isConnectedToInternet = true;
+  StreamSubscription? _internetConnectionStreamSubscription;
+
+
   @override
   void initState() {
     super.initState();
@@ -33,12 +43,12 @@ class _GetStartedScreenState extends State<GetStartedScreen>
 
     // Initialize slide animation
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3), // start position is slightly off-screen
-      end: Offset.zero, // end position is on-screen
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeOut,
-    ));
+    ),);
 
     // Start animation after build
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -47,11 +57,35 @@ class _GetStartedScreenState extends State<GetStartedScreen>
       });
       _animationController.forward();
     });
+
+    // start checker internet connection
+    _internetConnectionStreamSubscription =
+        InternetConnection().onStatusChange.listen((event) {
+          switch (event) {
+            case InternetStatus.connected:
+              setState(() {
+                isConnectedToInternet = true;
+              });
+              break;
+            case InternetStatus.disconnected:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+            default:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+          }
+        });
+
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _internetConnectionStreamSubscription?.cancel();
     super.dispose();
   }
 
@@ -61,7 +95,8 @@ class _GetStartedScreenState extends State<GetStartedScreen>
 
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-      child: Scaffold(
+      child: isConnectedToInternet
+      ? Scaffold(
         body: SafeArea(
           child: Padding(
             padding: EdgeInsetsDirectional.only(top: 30.0.h, bottom: 30.h),
@@ -106,7 +141,8 @@ class _GetStartedScreenState extends State<GetStartedScreen>
             ),
           ),
         ),
-      ),
+      )
+      : const NoInternetScreen(),
     );
   }
 }

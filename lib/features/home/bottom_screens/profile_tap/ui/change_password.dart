@@ -1,11 +1,15 @@
+import 'dart:async';
+
+import 'package:a2z_app/features/no_internet/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
+import '../../../../../a2z_app.dart';
 import '../../../../../core/helpers/spacing.dart';
 import '../../../../../core/language/language.dart';
 import '../../../../../core/networking/clients/dio_client_graphql.dart';
 import '../../../../../core/theming/text_style.dart';
-import '../../../../../core/language/StringsTexts.dart';
 import '../../../../../core/widgets/build_button.dart';
 import '../../../../../core/widgets/build_text_form_field.dart';
 import '../services/change_password_request.dart';
@@ -29,6 +33,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   late ProfileGraphQLService _profileService;
 
   Map<String, dynamic>? _profileData;
+  // Internet Connection
+  bool isConnectedToInternet = true;
+  StreamSubscription? _internetConnectionStreamSubscription;
 
   @override
   void initState() {
@@ -36,6 +43,29 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final dioClientGrapQl = DioClientGraphql();
     _profileService = ProfileGraphQLService(dioClientGrapQl);
     _fetchProfile();
+
+    // start checker internet connection
+    _internetConnectionStreamSubscription =
+        InternetConnection().onStatusChange.listen((event) {
+          switch (event) {
+            case InternetStatus.connected:
+              setState(() {
+                isConnectedToInternet = true;
+              });
+              break;
+            case InternetStatus.disconnected:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+            default:
+              setState(() {
+                isConnectedToInternet = false;
+              });
+              break;
+          }
+        });
+
   }
 
   Future<void> _fetchProfile() async {
@@ -50,93 +80,104 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     }
   }
 
+  String currentLang = "";
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.w),
-        child: ListView(
-          children: [
-            Text(
-              Language.instance.txtChangePass(),
-              style: TextStyles.font24BlueBold,
-            ),
-            verticalSpace(8),
-            Text(
-              Language.instance.txtChangePassDes(),
-              style: TextStyles.font14GrayNormal,
-            ),
-            verticalSpace(42),
-            // BuildTextFormField(
-            //   controller: userNameController,
-            //   hintText: _profileData?['userName'] ?? "Default Username",
-            //   validator: (value) {
-            //     if (value == null || value.isEmpty) {
-            //       return Language.instance.txtNameValid;
-            //     }
-            //     return null;
-            //   },
-            // ),
-           // verticalSpace(14),
-            BuildTextFormField(
-              controller: oldPasswordController,
-              hintText: Language.instance.txtOldPassword(),
-              isObscureText: isObscuredText,
-              suffixIcon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isObscuredText = !isObscuredText;
-                  });
-                },
-                child: Icon(
-                  isObscuredText ? Icons.visibility_off : Icons.visibility,
-                ),
+
+    final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
+
+    return Directionality(
+        textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+        child: isConnectedToInternet
+      ? Scaffold(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.w),
+          child: ListView(
+            children: [
+              Text(
+                Language.instance.txtChangePass(),
+                style: TextStyles.font24BlueBold,
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return Language.instance.txtPasswordIsValid;
-                }
-                return null;
-              },
-            ),
-            verticalSpace(14),
-            BuildTextFormField(
-              controller: newPasswordController,
-              hintText: Language.instance.txtNewPassword(),
-              isObscureText: newIsObscuredText,
-              suffixIcon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    newIsObscuredText = !newIsObscuredText;
-                  });
-                },
-                child: Icon(
-                  newIsObscuredText ? Icons.visibility_off : Icons.visibility,
-                ),
+              verticalSpace(8),
+              Text(
+                Language.instance.txtChangePassDes(),
+                style: TextStyles.font14GrayNormal,
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return Language.instance.txtPasswordIsValid;
-                }
-                return null;
-              },
-            ),
-            verticalSpace(50),
-            BuildButton(
-              textButton: Language.instance.txtChangePass(),
-              textStyle: TextStyles.font16WhiteMedium,
-              onPressed: () {
-                changePassword(
-                  context: context,
-                  username: _profileData?['userName'],
-                  oldPassword: oldPasswordController.text,
-                  newPassword: newPasswordController.text,
-                );
-              },
-            ),
-          ],
+              verticalSpace(42),
+              // BuildTextFormField(
+              //   controller: userNameController,
+              //   hintText: _profileData?['userName'] ?? "Default Username",
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return Language.instance.txtNameValid;
+              //     }
+              //     return null;
+              //   },
+              // ),
+             // verticalSpace(14),
+              BuildTextFormField(
+                controller: oldPasswordController,
+                hintText: Language.instance.txtOldPassword(),
+                isObscureText: isObscuredText,
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isObscuredText = !isObscuredText;
+                    });
+                  },
+                  child: Icon(
+                    isObscuredText ? Icons.visibility_off : Icons.visibility,
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return Language.instance.txtPasswordIsValid;
+                  }
+                  return null;
+                },
+              ),
+              verticalSpace(14),
+              BuildTextFormField(
+                controller: newPasswordController,
+                hintText: Language.instance.txtNewPassword(),
+                isObscureText: newIsObscuredText,
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      newIsObscuredText = !newIsObscuredText;
+                    });
+                  },
+                  child: Icon(
+                    newIsObscuredText ? Icons.visibility_off : Icons.visibility,
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return Language.instance.txtPasswordIsValid;
+                  }
+                  return null;
+                },
+              ),
+              verticalSpace(50),
+              BuildButton(
+                textButton: Language.instance.txtChangePass(),
+                textStyle: TextStyles.font16WhiteMedium,
+                onPressed: () {
+                  changePassword(
+                    context: context,
+                    username: _profileData?['userName'],
+                    oldPassword: oldPasswordController.text,
+                    newPassword: newPasswordController.text,
+                  );
+                },
+              ),
+            ],
+          ),
         ),
-      ),
+      )
+      : const NoInternetScreen(),
     );
   }
 }

@@ -1,12 +1,8 @@
-import 'package:a2z_app/core/helpers/extentions.dart';
-import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/helpers/spacing.dart';
-import '../../../core/routing/routers.dart';
 import '../../../core/theming/text_style.dart';
-import '../../../core/language/StringsTexts.dart';
 import '../../../core/utils/images_paths.dart';
 
 class BuildEmptyCourses extends StatelessWidget {
