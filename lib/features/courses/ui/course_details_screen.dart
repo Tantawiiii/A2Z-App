@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/theming/text_style.dart';
@@ -331,8 +332,59 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
                   onPressed: () async {
                     final url = asset['url'];
                     final name = asset['name'];
+
                     if (url != null && name != null) {
-                      await _downloadFile(url, name);
+                      // Request storage permission
+                      final status = await Permission.storage.request();
+
+                      if (status.isGranted) {
+                        try {
+                          // Get the application's documents directory
+                          final directory = await getApplicationDocumentsDirectory();
+                          final filePath = '${directory.path}/$name';
+
+                          print('Saving file to: $filePath');  // Print file path for verification
+
+                          // Create Dio instance
+                          final dio = Dio();
+
+                          // Download the file
+                          await dio.download(
+                            url,
+                            filePath,
+                            onReceiveProgress: (received, total) {
+                              if (total != -1) {
+                                print('Downloading: ${(received / total * 100).toStringAsFixed(0)}%');
+                              }
+                            },
+                          );
+
+                          // Verify the file existence
+                          final fileExists = await File(filePath).exists();
+                          if (fileExists) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Downloaded $name to $filePath')),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Failed to save $name')),
+                            );
+                          }
+                        } catch (e) {
+                          // Handle error
+                          print('Download error: $e');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to download $name')),
+                          );
+                        }
+                      } else {
+                        // Notify user of missing permissions
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Storage permission required')),
+                        );
+                      }
+                    } else {
+                      print('Invalid URL or name.');
                     }
                   },
                 ),
@@ -422,41 +474,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
     );
   }
 
-  Future<void> _downloadFile(String url, String fileName) async {
-    try {
-      // Request storage permission
-      if (await Permission.storage.request().isGranted) {
-        final dio = Dio();
 
-        // Get the external storage directory (e.g., Downloads folder)
-        final dir = await getExternalStorageDirectory();
-
-        if (dir != null) {
-          final filePath = '${dir.path}/$fileName';
-
-          // Download the file
-          await dio.download(url, filePath);
-
-          // Optionally, show a message that the download was successful
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(Language.instance.txtSuccessDownload())),
-          );
-        } else {
-          print('Failed to get storage directory');
-        }
-      } else {
-        // Handle permission denied
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(Language.instance.txtStoragePermission())),
-        );
-      }
-    } catch (e) {
-      print('Download failed: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(Language.instance.txtFailedDownload())),
-      );
-    }
-  }
 
   @override
   void dispose() {
