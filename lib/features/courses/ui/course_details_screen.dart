@@ -335,59 +335,54 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
 
                     if (url != null && name != null) {
                       // Request storage permission
-                      final status = await Permission.storage.request();
+                      final status = await requestPermission();
 
-                      if (status.isGranted) {
+                      if (status) {
+                        Directory? directory;
+                        if (Platform.isAndroid) {
+                          directory = Directory('/storage/emulated/0/Download');
+                          if (!(await directory.exists())) {
+                            directory = await getExternalStorageDirectory(); // Fallback to app-specific storage
+                          }
+                        } else {
+                          directory = await getApplicationDocumentsDirectory();
+                        }
+
+                        final filePath = '${directory!.path}/$name';
+
                         try {
-                          // Get the application's documents directory
-                          final directory = await getApplicationDocumentsDirectory();
-                          final filePath = '${directory.path}/$name';
-
-                          print('Saving file to: $filePath');  // Print file path for verification
-
-                          // Create Dio instance
+                          // Instantiate Dio here
                           final dio = Dio();
 
                           // Download the file
-                          await dio.download(
-                            url,
-                            filePath,
-                            onReceiveProgress: (received, total) {
-                              if (total != -1) {
-                                print('Downloading: ${(received / total * 100).toStringAsFixed(0)}%');
-                              }
-                            },
-                          );
+                          await dio.download(url, filePath, onReceiveProgress: (received, total) {
+                            if (total != -1) {
+                              print('Downloading: ${(received / total * 100).toStringAsFixed(0)}%');
+                            }
+                          });
 
-                          // Verify the file existence
-                          final fileExists = await File(filePath).exists();
-                          if (fileExists) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Downloaded $name to $filePath')),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Failed to save $name')),
-                            );
-                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Downloaded $name to $filePath')),
+                          );
                         } catch (e) {
-                          // Handle error
                           print('Download error: $e');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Failed to download $name')),
                           );
                         }
                       } else {
-                        // Notify user of missing permissions
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Storage permission required')),
                         );
                       }
+
                     } else {
                       print('Invalid URL or name.');
                     }
                   },
                 ),
+
+
               ],
             ),
           ),
@@ -395,6 +390,21 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
       },
     );
   }
+
+  Future<bool> requestPermission() async {
+    if (Platform.isAndroid && await Permission.storage.isGranted) {
+      if (Platform.isAndroid && await Permission.manageExternalStorage.isGranted) {
+        return true;
+      } else {
+        final status = await Permission.manageExternalStorage.request();
+        return status.isGranted;
+      }
+    } else {
+      final status = await Permission.storage.request();
+      return status.isGranted;
+    }
+  }
+
 
   Widget _buildVideoList() {
     final videos =
