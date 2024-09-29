@@ -211,7 +211,6 @@ class _CoursesTapState extends State<CoursesTap> {
                 EdgeInsets.only(top: 10.h, right: 14.h, left: 14.h),
                 child: Card(
                   elevation: 1.5,
-                  shadowColor: Colors.cyan,
                   child: Row(
                     children: [
                       product['imgSrc'] != null

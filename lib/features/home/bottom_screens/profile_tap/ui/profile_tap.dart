@@ -46,11 +46,11 @@ class _ProfileTapState extends State<ProfileTap> {
       if (data != null) {
         // Extract the 'dynamicProperties' list
         final dynamicProperties =
-            data['contact']['dynamicProperties'] as List<dynamic>;
+        data['contact']['dynamicProperties'] as List<dynamic>;
 
         // Find the 'ProfilePhoto' property
         final profilePhotoProperty = dynamicProperties.firstWhere(
-          (property) => property['name'] == 'ProfilePhoto',
+              (property) => property['name'] == 'ProfilePhoto',
           orElse: () => null,
         );
 
@@ -81,137 +81,127 @@ class _ProfileTapState extends State<ProfileTap> {
           children: [
             _profileData == null
                 ? ListView(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 30, horizontal: 15),
-                    children: [
-                      verticalSpace(50.h),
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.blue[200]!,
-                        child: CircleAvatar(
-                          radius: 80,
-                          backgroundColor: Colors.grey[300],
-                        ),
-                      ),
-                      verticalSpace(10.h),
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.blue[200]!,
-                        child: Container(
-                          height: 20.h,
-                          color: Colors.grey[300],
-                        ),
-                      ),
-                      verticalSpace(5.h),
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.blue[200]!,
-                        child: Container(
-                          height: 20.h,
-                          width: 150.w,
-                          color: Colors.grey[300],
-                        ),
-                      ),
-                      verticalSpace(40.h),
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.blue[200]!,
-                        child: Column(
-                          children: List.generate(5, (index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
-                              child: Container(
-                                height: 50.h,
-                                color: Colors.grey[300],
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                    ],
-                  )
-                : ListView(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 30, horizontal: 15),
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      verticalSpace(80.h),
-                      CircleAvatar(
-                        radius: 80,
-                        backgroundImage: _profileData!['profilePhoto'] !=
-                                    null &&
-                                _profileData!['profilePhoto']
-                                    .toString()
-                                    .isNotEmpty
-                            ? FileImage(File(_profileData![
-                                'profilePhoto'])) // Use FileImage for local files
-                            : (_profileData!['photoUrl'] != null &&
-                                    _profileData!['photoUrl'].contains('http')
-                                ? NetworkImage(_profileData!['photoUrl'])
-                                : const AssetImage('asset/images/teacher.png')
-                                    as ImageProvider),
-                      ),
-                      verticalSpace(10.h),
-                      Text(
-                        (_profileData!['contact']['fullName'] ??
-                            _profileData!['userName']),
-                        textAlign: TextAlign.center,
-                        style: TextStyles.font20BlueBold,
-                      ),
-                      Text(
-                        _profileData!['email'] ?? 'email',
-                        textAlign: TextAlign.center,
-                        style: TextStyles.font13DarkBlueRegular,
-                      ),
-                      verticalSpace(40.h),
-                      BuildProfileOptions(
-                        icon: Icons.lock_outline,
-                        text: Language.instance.txtChangePass(),
-                        color: ColorsCode.gray,
-                        onTap: () {
-                          print('Change Password Tapped');
-                          context.pushNamed(Routes.changePasswordScreen);
-                        },
-                      ),
-                      BuildProfileOptions(
-                        icon: Icons.school,
-                        text: Language.instance.txtExams(),
-                        color: ColorsCode.gray,
-                        onTap: () {
-                          print('My Exams Tapped');
-                        },
-                      ),
-                      // BuildProfileOptions(
-                      //   icon: Icons.help_outline,
-                      //   text: Language.instance.txtFaq(),
-                      //   color: ColorsCode.gray,
-                      //   onTap: () {
-                      //     print('FAQ Tapped');
-                      //   },
-                      // )
-                      BuildProfileOptions(
-                        icon: Icons.info_outline,
-                        text: Language.instance.txtAboutUs(),
-                        color: ColorsCode.gray,
-                        onTap: () {
-                          print('About Us Tapped');
-                          context.pushNamed(Routes.aboutUsScreen);
-
-                        },
-                      ),
-                      BuildProfileOptions(
-                        icon: Icons.exit_to_app,
-                        text: Language.instance.txtLogOut(),
-                        color: Colors.red,
-                        onTap: () {
-                          _logout_services.logout(context);
-                          print('Logout Tapped');
-                        },
-                      ),
-                      verticalSpace(100),
-                    ],
+              padding: const EdgeInsets.symmetric(
+                  vertical: 30, horizontal: 15),
+              children: [
+                verticalSpace(50.h),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.blue[200]!,
+                  child: CircleAvatar(
+                    radius: 80,
+                    backgroundColor: Colors.grey[300],
                   ),
+                ),
+                verticalSpace(10.h),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.blue[200]!,
+                  child: Container(
+                    height: 20.h,
+                    color: Colors.grey[300],
+                  ),
+                ),
+                verticalSpace(5.h),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.blue[200]!,
+                  child: Container(
+                    height: 20.h,
+                    width: 150.w,
+                    color: Colors.grey[300],
+                  ),
+                ),
+                verticalSpace(40.h),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.blue[200]!,
+                  child: Column(
+                    children: List.generate(5, (index) {
+                      return Padding(
+                        padding:
+                        const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          height: 50.h,
+                          color: Colors.grey[300],
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ],
+            )
+                : ListView(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 30, horizontal: 15),
+              scrollDirection: Axis.vertical,
+              children: [
+                verticalSpace(80.h),
+                CircleAvatar(
+                  radius: 80,
+                  backgroundImage: _profileData!['profilePhoto'] !=
+                      null &&
+                      _profileData!['profilePhoto']
+                          .toString()
+                          .isNotEmpty
+                      ? _getImageProvider(_profileData!['profilePhoto'])
+                      : (_profileData!['photoUrl'] != null &&
+                      _profileData!['photoUrl'].contains('http')
+                      ? NetworkImage(_profileData!['photoUrl'])
+                      : const AssetImage('asset/images/teacher.png')
+                  as ImageProvider),
+                ),
+                verticalSpace(10.h),
+                Text(
+                  (_profileData!['contact']['fullName'] ??
+                      _profileData!['userName']),
+                  textAlign: TextAlign.center,
+                  style: TextStyles.font20BlueBold,
+                ),
+                Text(
+                  _profileData!['email'] ?? 'email',
+                  textAlign: TextAlign.center,
+                  style: TextStyles.font13DarkBlueRegular,
+                ),
+                verticalSpace(40.h),
+                BuildProfileOptions(
+                  icon: Icons.lock_outline,
+                  text: Language.instance.txtChangePass(),
+                  color: ColorsCode.gray,
+                  onTap: () {
+                    print('Change Password Tapped');
+                    context.pushNamed(Routes.changePasswordScreen);
+                  },
+                ),
+                BuildProfileOptions(
+                  icon: Icons.school,
+                  text: Language.instance.txtExams(),
+                  color: ColorsCode.gray,
+                  onTap: () {
+                    print('My Exams Tapped');
+                  },
+                ),
+                BuildProfileOptions(
+                  icon: Icons.info_outline,
+                  text: Language.instance.txtAboutUs(),
+                  color: ColorsCode.gray,
+                  onTap: () {
+                    print('About Us Tapped');
+                    context.pushNamed(Routes.aboutUsScreen);
+                  },
+                ),
+                BuildProfileOptions(
+                  icon: Icons.exit_to_app,
+                  text: Language.instance.txtLogOut(),
+                  color: Colors.red,
+                  onTap: () {
+                    _logout_services.logout(context);
+                    print('Logout Tapped');
+                  },
+                ),
+                verticalSpace(100),
+              ],
+            ),
             // Positioned LiteRollingSwitch widget
             Positioned(
               top: 50.h,
@@ -250,6 +240,16 @@ class _ProfileTapState extends State<ProfileTap> {
         ),
       ),
     );
+  }
+
+  ImageProvider _getImageProvider(String path) {
+    final file = File(path);
+    if (file.existsSync()) {
+      return FileImage(file);
+    } else {
+      // Return a default image if the file doesn't exist.
+      return const AssetImage('asset/images/teacher.png');
+    }
   }
 
   changeLanguage(lang) async {

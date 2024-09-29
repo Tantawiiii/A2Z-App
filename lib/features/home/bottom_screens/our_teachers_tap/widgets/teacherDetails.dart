@@ -121,26 +121,32 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             return _buildShimmerEffect();
           }
 
+          if (result.data == null || result.data!['products'] == null) {
+            return Center(child: Text('No products found.'));
+          }
+
           final products = result.data!['products']['items'] as List;
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
+            child: ListView(
               children: [
                 Hero(
                   tag: widget.heroTag,
                   child: widget.imageSrc != null
                       ? Image.network(widget.imageSrc!,
-                          fit: BoxFit.cover, height: 300.h)
+                      fit: BoxFit.cover, height: 340.h)
                       : Image.asset(ImagesPaths.logoImage, height: 250),
                 ),
                 verticalSpace(16),
-                Text(
-                  widget.parentName,
-                  style: TextStyles.font20BlueBold,
+                Center(
+                  child: Text(
+                    widget.parentName,
+                    style: TextStyles.font20BlueBold,
+                  ),
                 ),
                 verticalSpace(16),
-                Expanded(child: _buildProductList(products)),
+                _buildProductList(products),
               ],
             ),
           );
@@ -155,8 +161,8 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
       child: Column(
         children: [
           Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            baseColor: Colors.grey[300] ?? Colors.grey,
+            highlightColor: Colors.grey[100] ?? Colors.white,
             child: Container(
               color: Colors.white,
               height: 300.h,
@@ -165,8 +171,8 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
           ),
           verticalSpace(16),
           Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            baseColor: Colors.grey[300] ?? Colors.grey,
+            highlightColor: Colors.grey[100] ?? Colors.white,
             child: Container(
               color: Colors.white,
               height: 24.h,
@@ -180,8 +186,8 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
               itemBuilder: (context, index) {
                 return ListTile(
                   leading: Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
+                    baseColor: Colors.grey[300] ?? Colors.grey,
+                    highlightColor: Colors.grey[100] ?? Colors.white,
                     child: Container(
                       color: Colors.white,
                       width: 90.w,
@@ -189,8 +195,8 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     ),
                   ),
                   title: Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
+                    baseColor: Colors.grey[300] ?? Colors.grey,
+                    highlightColor: Colors.grey[100] ?? Colors.white,
                     child: Container(
                       color: Colors.white,
                       height: 16.h,
@@ -232,35 +238,35 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
           style: TextStyles.font14BlueSemiBold,
         ),
         verticalSpace(8),
-        Expanded(
-          child: ListView.builder(
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return Card(
-                elevation: 2,
-                color: ColorsCode.lighterGray,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  color: ColorsCode.lighterGray,
-                  child: ListTile(
-                    leading: product['imgSrc'] != null
-                        ? Image.network(product['imgSrc'], width: 90, height: 90)
-                        : Image.asset(
-                      ImagesPaths.logoImage,
-                      height: 90,
-                      width: 90,
-                    ),
-                    title: Text(product['name']),
-                    onTap: () => _checkSubscription(product['id']),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final product = products[index];
+            return Card(
+              elevation: 2,
+              color: ColorsCode.lighterGray,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                color: ColorsCode.backBottomNav,
+                child: ListTile(
+                  leading: product['imgSrc'] != null
+                      ? Image.network(product['imgSrc'], width: 90, height: 90)
+                      : Image.asset(
+                    ImagesPaths.logoImage,
+                    height: 90,
+                    width: 90,
                   ),
+                  title: Text(product['name']),
+                  onTap: () => _checkSubscription(product['id']),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ],
     );
