@@ -1,7 +1,7 @@
 
 class ImagesPaths {
 
-  static const String logoImage = "asset/icon/new_logo_a2z_text.svg";
+  static const String logoImage = "asset/images/logo_without_back.png";
 
 
   static const String animBodyOnBoarding1 = "asset/icon/anim_onboard1.svg";

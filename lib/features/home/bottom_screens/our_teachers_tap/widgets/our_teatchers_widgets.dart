@@ -192,7 +192,7 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
                       fit: BoxFit.cover,
                     ),
                   )
-                      : SvgPicture.asset(
+                      : Image.asset(
                     ImagesPaths.logoImage,
                     fit: BoxFit.cover,
                     height: 90,

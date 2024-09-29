@@ -1,4 +1,5 @@
 import 'package:a2z_app/core/helpers/spacing.dart';
+import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,6 +26,7 @@ class ProductItemTile extends StatelessWidget {
         height: 120.h,
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
         decoration: BoxDecoration(
+          color: ColorsCode.lighterGray,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -44,11 +46,11 @@ class ProductItemTile extends StatelessWidget {
               width: 120,
               height: 100,
             )
-                : SvgPicture.asset(
+                : Image.asset(
               ImagesPaths.logoImage,
               fit: BoxFit.cover,
-              width: 70,
-              height: 90,
+              width: 120,
+              height: 100,
             ),
             SizedBox(width: 16.w),
             Column(

@@ -24,10 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _pageController = PageController(initialPage: 2);
-
   final _controller = NotchBottomBarController(index: 2);
-  int maxCount = 5;
-
 
   // Internet Connection
   bool isConnectedToInternet = true;
@@ -35,38 +32,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    // start checker internet connection
+    // Start checking internet connection
     _internetConnectionStreamSubscription =
         InternetConnection().onStatusChange.listen((event) {
-          switch (event) {
-            case InternetStatus.connected:
-              setState(() {
-                isConnectedToInternet = true;
-              });
-              break;
-            case InternetStatus.disconnected:
-              setState(() {
-                isConnectedToInternet = false;
-              });
-              break;
-            default:
-              setState(() {
-                isConnectedToInternet = false;
-              });
-              break;
+          bool connectionStatus = event == InternetStatus.connected;
+          if (connectionStatus != isConnectedToInternet) {
+            setState(() {
+              isConnectedToInternet = connectionStatus;
+            });
           }
         });
   }
 
-  /// widget list
+  /// Widget list
   final List<Widget> bottomBarPages = [
     const ProfileTap(),
     const CoursesTap(),
     const HomeTap(),
-     OurTeachersTap(),
+    OurTeachersTap(),
   ];
 
   @override
@@ -76,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Directionality(
       textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
       child: isConnectedToInternet
-      ? Scaffold(
+          ? Scaffold(
         body: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
@@ -85,84 +70,82 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         extendBody: true,
         bottomNavigationBar: AnimatedNotchBottomBar(
-                elevation: 4.0,
-                notchBottomBarController: _controller,
-                color: ColorsCode.backBottomNav,
-                showLabel: true,
-                shadowElevation: 4.0,
-                itemLabelStyle: TextStyles.font10GrayNormal,
-                notchColor: ColorsCode.mainBlue,
-                removeMargins: true,
-                bottomBarHeight: 65,
-                notchGradient: null,
-                maxLine: 1,
-                circleMargin: 9,
-                durationInMilliSeconds: 100,
-                bottomBarItems:  [
-                  BottomBarItem(
-                    inActiveItem: const Icon(
-                      Icons.person,
-                      color: Colors.black54,
-                    ),
-                    activeItem: const Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                    itemLabel: Language.instance.txtProfile(),
-                  ),
-                   BottomBarItem(
-                    inActiveItem: const Icon(
-                      Icons.collections_bookmark_outlined,
-                      color: Colors.black54,
-                    ),
-                    activeItem: const Icon(
-                      Icons.collections_bookmark_outlined,
-                      color: Colors.white,
-                    ),
-                    itemLabel: Language.instance.txtCourses(),
-                  ),
-                  BottomBarItem(
-                    inActiveItem: const Icon(
-                      Icons.home_filled,
-                      color: Colors.black54,
-                    ),
-                    activeItem: const Icon(
-                      Icons.home_filled,
-                      color: Colors.white,
-                    ),
-                    itemLabel: Language.instance.txtHome(),
-                  ),
-                  BottomBarItem(
-                    inActiveItem: const Icon(
-                      Icons.groups_rounded,
-                      color: Colors.black54,
-                    ),
-                    activeItem: const Icon(
-                      Icons.groups_rounded,
-                      color: Colors.white,
-                    ),
-                    itemLabel: Language.instance.txtTeachers(),
-                  ),
-                ],
-                onTap: (index) {
-                  /// perform action on tab change and to update pages you can update pages without pages
-                  log('current selected index $index');
-                  _pageController.jumpToPage(index);
-                },
-                kIconSize: 24,
-                kBottomRadius: 0.0,
+          elevation: 4.0,
+          notchBottomBarController: _controller,
+          color: ColorsCode.backBottomNav,
+          showLabel: true,
+          shadowElevation: 4.0,
+          itemLabelStyle: TextStyles.font10GrayNormal,
+          notchColor: ColorsCode.mainBlue,
+          removeMargins: true,
+          bottomBarHeight: 65,
+          notchGradient: null,
+          maxLine: 1,
+          circleMargin: 9,
+          durationInMilliSeconds: 100,
+          bottomBarItems: [
+            BottomBarItem(
+              inActiveItem: const Icon(
+                Icons.person,
+                color: Colors.black54,
               ),
+              activeItem: const Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              itemLabel: Language.instance.txtProfile(),
+            ),
+            BottomBarItem(
+              inActiveItem: const Icon(
+                Icons.collections_bookmark_outlined,
+                color: Colors.black54,
+              ),
+              activeItem: const Icon(
+                Icons.collections_bookmark_outlined,
+                color: Colors.white,
+              ),
+              itemLabel: Language.instance.txtCourses(),
+            ),
+            BottomBarItem(
+              inActiveItem: const Icon(
+                Icons.home_filled,
+                color: Colors.black54,
+              ),
+              activeItem: const Icon(
+                Icons.home_filled,
+                color: Colors.white,
+              ),
+              itemLabel: Language.instance.txtHome(),
+            ),
+            BottomBarItem(
+              inActiveItem: const Icon(
+                Icons.groups_rounded,
+                color: Colors.black54,
+              ),
+              activeItem: const Icon(
+                Icons.groups_rounded,
+                color: Colors.white,
+              ),
+              itemLabel: Language.instance.txtTeachers(),
+            ),
+          ],
+          onTap: (index) {
+            log('current selected index $index');
+            _pageController.jumpToPage(index);
+          },
+          kIconSize: 24,
+          kBottomRadius: 0.0,
+        ),
       )
-      : const NoInternetScreen(),
+          : const NoInternetScreen(),
     );
   }
 
-
   @override
   void dispose() {
+    _controller.dispose();
     _pageController.dispose();
     _internetConnectionStreamSubscription?.cancel();
     super.dispose();
   }
-
 }

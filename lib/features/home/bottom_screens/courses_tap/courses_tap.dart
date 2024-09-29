@@ -221,7 +221,7 @@ class _CoursesTapState extends State<CoursesTap> {
                         width: 120,
                         height: 100,
                       )
-                          : SvgPicture.asset(
+                          : Image.asset(
                         ImagesPaths.logoImage,
                         height: 90.h,
                         width: 60.w,

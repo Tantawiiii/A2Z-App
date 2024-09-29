@@ -131,7 +131,7 @@ class _HomeTapState extends State<HomeTap> {
                             color: Colors.white,
                           ),
                         ),
-                        errorWidget: (context, url, error) => SvgPicture.asset(
+                        errorWidget: (context, url, error) => Image.asset(
                           ImagesPaths.logoImage,
                         ),
                       ),
@@ -161,7 +161,7 @@ class _HomeTapState extends State<HomeTap> {
                       itemCount: _categories.length,
                       itemBuilder: (context, index) {
                         final category = _categories[index];
-                        final categoryId = category['id']; // Get the category ID
+                        final categoryId = category['id'];
 
                         return GestureDetector(
                           onTap: () {
@@ -190,7 +190,7 @@ class _HomeTapState extends State<HomeTap> {
                                             height: 130,
                                             width: double.infinity,
                                           )
-                                        : SvgPicture.asset(
+                                        : Image.asset(
                                             ImagesPaths.logoImage,
                                             height: 110.h,
                                             width: 90.w,
@@ -240,7 +240,7 @@ class _HomeTapState extends State<HomeTap> {
   Future<void> _fetchProfile() async {
     try {
       final data = await _profileService.fetchProfile(context);
-      if (!mounted) return; // Check if widget is still in the tree
+      if (!mounted) return;
       setState(() {
         _profileData = data;
       });
