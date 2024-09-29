@@ -3,6 +3,7 @@ import 'package:a2z_app/features/forget_password/services/network/password_reset
 import 'package:a2z_app/features/forget_password/ui/screens/forget_passworf_screen.dart';
 import 'package:a2z_app/features/forget_password/ui/screens/verify_otp_screen.dart';
 import 'package:a2z_app/features/getstarted/get_started_screen.dart';
+import 'package:a2z_app/features/home/bottom_screens/profile_tap/ui/aboutus_screen.dart';
 import 'package:a2z_app/features/home/bottom_screens/profile_tap/ui/change_password.dart';
 import 'package:a2z_app/features/home/home_screen.dart';
 import 'package:a2z_app/features/signup/ui/signup_screen.dart';
@@ -37,8 +38,13 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case Routes.changePasswordScreen:
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
-        case Routes.courseSubscriptionCode:
-        return MaterialPageRoute(builder: (_) => const SubscriptionScreen(courseId: '',));
+      case Routes.courseSubscriptionCode:
+        return MaterialPageRoute(
+            builder: (_) => const SubscriptionScreen(
+                  courseId: '',
+                ));
+      case Routes.aboutUsScreen:
+        return MaterialPageRoute(builder: (_) => const AboutUsScreen());
 
       default:
         return MaterialPageRoute(builder: (_) => const SplashScreen());

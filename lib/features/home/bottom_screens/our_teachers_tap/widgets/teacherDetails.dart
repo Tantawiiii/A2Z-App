@@ -1,5 +1,6 @@
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/language/language.dart';
+import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,7 +12,6 @@ import '../../../../../core/utils/images_paths.dart';
 import '../../../../courses/ui/course_details_screen.dart';
 import '../../../../get_courses_id_proudact/service/product_service.dart';
 import '../../../../subscription_courses/ui/subscription_screen.dart';
-
 
 class CategoryDetailsScreen extends StatefulWidget {
   final String categoryName;
@@ -34,8 +34,6 @@ class CategoryDetailsScreen extends StatefulWidget {
 }
 
 class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
-
-
   void _checkSubscription(String productId) async {
     try {
       final success = await ProductService.checkSubscription(productId);
@@ -48,11 +46,11 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
           ),
         );
       } else {
-        _showNoSubscriptionDialog(productId); // Pass productId here
+        _showNoSubscriptionDialog(productId);
       }
     } catch (e) {
       print('Error checking subscription: $e');
-      _showNoSubscriptionDialog(productId); // Pass productId here
+      _showNoSubscriptionDialog(productId);
     }
   }
 
@@ -64,7 +62,10 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(ImagesPaths.imgNoSubscribe, fit: BoxFit.cover,),
+              Image.asset(
+                ImagesPaths.imgNoSubscribe,
+                fit: BoxFit.cover,
+              ),
               SizedBox(height: 10.h),
               Text(
                 Language.instance.txtEmptySubscription(),
@@ -75,7 +76,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
           ),
           actions: [
             TextButton(
-              child:  Text(Language.instance.txtCancel()),
+              child: Text(Language.instance.txtCancel()),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -88,7 +89,8 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SubscriptionScreen(courseId: courseId),
+                    builder: (context) =>
+                        SubscriptionScreen(courseId: courseId),
                   ),
                 );
               },
@@ -109,7 +111,8 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
         options: QueryOptions(
           document: gql(_getProductsQuery(widget.categoryId)),
         ),
-        builder: (QueryResult result, {VoidCallback? refetch, FetchMore? fetchMore}) {
+        builder: (QueryResult result,
+            {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.hasException) {
             return Center(child: Text(result.exception.toString()));
           }
@@ -127,8 +130,9 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                 Hero(
                   tag: widget.heroTag,
                   child: widget.imageSrc != null
-                      ? Image.network(widget.imageSrc!, fit: BoxFit.cover, height: 300.h)
-                      : SvgPicture.asset(ImagesPaths.logoImage, height: 250),
+                      ? Image.network(widget.imageSrc!,
+                          fit: BoxFit.cover, height: 300.h)
+                      : Image.asset(ImagesPaths.logoImage, height: 250),
                 ),
                 verticalSpace(16),
                 Text(
@@ -233,16 +237,27 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              return ListTile(
-                leading: product['imgSrc'] != null
-                    ? Image.network(product['imgSrc'], width: 90, height: 90)
-                    : SvgPicture.asset(
-                  ImagesPaths.logoImage,
-                  height: 90.h,
-                  width: 90.w,
+              return Card(
+                elevation: 2,
+                color: ColorsCode.lighterGray,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                title: Text(product['name']),
-                  onTap: () => _checkSubscription(product['id']),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  color: ColorsCode.lighterGray,
+                  child: ListTile(
+                    leading: product['imgSrc'] != null
+                        ? Image.network(product['imgSrc'], width: 90, height: 90)
+                        : Image.asset(
+                      ImagesPaths.logoImage,
+                      height: 90,
+                      width: 90,
+                    ),
+                    title: Text(product['name']),
+                    onTap: () => _checkSubscription(product['id']),
+                  ),
+                ),
               );
             },
           ),

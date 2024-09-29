@@ -182,20 +182,22 @@ class _ProfileTapState extends State<ProfileTap> {
                           print('My Exams Tapped');
                         },
                       ),
-                      BuildProfileOptions(
-                        icon: Icons.help_outline,
-                        text: Language.instance.txtFaq(),
-                        color: ColorsCode.gray,
-                        onTap: () {
-                          print('FAQ Tapped');
-                        },
-                      ),
+                      // BuildProfileOptions(
+                      //   icon: Icons.help_outline,
+                      //   text: Language.instance.txtFaq(),
+                      //   color: ColorsCode.gray,
+                      //   onTap: () {
+                      //     print('FAQ Tapped');
+                      //   },
+                      // )
                       BuildProfileOptions(
                         icon: Icons.info_outline,
                         text: Language.instance.txtAboutUs(),
                         color: ColorsCode.gray,
                         onTap: () {
                           print('About Us Tapped');
+                          context.pushNamed(Routes.aboutUsScreen);
+
                         },
                       ),
                       BuildProfileOptions(

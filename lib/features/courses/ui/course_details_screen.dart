@@ -222,7 +222,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
                     _productDetails!['imgSrc'],
                     fit: BoxFit.cover,
                   )
-                : SvgPicture.asset(
+                : Image.asset(
                     ImagesPaths.logoImage,
                   ),
             verticalSpace(16),
@@ -342,7 +342,7 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
                         if (Platform.isAndroid) {
                           directory = Directory('/storage/emulated/0/Download');
                           if (!(await directory.exists())) {
-                            directory = await getExternalStorageDirectory(); // Fallback to app-specific storage
+                            directory = await getExternalStorageDirectory();
                           }
                         } else {
                           directory = await getApplicationDocumentsDirectory();
@@ -493,3 +493,74 @@ class _CoursesDetailsScreenState extends State<CoursesDetailsScreen> {
     super.dispose();
   }
 }
+
+//
+//
+// String path = "";
+// if (Platform.isAndroid) {
+// var status = await Permission.manageExternalStorage.request();
+//
+// //Settings.Log("ret statgus 2 : " + status.name);
+//
+// // if (status.isGranted) {
+// //   // Navigator.of(context).pushReplacement(
+// //   //     MaterialPageRoute(builder: (context) => const Home())
+// //   // );
+// // } else if (status.isPermanentlyDenied) {
+// //   openAppSettings();
+// // }
+//
+// //status = await Permission.storage.status;
+// showMessage(ctx: NavigationService.context!, message: status.name, title: 'Success');
+// // EasyLoading.showToast(status.name);
+//
+// if (status != PermissionStatus.granted) {
+// status = await Permission.storage.request();
+// Settings.Log("ret statgus : " + status.name);
+//
+// openAppSettings();
+// }
+//
+// path = "/sdcard/download/";
+// } else {
+// // var directory = await getApplicationDocumentsDirectory();
+// // path = (await getApplicationDocumentsDirectory()).path;
+//
+// var tempDir = await getTemporaryDirectory();
+// var tempDirPath = tempDir.path;
+// final myAppPath = '$tempDirPath/dawul';
+// final res = await Directory(myAppPath).create(recursive: true);
+// path = res.path;
+// }
+//
+// //Directory _path = await getApplicationDocumentsDirectory();
+// Directory _path = Directory('/storage/emulated/0/Download');
+// String _localPath = _path.path + Platform.pathSeparator + 'Dawul';
+// final savedDir = Directory(_localPath);
+// bool hasExisted = await savedDir.exists();
+// if (!hasExisted) {
+// savedDir.create();
+// }
+// path = _localPath;
+//
+// Settings.Log("ret path : " + path + Platform.pathSeparator + "sharm_glance" + ".pdf");
+// // Settings.Log("ret path : " + path + Platform.pathSeparator + item.name + ".pdf");
+// //path = path + "dawul"+ item.name+ ".pdf";
+//
+// await FlutterDownloader.enqueue(
+// url: "http://23.254.231.138/At_aglance.pdf",
+// savedDir: path,
+// showNotification: true,
+// // show download progress in status bar (for Android)
+// openFileFromNotification: true,
+// fileName: "sharm_glance",
+// saveInPublicStorage: true // click on notification to open downloaded file (for Android)
+// )
+//     .then((value) {
+// Settings.Log("daonlowd value 1 : " + value.toString());
+// Settings.Log("daonlowd value 2 : " + value.toString());
+// showMessage(ctx: NavigationService.context!, message: "Check your download folder", title: 'Success');
+//
+// });
+//
+// }),

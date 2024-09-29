@@ -100,11 +100,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         );
       } else {
-        _showNoSubscriptionDialog(productId); // Pass productId here
+        _showNoSubscriptionDialog(productId);
       }
     } catch (e) {
       print('Error checking subscription: $e');
-      _showNoSubscriptionDialog(productId); // Pass productId here
+      _showNoSubscriptionDialog(productId);
     }
   }
 

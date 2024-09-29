@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../a2z_app.dart';
+import '../../../core/helpers/spacing.dart';
 import '../../../core/language/language.dart';
 import '../../../core/theming/text_style.dart';
 import '../../../core/language/StringsTexts.dart';
@@ -105,11 +106,30 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               child: Opacity(
                                 opacity: 1 - (_pageNotifier.value - i).abs().clamp(0.0, 1.0),
                                 child: [
-                                   BuildOnboardingScreen(
-                                    svgBodyPath: ImagesPaths.logoImage,
-                                    titleBoard: Language.instance.titleOnBoard1(),
-                                    desBoard: Language.instance.desOnBoard1(),
+
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Image.asset(
+                                        ImagesPaths.logoImage,
+                                        width: 360.w,
+                                      ),
+                                      verticalSpace(60.h),
+                                      Text(
+                                        Language.instance.titleOnBoard1(),
+                                        style: TextStyles.font24BlueBold,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      verticalSpace(20.h),
+                                      Text(
+                                        Language.instance.desOnBoard1(),
+                                        style: TextStyles.font13GrayNormal,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
                                   ),
+
                                    BuildOnboardingScreen(
                                     svgBodyPath: ImagesPaths.animBodyOnBoarding2,
                                     titleBoard: Language.instance.titleOnBoard2(),

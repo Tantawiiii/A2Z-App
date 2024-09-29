@@ -223,7 +223,7 @@ class _LoginScreenState extends State<LoginScreen>
       await _authService.login(context, username, password);
 
       setState(() {
-        _isLoading = false; // Stop loading after response
+        _isLoading = false;
       });
     } else {
       buildFailedToast(context, Language.instance.txtBothFields());
