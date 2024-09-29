@@ -45,7 +45,7 @@ class AboutUsScreen extends StatelessWidget {
                     "Join us today and start your journey towards mastering new knowledge and skills, all from the comfort of your home.",
                 style: TextStyles.font13DarkBlueMedium ),
 
-              SizedBox(height: 24.h),
+              SizedBox(height: 22.h),
               Text(
                 Language.instance.txtMeetDevelopers(),
                 style: TextStyles.font16BlueSemiBold
