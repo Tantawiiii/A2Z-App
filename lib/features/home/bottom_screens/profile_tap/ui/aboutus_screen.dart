@@ -9,9 +9,15 @@
 //
 
 
+
+// "مرحبًا بك في The Best Platform، بوابتك إلى التعليم عبر الإنترنت المصمم لتمكين المتعلمين من جميع الأعمار. توفر منصتنا تجارب تعليمية تفاعلية عالية الجودة، وتقدم دورات عبر مجموعة واسعة من الموضوعات. سواء كنت طالبًا يتطلع إلى تحسين مهاراته، أو محترفًا يسعى إلى التقدم الوظيفي، أو ببساطة شخصًا حريصًا على تعلم شيء جديد، فلدينا الدورة التدريبية المناسبة لك."
+// "في The Best Platform، نعتقد أن التعليم يجب أن يكون متاحًا للجميع، في أي مكان. يضمن مدرسونا الخبراء وأدواتنا المبتكرة أن يكون التعلم جذابًا ومرنًا ومصممًا وفقًا لاحتياجاتك."
+// "انضم إلينا اليوم وابدأ رحلتك نحو إتقان المعرفة والمهارات الجديدة، كل ذلك من راحة منزلك.",
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/language/language.dart';
 import '../../../../../core/theming/text_style.dart';
 
 class AboutUsScreen extends StatelessWidget {
@@ -23,7 +29,7 @@ class AboutUsScreen extends StatelessWidget {
 
       appBar: AppBar(
         title: Text(
-          'About Us',
+          Language.instance.txtAboutUs(),
           style: TextStyles.font15DarkBlueMedium,
         ),
       ),
@@ -33,29 +39,24 @@ class AboutUsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Text(
                 "Welcome to The Best Platform, your gateway to online education designed to empower learners of all ages. Our platform provides high-quality, interactive learning experiences, offering courses across a wide range of subjects. Whether you're a student looking to enhance your skills, a professional seeking career advancement, or simply someone eager to learn something new, we've got the right course for you."
                     "At The Best Platform, we believe that education should be accessible to everyone, anywhere. Our expert instructors and innovative tools ensure that learning is engaging, flexible, and tailored to your needs."
                     "Join us today and start your journey towards mastering new knowledge and skills, all from the comfort of your home.",
-                style: TextStyle(fontSize: 16.sp, height: 1.5),
-              ),
+                style: TextStyles.font13DarkBlueMedium ),
+
               SizedBox(height: 24.h),
               Text(
-                "Meet the Developers",
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
-                ),
+                Language.instance.txtMeetDevelopers(),
+                style: TextStyles.font16BlueSemiBold
               ),
               SizedBox(height: 16.h),
 
-              Row(
+              const Row(
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: AssetImage('assets/ahmed_tantawy.jpg'), // Add image path or use placeholder
+                    backgroundImage: AssetImage('assets/ahmed_tantawy.jpg'),
                   ),
                   SizedBox(width: 16),
                   Column(

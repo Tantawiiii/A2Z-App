@@ -907,4 +907,12 @@ class Language extends ChangeNotifier {
     }
   }
 
+  txtMeetDevelopers() {
+    if (getLanguage() == 'EN') {
+      return "Meet the Developers";
+    } else if (getLanguage() == 'AR') {
+      return "كود الأشتراك";
+    }
+  }
+
 }

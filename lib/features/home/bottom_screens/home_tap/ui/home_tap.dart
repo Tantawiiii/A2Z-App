@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:a2z_app/core/helpers/spacing.dart';
 import 'package:a2z_app/core/networking/const/api_constants.dart';
+import 'package:a2z_app/core/utils/colors_code.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -177,7 +178,8 @@ class _HomeTapState extends State<HomeTap> {
                           child: SizedBox(
                             height: 160.h,
                             child: Card(
-                              elevation: 4,
+                              elevation: 1,
+                              color: ColorsCode.backBottomNav,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
@@ -314,7 +316,7 @@ class _HomeTapState extends State<HomeTap> {
         queryParameters: {'BannarArea': 'Home'},
       );
 
-      if (!mounted) return; // Check if widget is still in the tree
+      if (!mounted) return;
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
         setState(() {
@@ -343,7 +345,7 @@ class _HomeTapState extends State<HomeTap> {
 
         double targetScroll = currentScroll + scrollIncrement;
         if (targetScroll >= maxScroll) {
-          targetScroll = 0; // Scroll back to the start
+          targetScroll = 0;
         }
 
         _scrollController.animateTo(

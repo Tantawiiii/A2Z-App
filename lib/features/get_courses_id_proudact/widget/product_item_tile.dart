@@ -21,12 +21,11 @@ class ProductItemTile extends StatelessWidget {
 
     return Card(
       elevation: 1.5,
-      shadowColor: Colors.cyan,
       child: Container(
         height: 120.h,
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: ColorsCode.lighterGray,
+          color: ColorsCode.backBottomNav,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(

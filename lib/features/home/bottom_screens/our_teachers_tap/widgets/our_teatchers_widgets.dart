@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../core/utils/colors_code.dart';
 import '../../../../../core/utils/images_paths.dart';
 import '../service/categoris_teachers_servise.dart';
 
@@ -178,6 +179,7 @@ class _OurTeachersTapWidgetState extends State<OurTeachersTapWidget> {
         height: 280.h,
         width: 150,
         child: Card(
+          color: ColorsCode.backBottomNav,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
