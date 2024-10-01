@@ -12,5 +12,6 @@ class Routes {
   static const String getAllCoursesScreen = "/getAllCoursesScreen";
   static const String courseSubscriptionCode = "/courseSubscriptionCode";
   static const String aboutUsScreen = "/aboutUsScreen";
+  static const String examScreen = "/examsScreen";
 
 }
