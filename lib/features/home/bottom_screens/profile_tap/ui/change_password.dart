@@ -82,16 +82,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   String currentLang = "";
 
-
   @override
   Widget build(BuildContext context) {
-
     final isArabic = A2ZApp.getLocal(context).languageCode == 'ar';
+    return Directionality (
 
-    return Directionality(
+
         textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
         child: isConnectedToInternet
       ? Scaffold(
+          appBar: AppBar(
+            title: Text(
+              Language.instance.txtChangePass(),
+              style: TextStyles.font15DarkBlueMedium,
+            ),
+          ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 24.w),
           child: ListView(
@@ -178,6 +183,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         ),
       )
       : const NoInternetScreen(),
+
+
     );
   }
 }
