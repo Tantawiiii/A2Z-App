@@ -46,16 +46,14 @@ class BuildTextFormField extends StatelessWidget {
               vertical: 18.h,
               horizontal: 20.w,
             ),
-        focusedBorder: focusedBorder ??
-            OutlineInputBorder(
+        focusedBorder: focusedBorder ?? OutlineInputBorder(
               borderSide: const BorderSide(
                 color: ColorsCode.mainBlue,
                 width: 1.3,
               ),
               borderRadius: BorderRadius.circular(16.0),
             ),
-        enabledBorder: enabledBorder ??
-            OutlineInputBorder(
+        enabledBorder: enabledBorder ?? OutlineInputBorder(
               borderSide: const BorderSide(
                 color: ColorsCode.lighterGray,
                 width: 1.3,

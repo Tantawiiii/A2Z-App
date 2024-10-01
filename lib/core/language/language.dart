@@ -915,4 +915,52 @@ class Language extends ChangeNotifier {
     }
   }
 
+  txtAhmedTantawy() {
+    if (getLanguage() == 'EN') {
+      return "Ahmed Tantawy";
+    } else if (getLanguage() == 'AR') {
+      return "أحمد طنطاوى";
+    }
+  }
+
+  txtMobileApp() {
+    if (getLanguage() == 'EN') {
+      return "Mobile App Developer";
+    } else if (getLanguage() == 'AR') {
+      return "Mobile App Developer";
+    }
+  }
+
+  txtBackend() {
+    if (getLanguage() == 'EN') {
+      return "Backend Developer";
+    } else if (getLanguage() == 'AR') {
+      return "Backend Developer";
+    }
+  }
+
+
+  txtWeBelieve() {
+    if (getLanguage() == 'EN') {
+      return "We believe in the power of education to transform lives. Our goal is to make learning accessible to everyone, anytime, anywhere.";
+    } else if (getLanguage() == 'AR') {
+      return "نحن نؤمن بقدرة التعليم على تغيير حياة الناس. هدفنا هو جعل التعلم متاحًا للجميع، في أي وقت وفي أي مكان.";
+    }
+  }
+
+  txtAboutDes() {
+    if (getLanguage() == 'EN') {
+      return "Welcome to The Best Platform, your gateway to online education designed to empower learners of all ages. Our platform provides high-quality, interactive learning experiences, offering courses across a wide range of subjects. Whether you're a student looking to enhance your skills, a professional seeking career advancement, or simply someone eager to learn something new, we've got the right course for you."
+    "At The Best Platform, we believe that education should be accessible to everyone, anywhere. Our expert instructors and innovative tools ensure that learning is engaging, flexible, and tailored to your needs."
+    "Join us today and start your journey towards mastering new knowledge and skills, all from the comfort of your home.";
+
+    } else if (getLanguage() == 'AR') {
+      return "مرحبًا بك في The Best Platform، بوابتك إلى التعليم عبر الإنترنت المصمم لتمكين المتعلمين من جميع الأعمار. توفر منصتنا تجارب تعليمية تفاعلية عالية الجودة، وتقدم دورات عبر مجموعة واسعة من الموضوعات. سواء كنت طالبًا يتطلع إلى تحسين مهاراته، أو محترفًا يسعى إلى التقدم الوظيفي، أو ببساطة شخصًا حريصًا على تعلم شيء جديد، فلدينا الدورة التدريبية المناسبة لك."
+    "في The Best Platform، نعتقد أن التعليم يجب أن يكون متاحًا للجميع، في أي مكان. يضمن مدرسونا الخبراء وأدواتنا المبتكرة أن يكون التعلم جذابًا ومرنًا ومصممًا وفقًا لاحتياجاتك."
+    "انضم إلينا اليوم وابدأ رحلتك نحو إتقان المعرفة والمهارات الجديدة، كل ذلك من راحة منزلك.";
+    }
+  }
+
+
+
 }

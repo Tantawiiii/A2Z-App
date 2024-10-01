@@ -5,6 +5,7 @@ import 'package:a2z_app/features/forget_password/ui/screens/verify_otp_screen.da
 import 'package:a2z_app/features/getstarted/get_started_screen.dart';
 import 'package:a2z_app/features/home/bottom_screens/profile_tap/ui/aboutus_screen.dart';
 import 'package:a2z_app/features/home/bottom_screens/profile_tap/ui/change_password.dart';
+import 'package:a2z_app/features/home/bottom_screens/profile_tap/ui/exams_screens.dart';
 import 'package:a2z_app/features/home/home_screen.dart';
 import 'package:a2z_app/features/signup/ui/signup_screen.dart';
 import 'package:a2z_app/features/splash_screen.dart';
@@ -45,6 +46,8 @@ class AppRouter {
                 ));
       case Routes.aboutUsScreen:
         return MaterialPageRoute(builder: (_) => const AboutUsScreen());
+        case Routes.examScreen:
+        return MaterialPageRoute(builder: (_) => const ExamsScreens());
 
       default:
         return MaterialPageRoute(builder: (_) => const SplashScreen());

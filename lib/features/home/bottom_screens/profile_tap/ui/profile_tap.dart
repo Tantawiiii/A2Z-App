@@ -179,6 +179,8 @@ class _ProfileTapState extends State<ProfileTap> {
                   color: ColorsCode.gray,
                   onTap: () {
                     print('My Exams Tapped');
+
+                    context.pushNamed(Routes.examScreen);
                   },
                 ),
                 BuildProfileOptions(
